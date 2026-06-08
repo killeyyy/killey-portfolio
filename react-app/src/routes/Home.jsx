@@ -1,5 +1,6 @@
 import Nav from "../components/Nav.jsx";
 import Hero from "../components/Hero.jsx";
+import Marquee from "../components/Marquee.jsx";
 import Services from "../components/Services.jsx";
 import Process from "../components/Process.jsx";
 import Work from "../components/Work.jsx";
@@ -13,6 +14,7 @@ export default function Home() {
       <Nav />
       <main id="main">
         <Hero />
+        <Marquee />
         <Services />
         <Process />
         <Work />
