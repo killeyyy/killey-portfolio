@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   KILLEYYY design tokens — premium jewel-tone system.
+   RGB triples (space-separated) so Tailwind alpha utilities work.
+   Tune the whole palette here.
+   ============================================================ */
+:root {
+  --c-ink: 14 14 16; /* #0E0E10 base background (not pure black → avoids halation) */
+  --c-surface: 23 23 27; /* #17171B cards */
+  --c-surface-2: 31 31 36; /* #1F1F24 raised */
+  --c-line: 58 54 47; /* hairline border (warm champagne-tinted) */
+  --c-silver: 232 230 225; /* #E8E6E1 primary text */
+  --c-muted: 167 162 154; /* #A7A29A secondary text/labels */
+  --c-garnet: 123 30 43; /* #7B1E2B deep accent */
+  --c-crimson: 200 50 60; /* #C8323C lead accent */
+  --c-jade: 31 111 92; /* #1F6F5C restrained "live/shipped" accent */
+  --c-gold: 201 168 106; /* #C9A86A champagne metallic detail */
+
+  /* motion tokens */
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink text-silver font-sans antialiased;
+    margin: 0;
+    text-rendering: optimizeLegibility;
+  }
+  /* Headings default to the display serif */
+  h1, h2, h3 {
+    @apply font-serif;
+  }
+  /* Selection in brand crimson */
+  ::selection {
+    background: rgb(var(--c-crimson));
+    color: rgb(var(--c-ink));
+  }
+  /* Visible, on-brand keyboard focus (WCAG 2.4.7 / 2.4.11). */
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-gold));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  /* Give anchored sections room under a sticky header (2.4.11). */
+  :target {
+    scroll-margin-top: 6rem;
+  }
+}
+
+@layer components {
+  /* Film-grain overlay: tile a static SVG noise, very low opacity, behind text. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* ============================================================
+   Reduced motion: neutralize non-essential animation globally.
+   Use 0.01ms (not 0) — some engines treat 0 as falsy.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
