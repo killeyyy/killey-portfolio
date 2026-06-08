@@ -1,11 +1,11 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1];
 
 /** Reusable kicker + title block with a scroll reveal. */
 export default function SectionHeading({ kicker, title, id }) {
   return (
-    <motion.div
+    <m.div
       className="mb-10"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -18,6 +18,6 @@ export default function SectionHeading({ kicker, title, id }) {
       <h2 id={id} className="max-w-3xl text-fluid-xl font-semibold leading-tight text-silver">
         {title}
       </h2>
-    </motion.div>
+    </m.div>
   );
 }

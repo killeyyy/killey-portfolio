@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { useReducedMotion } from "../lib/useReducedMotion.js";
 
 /** Cinematic preloader: oversized counter 0→100 over ink, then a curtain wipe.
@@ -44,7 +44,7 @@ export default function Preloader() {
   return (
     <AnimatePresence>
       {!done && (
-        <motion.div
+        <m.div
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-ink"
           initial={{ opacity: 1 }}
           exit={{ y: "-100%" }}
@@ -58,7 +58,7 @@ export default function Preloader() {
           <div className="mt-6 h-px w-56 overflow-hidden bg-white/10">
             <div className="h-full bg-gradient-to-r from-crimson to-gold transition-[width] duration-150" style={{ width: `${pct}%` }} />
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

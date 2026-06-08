@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useReducedMotion } from "../lib/useReducedMotion.js";
 import Magnetic from "../lib/Magnetic.jsx";
@@ -45,19 +45,19 @@ export default function Hero() {
       </div>
 
       <div className="mx-auto flex min-h-[92vh] max-w-content flex-col justify-center px-6 pb-20 pt-28">
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE }}
           className="mb-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-gold"
         >
           <Sparkles size={14} aria-hidden="true" /> {site.brand} · AI-first builder &amp; creator
-        </motion.p>
+        </m.p>
 
         {/* Oversized kinetic wordmark with per-letter reveal */}
         <h1 className="font-serif leading-[0.86]">
           <span className="sr-only">{site.brand}</span>
-          <motion.span
+          <m.span
             aria-hidden="true"
             className="text-gradient block text-fluid-hero font-semibold"
             initial="hidden"
@@ -65,7 +65,7 @@ export default function Hero() {
             variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } } }}
           >
             {WORD.map((ch, i) => (
-              <motion.span
+              <m.span
                 key={i}
                 className="inline-block"
                 variants={{
@@ -74,12 +74,12 @@ export default function Hero() {
                 }}
               >
                 {ch}
-              </motion.span>
+              </m.span>
             ))}
-          </motion.span>
+          </m.span>
         </h1>
 
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE, delay: 0.5 }}
@@ -87,18 +87,18 @@ export default function Hero() {
         >
           I build <span className="text-gradient-warm">cinematic</span> games, sites &amp; content with{" "}
           <span className="text-gradient-warm">AI</span>.
-        </motion.p>
+        </m.p>
 
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE, delay: 0.62 }}
           className="mt-5 max-w-xl text-fluid-base leading-relaxed text-muted"
         >
           {site.subhead}
-        </motion.p>
+        </m.p>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE, delay: 0.74 }}
@@ -120,7 +120,7 @@ export default function Hero() {
               Start a project
             </a>
           </Magnetic>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

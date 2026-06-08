@@ -1,9 +1,9 @@
 import { useRef } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { m, useMotionValue, useSpring } from "framer-motion";
 import { useReducedMotion } from "./useReducedMotion.js";
 
 /** Wraps children so they spring toward the pointer (magnetic CTA / tile).
- *  No-op under reduced-motion. docs/PLAYBOOK.md Recipe 3.2. */
+ *  No-op under reduced-m. docs/PLAYBOOK.md Recipe 3.2. */
 export default function Magnetic({ children, strength = 0.4, className }) {
   const ref = useRef(null);
   const reduced = useReducedMotion();
@@ -24,8 +24,8 @@ export default function Magnetic({ children, strength = 0.4, className }) {
   }
 
   return (
-    <motion.div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} style={{ x: sx, y: sy }} className={className}>
+    <m.div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} style={{ x: sx, y: sy }} className={className}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }
