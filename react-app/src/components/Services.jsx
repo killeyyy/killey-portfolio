@@ -1,25 +1,28 @@
 import { services } from "../data/site.js";
 import SectionHeading from "./SectionHeading.jsx";
 import Icon from "../lib/icons.jsx";
+import { Stagger, Item } from "../lib/motion.jsx";
+
+// Literal classes (so Tailwind keeps them) — rotate a colorful accent per card.
+const ACCENTS = ["text-crimson-bright", "text-violet-bright", "text-cyan", "text-gold"];
 
 export default function Services() {
   return (
-    <section id="services" className="mx-auto max-w-content px-6 py-20 md:py-28">
+    <section id="services" className="mx-auto max-w-content px-6 py-24 md:py-32">
       <SectionHeading kicker="What I do" title="Built with AI, end to end." />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {services.map((s) => (
-          <div
-            key={s.title}
-            className="group rounded-xl2 border border-line/70 bg-surface/60 p-6 transition-colors hover:border-crimson/40"
-          >
-            <div className="mb-4 inline-flex rounded-lg border border-line/70 p-2.5 text-gold transition-colors group-hover:text-crimson">
-              <Icon name={s.icon} size={20} aria-hidden="true" />
+      <Stagger className="grid gap-4 sm:grid-cols-2">
+        {services.map((s, i) => (
+          <Item key={s.title} className="h-full">
+            <div className="glow-card group h-full rounded-[18px] border border-line/70 bg-surface/60 p-7 transition-transform duration-300 hover:-translate-y-1">
+              <div className={`mb-5 inline-flex rounded-xl border border-line/70 bg-ink/40 p-3 ${ACCENTS[i % ACCENTS.length]}`}>
+                <Icon name={s.icon} size={22} aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-fluid-lg font-semibold text-silver">{s.title}</h3>
+              <p className="text-sm leading-relaxed text-muted">{s.body}</p>
             </div>
-            <h3 className="mb-2 text-fluid-lg font-semibold text-silver">{s.title}</h3>
-            <p className="text-sm leading-relaxed text-muted">{s.body}</p>
-          </div>
+          </Item>
         ))}
-      </div>
+      </Stagger>
     </section>
   );
 }

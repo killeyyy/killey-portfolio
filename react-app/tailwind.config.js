@@ -19,6 +19,13 @@ export default {
         gold: "rgb(var(--c-gold) / <alpha-value>)", // champagne metallic detail (#C9A86A)
         plum: "rgb(var(--c-plum) / <alpha-value>)", // jewel accent (#8B4AA8)
         azure: "rgb(var(--c-azure) / <alpha-value>)", // jewel accent (#3882C4)
+        "crimson-bright": "rgb(var(--c-crimson-bright) / <alpha-value>)",
+        "jade-bright": "rgb(var(--c-jade-bright) / <alpha-value>)",
+        violet: "rgb(var(--c-violet) / <alpha-value>)",
+        "violet-bright": "rgb(var(--c-violet-bright) / <alpha-value>)",
+        cyan: "rgb(var(--c-cyan) / <alpha-value>)",
+        magenta: "rgb(var(--c-magenta) / <alpha-value>)",
+        amber: "rgb(var(--c-amber) / <alpha-value>)",
       },
       fontFamily: {
         serif: ["Fraunces", "ui-serif", "Georgia", "serif"],

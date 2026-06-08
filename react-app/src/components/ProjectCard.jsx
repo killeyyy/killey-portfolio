@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Play, Maximize2, ArrowUpRight } from "lucide-react";
 import StatusPill from "./StatusPill.jsx";
-import { cn } from "../lib/cn.js";
 
 /**
  * Project card with click-to-launch playable embed.
@@ -16,13 +15,8 @@ export default function ProjectCard({ project, featured }) {
   const playable = !!project.embed;
 
   return (
-    <article
-      className={cn(
-        "group relative flex flex-col overflow-hidden rounded-xl2 border border-line/70 bg-surface/50 transition-colors hover:border-crimson/40",
-        featured && "sm:col-span-2",
-      )}
-    >
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-ink">
+    <article className="group relative flex h-full flex-col rounded-[18px] border border-line/70 bg-surface/50 transition-all duration-300 hover:-translate-y-1 hover:border-crimson/40 hover:shadow-[0_24px_70px_-24px_rgba(200,50,60,0.5)]">
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-[18px] bg-ink">
         {playable && launched ? (
           <iframe
             src={project.embed}
