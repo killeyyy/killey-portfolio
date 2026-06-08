@@ -65,5 +65,7 @@ npm run preview  # preview the production build
 - `/vault` is an Obsidian-compatible markdown vault (clients, business, projects,
   personal, memory, instructions, daily) synced via the Obsidian Git plugin.
 - Long-term memory → `vault/memory/`. Standing instructions → `vault/instructions/`.
-- Structured data (leads/clients/pipeline) → Notion. Files → Drive. Dev activity →
-  GitHub/Vercel. The owner cockpit surfaces these (live data lands in Phase 4).
+- Structured data (leads/clients/pipeline) → Notion ("KILLEYYY — Client Pipeline").
+  Files → Drive. Dev activity → GitHub/Vercel. The owner cockpit surfaces these: secure
+  serverless login + LIVE GitHub feed shipped; Vercel/Notion/Drive go live when their
+  tokens are set in Vercel env (see docs/SETUP-ENV.md).

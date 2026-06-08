@@ -158,9 +158,10 @@ export const leads = [
 
 /** @type {{title:string, due:string, done:boolean}[]} */
 export const pipeline = [
-  { title: "Ship redesigned portfolio", due: "In progress", done: false },
-  { title: "Wire owner login (serverless)", due: "Next", done: false },
-  { title: "Connect GitHub/Vercel/Notion to cockpit", due: "Next", done: false },
+  { title: "Wire owner login (serverless)", due: "Shipped", done: true },
+  { title: "Connect GitHub to cockpit (live)", due: "Shipped", done: true },
+  { title: "Ship redesigned portfolio (review → merge)", due: "In review", done: false },
+  { title: "Add Vercel/Notion tokens for live feeds", due: "Next", done: false },
 ];
 
 /** @type {{label:string, href:string, icon:string}[]} */
