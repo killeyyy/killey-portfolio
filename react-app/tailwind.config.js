@@ -17,6 +17,8 @@ export default {
         crimson: "rgb(var(--c-crimson) / <alpha-value>)", // lead accent (#C8323C)
         jade: "rgb(var(--c-jade) / <alpha-value>)", // restrained "live" accent (#1F6F5C)
         gold: "rgb(var(--c-gold) / <alpha-value>)", // champagne metallic detail (#C9A86A)
+        plum: "rgb(var(--c-plum) / <alpha-value>)", // jewel accent (#8B4AA8)
+        azure: "rgb(var(--c-azure) / <alpha-value>)", // jewel accent (#3882C4)
       },
       fontFamily: {
         serif: ["Fraunces", "ui-serif", "Georgia", "serif"],
@@ -46,10 +48,20 @@ export default {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-50%)" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.6" },
+          "50%": { opacity: "1" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.7s cubic-bezier(0.22,1,0.36,1) both",
         marquee: "marquee 40s linear infinite",
+        float: "float 6s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 4s ease-in-out infinite",
       },
     },
   },
