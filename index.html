@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hassan Sardar Shah (KILLEYYY) — Builder & Creator</title>
+    <meta name="description" content="Hassan Sardar Shah (KILLEYYY) — I ship cinematic games, websites, and content with an AI-first workflow." />
+    <meta property="og:title" content="Hassan Sardar Shah (KILLEYYY) — Builder & Creator" />
+    <meta property="og:description" content="Hassan Sardar Shah (KILLEYYY) — I ship cinematic games, websites, and content with an AI-first workflow." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hassan Sardar Shah (KILLEYYY) — Builder & Creator" />
+    <meta name="twitter:description" content="I ship cinematic games, websites, and content with an AI-first workflow." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230c0a09'/%3E%3Ctext%20x='50'%20y='71'%20font-family='Georgia,serif'%20font-size='62'%20fill='%2334d399'%20text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: { extend: { fontFamily: {
+          sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+          serif: ["Fraunces", "ui-serif", "Georgia", "serif"],
+        } } }
+      };
+    </script>
+    <style>
+      html { scroll-behavior: smooth; }
+      body { background: #0c0a09; margin: 0; }
+    </style>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="react">
+      const { useState } = React;
+
+      const SVG_DEF = { xmlns: "http://www.w3.org/2000/svg", width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" };
+      function Icon({ name, className }) {
+        const node = (window.lucide && window.lucide.icons && window.lucide.icons[name]) || null;
+        if (!node) return <svg {...SVG_DEF} className={className} />;
+        const kids = node.map((c, i) => React.createElement(c[0], Object.assign({ key: i }, c[1])));
+        return React.createElement("svg", Object.assign({}, SVG_DEF, { className }), kids);
+      }
+
+      const OWNER_PASSWORD = "killey-2026";
+
+      const DATA = {
+        name: "KILLEYYY",
+        tagline: "Student · Builder · Creator — shipping cinematic games, sites & content with AI",
+        blurb: "I'm Hassan Sardar Shah — KILLEYYY. I design and ship cinematic games, websites, and content using an AI-first workflow, turning ideas into live products fast.",
+        location: "Karachi, Pakistan · Remote",
+        email: "hsskiller@gmail.com",
+        socials: {
+          instagram: "https://instagram.com/hssn.shah",
+          linkedin: "https://www.linkedin.com/in/hassan-sardar-shah-941625170/",
+          website: "https://empire-rise.vercel.app",
+        },
+        services: [
+          { icon: "Gamepad2", title: "AI-Built Games", desc: "Cinematic browser and Godot games — branching stories, combat, and game feel, designed and shipped with an AI-first pipeline." },
+          { icon: "Megaphone", title: "Brand & Content", desc: "KILLEYYY: disciplined, cinematic content on discipline, ambition, and Sabit Qadam across Instagram, LinkedIn, and X." },
+          { icon: "PenTool", title: "Web & Product Design", desc: "Dark, premium, cinematic websites and digital products — from concept to a live link." },
+          { icon: "Sparkles", title: "AI Workflows", desc: "Using Claude and Codex to automate work, build tools, and ship real products without a traditional dev team." },
+        ],
+        projects: [
+          { name: "Empire — Rise to the Top", type: "Game", year: "2026", status: "Live", client: true, blurb: "Cinematic choose-your-own-adventure crime game. Branching neo-noir story across three acts, runs on any device.", metric: "Live in browser", link: "https://empire-rise.vercel.app" },
+          { name: "Shadow Kombat", type: "Game", year: "2026", status: "In progress", client: true, blurb: "Original cinematic 2D fighter in Godot — MK-style impact, KO slow-mo, and a living dragon boss.", metric: "In development", link: "#" },
+          { name: "BMLA Quest", type: "EdTech", year: "2026", status: "Live", client: true, blurb: "A gamified study tool for Business Maths & Linear Algebra — learning turned into a quest.", metric: "Live", link: "https://bmla-quest.vercel.app" },
+          { name: "BMLA Prep Command Center", type: "EdTech", year: "2026", status: "Live", client: true, blurb: "A focused study dashboard that organizes prep, questions, and progress in one place.", metric: "Live", link: "https://hassan-deals-pk.vercel.app" },
+          { name: "ASCENT: Zero to Hero", type: "Web / Product", year: "2026", status: "In progress", client: true, blurb: "A cinematic web-series reading experience — 'ranked zero,' chapter-based progression and lore.", metric: "Chapter 1 ready", link: "#" },
+          { name: "NeonSurvivor", type: "Game", year: "2026", status: "Prototype", client: false, blurb: "Browser survival-action prototype. Private build.", metric: "—", link: "#" },
+          { name: "Kapture MCP", type: "Tooling", year: "2026", status: "Paused", client: false, blurb: "URL-to-screenshot automation tool. Paused.", metric: "—", link: "#" },
+        ],
+        leads: [
+          { name: "First freelance build", company: "Prospect", topic: "Land one paid game / site build", status: "Idea", value: "—" },
+          { name: "Brand collab", company: "KILLEYYY", topic: "Sponsor or collab as audience grows", status: "Idea", value: "—" },
+        ],
+        pipeline: [
+          { title: "Shadow Kombat — wire downloaded monsters as bosses", due: "This week", done: false },
+          { title: "Post 2 cinematic pieces (Instagram + LinkedIn)", due: "This week", done: false },
+          { title: "Log 3 new ideas + pick one to validate", due: "This week", done: false },
+          { title: "5 hours focused IBA / BMLA study", due: "Daily", done: false },
+          { title: "Godot engine installed + project verified", due: "Done", done: true },
+        ],
+        links: [
+          { label: "Empire (live)", url: "https://empire-rise.vercel.app" },
+          { label: "BMLA Quest (live)", url: "https://bmla-quest.vercel.app" },
+          { label: "Vercel dashboard", url: "https://vercel.com/dashboard" },
+          { label: "Notion", url: "https://notion.so" },
+          { label: "Gmail", url: "https://mail.google.com" },
+          { label: "Google Calendar", url: "https://calendar.google.com" },
+        ],
+      };
+
+      function App() {
+        const [mode, setMode] = useState("client");
+        const [authed, setAuthed] = useState(() => sessionStorage.getItem("owner_ok") === "1");
+        function signOut() { sessionStorage.removeItem("owner_ok"); setAuthed(false); setMode("client"); }
+        const showOwner = mode === "owner";
+        return (
+          <div className="min-h-screen bg-stone-950 text-stone-100 font-sans antialiased selection:bg-emerald-400 selection:text-stone-900">
+            <ModeToggle mode={mode} setMode={setMode} />
+            {!showOwner && <ClientSite />}
+            {showOwner && !authed && <PasswordGate onPass={() => setAuthed(true)} onBack={() => setMode("client")} />}
+            {showOwner && authed && <OwnerDashboard onSignOut={signOut} />}
+          </div>
+        );
+      }
+
+      function ModeToggle({ mode, setMode }) {
+        return (
+          <div className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2">
+            <div className="flex items-center gap-1 rounded-full border border-stone-700/70 bg-stone-900/80 p-1 shadow-2xl backdrop-blur">
+              <button onClick={() => setMode("client")} className={"flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition " + (mode === "client" ? "bg-emerald-400 text-stone-900" : "text-stone-300 hover:text-white")}>
+                <Icon name="Eye" className="h-4 w-4" /> Client Site
+              </button>
+              <button onClick={() => setMode("owner")} className={"flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition " + (mode === "owner" ? "bg-emerald-400 text-stone-900" : "text-stone-300 hover:text-white")}>
+                <Icon name="Shield" className="h-4 w-4" /> Owner
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      function PasswordGate({ onPass, onBack }) {
+        const [val, setVal] = useState(""); const [err, setErr] = useState(false);
+        function submit(e) { e.preventDefault(); if (val === OWNER_PASSWORD) { sessionStorage.setItem("owner_ok", "1"); onPass(); } else { setErr(true); } }
+        return (
+          <div className="flex min-h-screen items-center justify-center px-6">
+            <form onSubmit={submit} className="w-full max-w-sm rounded-3xl border border-stone-800 bg-stone-900/50 p-8 text-center">
+              <div className="mx-auto mb-5 inline-flex rounded-2xl bg-emerald-400/10 p-4 text-emerald-400"><Icon name="Lock" className="h-7 w-7" /></div>
+              <h1 className="font-serif text-2xl">Owner access</h1>
+              <p className="mt-2 text-sm text-stone-400">This area is private. Enter your password to continue.</p>
+              <input type="password" autoFocus value={val} onChange={(e) => { setVal(e.target.value); setErr(false); }} placeholder="Password" className="mt-6 w-full rounded-xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 outline-none focus:border-emerald-400" />
+              {err && <p className="mt-2 text-sm text-rose-400">Incorrect password. Try again.</p>}
+              <button type="submit" className="mt-4 w-full rounded-xl bg-emerald-400 px-4 py-3 text-sm font-medium text-stone-900 transition hover:bg-emerald-300">Unlock</button>
+              <button type="button" onClick={onBack} className="mt-3 text-sm text-stone-400 hover:text-white">← Back to site</button>
+            </form>
+          </div>
+        );
+      }
+
+      function ClientSite() {
+        const work = DATA.projects.filter((p) => p.client);
+        return (<div><ClientNav /><Hero /><Services /><Process /><Work work={work} /><About /><Contact /><Footer /></div>);
+      }
+
+      function ClientNav() {
+        const [open, setOpen] = useState(false);
+        const links = [["#services", "Services"], ["#work", "Work"], ["#about", "About"], ["#contact", "Contact"]];
+        return (
+          <header className="sticky top-0 z-40 border-b border-stone-800/60 bg-stone-950/70 backdrop-blur">
+            <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+              <div className="flex items-center gap-2"><Icon name="Sparkles" className="h-5 w-5 text-emerald-400" /><span className="font-serif text-lg tracking-tight">{DATA.name}</span></div>
+              <nav className="hidden items-center gap-8 text-sm text-stone-300 md:flex">
+                {links.map(([h, l]) => <a key={h} href={h} className="hover:text-white">{l}</a>)}
+              </nav>
+              <div className="flex items-center gap-3">
+                <a href={"mailto:" + DATA.email} className="hidden items-center gap-1.5 rounded-full bg-emerald-400 px-4 py-2 text-sm font-medium text-stone-900 transition hover:bg-emerald-300 sm:flex">Let's talk <Icon name="ArrowRight" className="h-4 w-4" /></a>
+                <button onClick={() => setOpen(!open)} className="text-stone-200 md:hidden" aria-label="Menu"><Icon name={open ? "X" : "Menu"} className="h-6 w-6" /></button>
+              </div>
+            </div>
+            {open && (
+              <div className="border-t border-stone-800/60 px-6 py-4 md:hidden">
+                <div className="flex flex-col gap-3 text-sm text-stone-300">
+                  {links.map(([h, l]) => <a key={h} href={h} onClick={() => setOpen(false)} className="hover:text-white">{l}</a>)}
+                  <a href={"mailto:" + DATA.email} className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-400 px-4 py-2 font-medium text-stone-900">Let's talk <Icon name="ArrowRight" className="h-4 w-4" /></a>
+                </div>
+              </div>
+            )}
+          </header>
+        );
+      }
+
+      function Hero() {
+        return (
+          <section className="relative overflow-hidden">
+            <div className="pointer-events-none absolute -top-32 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-emerald-400/10 blur-3xl" />
+            <div className="mx-auto max-w-6xl px-6 py-28 text-center">
+              <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-stone-700/70 bg-stone-900/50 px-4 py-1.5 text-xs text-stone-300"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Available for select projects</div>
+              <h1 className="font-serif text-5xl leading-tight tracking-tight md:text-7xl">I build &amp; ship<br /><span className="text-emerald-400">cinematic products</span></h1>
+              <p className="mx-auto mt-6 max-w-2xl text-lg text-stone-400">{DATA.blurb}</p>
+              <p className="mt-3 text-sm uppercase tracking-widest text-stone-500">{DATA.tagline}</p>
+              <div className="mt-10 flex items-center justify-center gap-4">
+                <a href="#work" className="flex items-center gap-2 rounded-full bg-emerald-400 px-6 py-3 text-sm font-medium text-stone-900 transition hover:bg-emerald-300">View work <Icon name="ArrowRight" className="h-4 w-4" /></a>
+                <a href="#contact" className="flex items-center gap-2 rounded-full border border-stone-700 px-6 py-3 text-sm font-medium text-stone-200 transition hover:border-stone-500">Start a project</a>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Services() {
+        return (
+          <section id="services" className="mx-auto max-w-6xl px-6 py-20">
+            <SectionHeading kicker="What I do" title="Four disciplines, one workflow" />
+            <div className="mt-12 grid gap-5 md:grid-cols-2">
+              {DATA.services.map((s) => (
+                <div key={s.title} className="group rounded-2xl border border-stone-800 bg-stone-900/40 p-7 transition hover:border-emerald-400/40 hover:bg-stone-900/70">
+                  <div className="mb-5 inline-flex rounded-xl bg-emerald-400/10 p-3 text-emerald-400"><Icon name={s.icon} className="h-6 w-6" /></div>
+                  <h3 className="font-serif text-xl">{s.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-400">{s.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      }
+
+      function Process() {
+        const steps = [
+          { n: "01", t: "Discover", d: "We map the problem, success metrics, and constraints before a line of code is written." },
+          { n: "02", t: "Design & build", d: "Rapid prototypes, then a production build — story, interface, and systems together." },
+          { n: "03", t: "Ship & iterate", d: "Launch, measure, refine — and hand over something polished you can actually use." },
+        ];
+        return (
+          <section className="mx-auto max-w-6xl px-6 py-20">
+            <SectionHeading kicker="How I work" title="From idea to shipped, without the hand-offs" />
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
+              {steps.map((s) => (
+                <div key={s.n} className="rounded-2xl border border-stone-800 bg-stone-900/40 p-7">
+                  <span className="font-serif text-3xl text-emerald-400">{s.n}</span>
+                  <h3 className="mt-4 font-serif text-xl">{s.t}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-stone-400">{s.d}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      }
+
+      function Work({ work }) {
+        return (
+          <section id="work" className="mx-auto max-w-6xl px-6 py-20">
+            <SectionHeading kicker="Selected work" title="Things I've shipped" />
+            <div className="mt-12 grid gap-5 md:grid-cols-2">
+              {work.map((p) => (
+                <a key={p.name} href={p.link} className="group flex flex-col rounded-2xl border border-stone-800 bg-stone-900/40 p-7 transition hover:border-emerald-400/40 hover:bg-stone-900/70">
+                  <div className="flex items-center justify-between"><span className="rounded-full bg-stone-800 px-3 py-1 text-xs text-stone-300">{p.type}</span><span className="text-xs text-stone-500">{p.year}</span></div>
+                  <h3 className="mt-5 font-serif text-2xl">{p.name}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-stone-400">{p.blurb}</p>
+                  <div className="mt-5 flex items-center justify-between border-t border-stone-800 pt-4"><span className="text-sm font-medium text-emerald-400">{p.metric}</span><Icon name="ArrowUpRight" className="h-4 w-4 text-stone-500 transition group-hover:text-emerald-400" /></div>
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      }
+
+      function About() {
+        return (
+          <section id="about" className="mx-auto max-w-6xl px-6 py-20">
+            <div className="grid gap-12 rounded-3xl border border-stone-800 bg-stone-900/40 p-10 md:grid-cols-2 md:p-14">
+              <div><SectionHeading kicker="About" title="One disciplined operator, end to end" /></div>
+              <div className="space-y-5 text-stone-400">
+                <p>I'm Hassan Sardar Shah — online, KILLEYYY. I'm a student at IBA Karachi building a body of work around discipline, AI, and shipping real things.</p>
+                <p>I don't come from a traditional coding background. Instead I use an AI-first workflow — planning, designing, and building with tools like Claude and Codex — to take an idea and turn it into a live game, site, or product fast. Cinematic, dark, premium, disciplined is the through-line. Sabit Qadam: show up every day.</p>
+                <div className="flex items-center gap-2 pt-2 text-sm text-stone-400"><Icon name="MapPin" className="h-4 w-4 text-emerald-400" /> {DATA.location}</div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Contact() {
+        const [f, setF] = useState({ name: "", email: "", msg: "" });
+        function submit(e) {
+          e.preventDefault();
+          const subject = encodeURIComponent("Project inquiry — " + (f.name || "new lead"));
+          const body = encodeURIComponent("Name: " + f.name + "\nEmail: " + f.email + "\n\n" + f.msg);
+          window.location.href = "mailto:" + DATA.email + "?subject=" + subject + "&body=" + body;
+        }
+        const inp = "w-full rounded-xl border border-stone-700 bg-stone-950/60 px-4 py-3 text-sm text-stone-100 outline-none transition focus:border-emerald-400";
+        return (
+          <section id="contact" className="mx-auto max-w-6xl px-6 py-20">
+            <div className="relative overflow-hidden rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-stone-900 to-stone-950 p-10 md:p-16">
+              <div className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-400/10 blur-3xl" />
+              <div className="relative mx-auto max-w-xl text-center">
+                <h2 className="font-serif text-4xl tracking-tight md:text-5xl">Have something in mind?</h2>
+                <p className="mx-auto mt-4 text-stone-400">Tell me about your project and what you're trying to build. I reply to every serious inquiry.</p>
+                <form onSubmit={submit} className="mt-8 space-y-3 text-left">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <input className={inp} placeholder="Your name" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} required />
+                    <input className={inp} type="email" placeholder="Your email" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} required />
+                  </div>
+                  <textarea className={inp} rows="4" placeholder="What are you building?" value={f.msg} onChange={(e) => setF({ ...f, msg: e.target.value })} required />
+                  <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-400 px-7 py-3.5 text-sm font-medium text-stone-900 transition hover:bg-emerald-300"><Icon name="Mail" className="h-4 w-4" /> Send message</button>
+                  <p className="text-center text-xs text-stone-500">Opens your email app, pre-filled and addressed to {DATA.email}.</p>
+                </form>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Footer() {
+        const s = DATA.socials;
+        return (
+          <footer className="border-t border-stone-800/60">
+            <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 md:flex-row">
+              <div className="flex items-center gap-2"><Icon name="Sparkles" className="h-4 w-4 text-emerald-400" /><span className="font-serif">{DATA.name}</span><span className="text-sm text-stone-500">© {new Date().getFullYear()}</span></div>
+              <div className="flex items-center gap-5 text-stone-400">
+                <a href={s.instagram} className="hover:text-white"><Icon name="Instagram" className="h-5 w-5" /></a>
+                <a href={s.linkedin} className="hover:text-white"><Icon name="Linkedin" className="h-5 w-5" /></a>
+                <a href={s.website} className="hover:text-white"><Icon name="Globe" className="h-5 w-5" /></a>
+              </div>
+            </div>
+          </footer>
+        );
+      }
+
+      function SectionHeading({ kicker, title }) {
+        return (<div><p className="text-xs uppercase tracking-widest text-emerald-400">{kicker}</p><h2 className="mt-2 font-serif text-3xl tracking-tight md:text-4xl">{title}</h2></div>);
+      }
+
+      function OwnerDashboard({ onSignOut }) {
+        const [section, setSection] = useState("overview");
+        const nav = [
+          { id: "overview", label: "Overview", icon: "LayoutDashboard" },
+          { id: "projects", label: "Projects", icon: "FolderKanban" },
+          { id: "leads", label: "Leads", icon: "Inbox" },
+          { id: "pipeline", label: "Pipeline", icon: "CalendarDays" },
+          { id: "links", label: "Quick links", icon: "Link2" },
+        ];
+        return (
+          <div className="mx-auto flex max-w-7xl gap-6 px-6 py-8">
+            <aside className="hidden w-56 shrink-0 md:block">
+              <div className="sticky top-8 space-y-1">
+                <div className="mb-6 flex items-center gap-2 px-2"><Icon name="Shield" className="h-5 w-5 text-emerald-400" /><span className="font-serif text-lg">Control Center</span></div>
+                {nav.map((n) => {
+                  const active = section === n.id;
+                  return (<button key={n.id} onClick={() => setSection(n.id)} className={"flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition " + (active ? "bg-emerald-400 text-stone-900" : "text-stone-400 hover:bg-stone-900 hover:text-white")}><Icon name={n.icon} className="h-4 w-4" /> {n.label}</button>);
+                })}
+                <button onClick={onSignOut} className="mt-4 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-stone-500 transition hover:bg-stone-900 hover:text-white"><Icon name="LogOut" className="h-4 w-4" /> Sign out</button>
+              </div>
+            </aside>
+            <main className="min-w-0 flex-1 pb-24">
+              <div className="mb-6 flex gap-2 overflow-x-auto md:hidden">
+                {nav.map((n) => (<button key={n.id} onClick={() => setSection(n.id)} className={"whitespace-nowrap rounded-full px-4 py-2 text-sm " + (section === n.id ? "bg-emerald-400 text-stone-900" : "bg-stone-900 text-stone-400")}>{n.label}</button>))}
+                <button onClick={onSignOut} className="whitespace-nowrap rounded-full bg-stone-900 px-4 py-2 text-sm text-stone-400">Sign out</button>
+              </div>
+              {section === "overview" && <Overview setSection={setSection} />}
+              {section === "projects" && <ProjectsTable />}
+              {section === "leads" && <Leads />}
+              {section === "pipeline" && <Pipeline />}
+              {section === "links" && <QuickLinks />}
+            </main>
+          </div>
+        );
+      }
+
+      function Overview({ setSection }) {
+        const active = DATA.projects.filter((p) => p.status !== "Live").length;
+        const live = DATA.projects.filter((p) => p.status === "Live").length;
+        const openLeads = DATA.leads.filter((l) => l.status !== "Won").length;
+        const todos = DATA.pipeline.filter((p) => !p.done).length;
+        const stats = [
+          { label: "Live projects", value: live, icon: "CircleCheck", tint: "text-emerald-400" },
+          { label: "In progress", value: active, icon: "Clock", tint: "text-amber-300" },
+          { label: "Open leads", value: openLeads, icon: "Users", tint: "text-sky-400" },
+          { label: "Pending tasks", value: todos, icon: "TrendingUp", tint: "text-rose-300" },
+        ];
+        return (
+          <div>
+            <h1 className="font-serif text-3xl">Welcome back, {DATA.name}</h1>
+            <p className="mt-1 text-stone-400">Everything across all four practices, in one view.</p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map((s) => (
+                <div key={s.label} className="rounded-2xl border border-stone-800 bg-stone-900/40 p-5"><Icon name={s.icon} className={"h-5 w-5 " + s.tint} /><p className="mt-4 text-3xl font-semibold">{s.value}</p><p className="text-sm text-stone-400">{s.label}</p></div>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+              <Card title="Recent leads" action={() => setSection("leads")}>
+                <div className="space-y-3">
+                  {DATA.leads.slice(0, 3).map((l) => (<div key={l.name} className="flex items-center justify-between text-sm"><div><p className="font-medium">{l.name} <span className="text-stone-500">· {l.company}</span></p><p className="text-stone-500">{l.topic}</p></div><StatusPill status={l.status} /></div>))}
+                </div>
+              </Card>
+              <Card title="Up next" action={() => setSection("pipeline")}>
+                <div className="space-y-3">
+                  {DATA.pipeline.filter((p) => !p.done).slice(0, 4).map((t) => (<div key={t.title} className="flex items-center gap-3 text-sm"><Icon name="Circle" className="h-4 w-4 shrink-0 text-stone-600" /><span className="flex-1">{t.title}</span><span className="text-stone-500">{t.due}</span></div>))}
+                </div>
+              </Card>
+            </div>
+          </div>
+        );
+      }
+
+      function ProjectsTable() {
+        return (
+          <div>
+            <h1 className="font-serif text-3xl">All projects</h1>
+            <p className="mt-1 text-stone-400">Public and private work. Public projects appear on the client site.</p>
+            <div className="mt-8 overflow-x-auto rounded-2xl border border-stone-800">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-stone-900/60 text-stone-400"><tr><th className="px-5 py-3 font-medium">Project</th><th className="px-5 py-3 font-medium">Type</th><th className="px-5 py-3 font-medium">Status</th><th className="px-5 py-3 font-medium">Visibility</th><th className="px-5 py-3 font-medium">Metric</th></tr></thead>
+                <tbody>
+                  {DATA.projects.map((p) => (
+                    <tr key={p.name} className="border-t border-stone-800/70 hover:bg-stone-900/40">
+                      <td className="px-5 py-4"><p className="font-medium">{p.name}</p><p className="text-stone-500">{p.blurb}</p></td>
+                      <td className="px-5 py-4 text-stone-400">{p.type}</td>
+                      <td className="px-5 py-4"><StatusPill status={p.status} /></td>
+                      <td className="px-5 py-4">{p.client ? (<span className="inline-flex items-center gap-1 text-emerald-400"><Icon name="Eye" className="h-3.5 w-3.5" /> Public</span>) : (<span className="inline-flex items-center gap-1 text-stone-500"><Icon name="Shield" className="h-3.5 w-3.5" /> Private</span>)}</td>
+                      <td className="px-5 py-4 text-emerald-400">{p.metric}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+      }
+
+      function Leads() {
+        return (
+          <div>
+            <h1 className="font-serif text-3xl">Leads &amp; inquiries</h1>
+            <p className="mt-1 text-stone-400">Your private pipeline of potential clients.</p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {DATA.leads.map((l) => (
+                <div key={l.name} className="rounded-2xl border border-stone-800 bg-stone-900/40 p-5">
+                  <div className="flex items-start justify-between"><div><p className="font-medium">{l.name}</p><p className="text-sm text-stone-500">{l.company}</p></div><StatusPill status={l.status} /></div>
+                  <p className="mt-3 text-sm text-stone-300">{l.topic}</p>
+                  <p className="mt-4 text-lg font-semibold text-emerald-400">{l.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      function Pipeline() {
+        return (
+          <div>
+            <h1 className="font-serif text-3xl">Pipeline &amp; tasks</h1>
+            <p className="mt-1 text-stone-400">What needs to happen and when.</p>
+            <div className="mt-8 space-y-3">
+              {DATA.pipeline.map((t) => (
+                <div key={t.title} className="flex items-center gap-4 rounded-xl border border-stone-800 bg-stone-900/40 p-4">
+                  {t.done ? (<Icon name="CircleCheck" className="h-5 w-5 shrink-0 text-emerald-400" />) : (<Icon name="Circle" className="h-5 w-5 shrink-0 text-stone-600" />)}
+                  <span className={"flex-1 " + (t.done ? "text-stone-500 line-through" : "")}>{t.title}</span>
+                  <span className="flex items-center gap-1 text-sm text-stone-500"><Icon name="CalendarDays" className="h-4 w-4" /> {t.due}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+
+      function QuickLinks() {
+        return (
+          <div>
+            <h1 className="font-serif text-3xl">Quick links</h1>
+            <p className="mt-1 text-stone-400">Everything you reach for, in one place.</p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {DATA.links.map((l) => (<a key={l.label} href={l.url} className="group flex items-center justify-between rounded-xl border border-stone-800 bg-stone-900/40 p-5 transition hover:border-emerald-400/40 hover:bg-stone-900/70"><span className="font-medium">{l.label}</span><Icon name="ExternalLink" className="h-4 w-4 text-stone-500 transition group-hover:text-emerald-400" /></a>))}
+            </div>
+          </div>
+        );
+      }
+
+      function Card({ title, action, children }) {
+        return (
+          <div className="rounded-2xl border border-stone-800 bg-stone-900/40 p-6">
+            <div className="mb-4 flex items-center justify-between"><h3 className="font-serif text-lg">{title}</h3>{action && (<button onClick={action} className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300">View all <Icon name="ArrowRight" className="h-3.5 w-3.5" /></button>)}</div>
+            {children}
+          </div>
+        );
+      }
+
+      function StatusPill({ status }) {
+        const map = { "Live": "bg-emerald-500/15 text-emerald-300", "In progress": "bg-amber-500/15 text-amber-300", "New": "bg-sky-500/15 text-sky-300", "In talks": "bg-violet-500/15 text-violet-300", "Proposal sent": "bg-amber-500/15 text-amber-300", "Won": "bg-emerald-500/15 text-emerald-300" };
+        return (<span className={"rounded-full px-2.5 py-1 text-xs font-medium " + (map[status] || "bg-stone-700 text-stone-300")}>{status}</span>);
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
