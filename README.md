@@ -1,34 +1,53 @@
-# KILLEYYY — Portfolio
+# KILLEYYY — Portfolio & Command Center
 
-A dual-mode personal portfolio for **Hassan Sardar Shah (KILLEYYY)** — student, builder, and creator shipping cinematic games, sites, and content with an AI-first workflow.
+A cinematic, premium personal site for **Hassan Sardar Shah (KILLEYYY)** — an
+AI-first builder & creator shipping cinematic games, websites and content. Two modes:
 
-🔗 **Live:** https://killey-portfolio-hsskiller-2439s-projects.vercel.app
+- **Public site** — the showcase (hero, work, about, contact). Live projects are
+  **playable in the browser** right on the page.
+- **Owner cockpit** — a private command center (overview, projects, pipeline, links)
+  that connects to GitHub/Vercel/Notion/Drive and an in-repo Obsidian vault.
 
-## Two modes
-- **Client Site** — the public-facing portfolio (hero, services, work, about, contact).
-- **Owner** — a private dashboard (overview, projects, leads, pipeline, quick links) behind a password gate.
+> Status: actively being upgraded. See `docs/PROPOSAL.md`, `docs/RESEARCH.md`,
+> `docs/DECISIONS.md`, and `CHANGELOG.md`. During the migration the root
+> `index.html` still serves production; the new app lives in `react-app/`.
 
-> Note: the owner password is a lightweight, client-side gate — it keeps casual visitors and search engines out, but it is not real authentication. Don't store anything sensitive behind it.
+## Architecture
 
-## What's in this repo
+| Part | Where | Notes |
+|---|---|---|
+| **Production site (current)** | `index.html` (root) | Self-contained CDN build; serves prod until the Vite flip. |
+| **Production site (target)** | `react-app/` | Vite + React + Tailwind v3.4 + react-router; the real app. |
+| **Content (source of truth)** | `react-app/src/data/site.js` | Edit content **here only** — both modes read it. |
+| **Design system** | `react-app/tailwind.config.js` + `react-app/src/index.css` | Palette tokens, type scale, motion. |
+| **Serverless (Phase 4)** | `/api/*` | Owner auth + live data; secrets via Vercel env vars. |
+| **Knowledge hub** | `/vault` + `CLAUDE.md` | Obsidian-synced markdown second brain. |
 
-### `index.html` (root)
-The **deployed version** — a single, self-contained file. It uses React + Babel + Tailwind via CDN, so it runs by just opening it in a browser or hosting the file anywhere (Vercel, GitHub Pages, Netlify…). Edit the `DATA` object and `OWNER_PASSWORD` near the top to customize.
-
-### `react-app/`
-The same site as a **Vite + React** project, for anyone who wants to develop it with a modern toolchain.
+## Run it
 
 ```bash
 cd react-app
 npm install
 npm run dev      # local dev server
-npm run build    # production build into dist/
+npm run build    # production build (must exit 0)
+npm run preview  # preview the production build
 ```
 
-It uses `lucide-react` for icons and Tailwind (via CDN in `index.html`). All content lives in the `DATA` object in `src/App.jsx`.
+## Edit content
+
+Open `react-app/src/data/site.js` — it holds the headline, about text, contact,
+services, process, projects (incl. which are public/playable), and cockpit data.
+Change it in one place; the whole site updates. **Truthful content only — no
+invented metrics.** Tune colors in `react-app/src/index.css` (`:root` tokens).
+
+## The hub (one place for everything)
+
+`/vault` is an Obsidian-compatible markdown vault (clients, business, projects,
+personal, memory, instructions, daily). See `vault/README.md` for the 5-minute
+Obsidian Git sync setup. `CLAUDE.md` holds standing context so Claude/Codex always
+work from the correct, current facts.
 
 ## Tech
-React · Tailwind CSS · lucide-react · Vite
 
----
-_Sabit Qadam — show up every day._
+React 18 · Vite 5 · Tailwind v3.4 · react-router · ogl (WebGL hero) · lucide-react ·
+Vercel. Budget: Lighthouse mobile ≥ 90, WCAG AA, `prefers-reduced-motion` respected.
