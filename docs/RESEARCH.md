@@ -495,3 +495,76 @@ successor) — but none of it matters unless the metadata reaches the served HTM
 **Cross-cutting rules that protect the budget:** no-motion-first baseline; Firefox needs static
 fallbacks (scroll-driven anims, cross-document VT); one signature creative moment per chapter, not
 everywhere (Awwwards Usability is weighted 30%); every accent-on-dark pairing audited for contrast.
+
+
+## Addendum: deep-research pass (this session)
+
+A second, code-first research pass (8 structured dossiers) was run to turn the earlier RESEARCH.md
+direction into a **copy-pasteable implementation playbook** (`docs/PLAYBOOK.md`). It confirms the
+existing ADRs and adds concrete, sourced recipes. New or sharpened findings:
+
+**Visual language / color.** The "premium not rainbow" discipline is now codified: keep the locked base
++ **crimson `#C8323C` as the single LEAD accent**, ADD one cool gradient/glow axis **violet `#7C5CFF` →
+cyan `#22D3EE`**, keep **magenta `#FF4FD8` / amber `#FFB703` as rare "wow" pops only**, and jade strictly
+for live/shipped (use `#34D399` when readable). Three hard rules: max 2 primary accents on screen; every
+accent-as-text uses an AA-verified `*-bright` variant (raw crimson is only ~3.8:1 on ink → `#F0566A` for
+body); every animated gradient/glow has a `prefers-reduced-motion` freeze. Tune with APCA, certify with
+WCAG 2 AA. New techniques: `@property --angle` conic glow border (GPU, far cheaper than animating
+box-shadow), `background-clip:text` animated gradient headlines, OKLCH conic-spotlight + layered-radial
+aurora hero.
+
+**Shader hero.** The existing `react-app/src/components/hero/ShaderHero.jsx` already implements the OGL
+fullscreen-Triangle pattern with DPR cap, IO/visibility rAF pause, and `loseContext()` cleanup. Research
+identifies the four **missing guards to add**: explicit reduced-motion single-frame freeze, a lerped
+mouse-follow glow uniform, a `try/catch + renderer.gl` check that flips to a CSS-gradient fallback, and
+container-scoped passive pointer listeners. A WebGL1-ported **Aurora** FRAG (crimson→champagne→jade,
+premultiplied alpha) is provided as a swappable module.
+
+**Motion.** Confirmed `framer-motion@11` is API-compatible with the renamed "Motion". The bundle win is
+**`LazyMotion` + `m`** (~4.6KB vs ~34KB) with the `strict` prop, plus app-wide `<MotionConfig
+reducedMotion="user">`. Motion's slick text primitives (**ScrambleText / splitText / Ticker are paid
+Motion+**) — free DIY equivalents are included. Split work by mechanism: JS/Framer for pointer/spring;
+CSS `animation-timeline: view()/scroll()` (behind `@supports`) for cheap high-volume reveals + progress
+bar; React Router v6 `viewTransition` + `useViewTransitionState` for cross-route cover/title morphs.
+
+**Cockpit dashboard.** The 2025–26 "command-center" aesthetic = strict **bento grid** + a **zero-dependency
+viz kit** (inline-SVG `Sparkline`/`ProgressRing`/`Heatmap`, CSS `Skeleton`/`StatusBadge`/`ActivityFeed`) —
+no chart library (saves 50–200KB). One glassmorphism treatment (blur ≤12px) on hero tiles only; all motion
+behind `motion-safe`; tiles fetch from own `/api` only.
+
+**Serverless auth & OG.** Stateless **HMAC-signed httpOnly cookie** via `node:crypto` (no DB, no deps);
+**scrypt-hashed** owner password in env; `timingSafeEqual` **after an equal-length guard** (it throws on
+length mismatch). `@vercel/og` works framework-agnostically via `api/og.tsx` (`runtime:'edge'`, flexbox
+only, 500KB cap).
+
+**Prerender & SEO.** Locks **`vite-react-ssg`** over Vike (Vike became a full framework that replaces RR
+routing). Surfaces a **repo-blocking issue**: the current `vercel.json` blanket SPA rewrite
+(`"/((?!api/).*)" → /index.html`) would hand crawlers the empty CSR shell and destroy the SEO win — it
+must be replaced so prerendered per-route HTML is served as-is, with fallback only for `/owner/*`. Derive
+`getStaticPaths` and the sitemap `dynamicRoutes` from the same `site.js` slug list.
+
+**Live-data APIs.** Four uniform Node functions with token-in-env + **HTTP-200 sample fallback** +
+`s-maxage`/`stale-while-revalidate`. Key gotchas: **Notion 2025-09-03** moved querying to
+`/v1/data_sources/{id}/query` (one-time discovery of `data_sources[].id`); **Drive** needs a stored
+refresh-token exchange and a mandatory `fields` param; **Vercel** is on `/v7/deployments` and `url`
+lacks `https://`; **GitHub** needs a PAT (5,000/hr) + `User-Agent`, with ETag/304 polling free of quota.
+
+### Cited source list (this pass)
+- Phantom.land + Codrops grid writeup — phantom.land · tympanus.net/codrops/2025/06/30/…
+- Codrops WebGL portfolio writeup — tympanus.net/codrops/2025/11/27/…
+- Cyd Stumpel, Roman Jean-Elie, Obys, Bruno Simon, Active Theory, Bithell, Remedy, Jenova Chen, Immersive Garden, Noomo, Cappen (award inspirations)
+- OGL Triangle example + repo — oframe.github.io/ogl · github.com/oframe/ogl
+- React Bits Aurora / Iridescence — github.com/DavidHDev/react-bits
+- Patricio GLSL noise gist · The Book of Shaders — gist.github.com/patriciogonzalezvivo · thebookofshaders.com/11
+- Motion LazyMotion / accessibility / scroll docs — motion.dev/docs/…
+- Josh Comeau scroll-driven animations — joshwcomeau.com/animation/scroll-driven-animations
+- arielbk 3D shiny card · alexjedi magnetic-wrapper · Codrops SVG marquee
+- React Router View Transitions how-to — reactrouter.com/how-to/view-transitions
+- Chrome VT misconceptions — developer.chrome.com/blog/view-transitions-misconceptions
+- Color: media.io futuristic palettes · colorhero dark mode 2025 · Lionel Peramo glow border · Smashing radial/conic gradients · Harshal Ladhe gradient text · 66colorful APCA · Mavik Labs design tokens
+- Dashboard: Vercel/Linear/Raycast/Resend · bentogrids.com · Aceternity bento · react-calendar-heatmap · Flowbite indicators
+- Vercel: OG docs + API ref · Node runtime · request-headers (HMAC) · custom font recipe · edge caching · list deployments
+- MDN Set-Cookie · Node.js crypto docs
+- Prerender: vite-react-ssg (repo + docs) · Vike · vite-plugin-sitemap · Google BreadcrumbList structured data · jsonld Person · alikaraki CSR→SSG Lighthouse case study
+- APIs: GitHub REST (repos/events/rate-limits) · Vercel deployments · Notion 2025-09-03 upgrade + query data source · Google Drive files.list + OAuth offline refresh
+
