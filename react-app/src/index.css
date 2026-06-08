@@ -247,3 +247,19 @@ html.lenis body { height: auto; }
 @media (prefers-reduced-motion: reduce) {
   .glow-card::before { animation: none; }
 }
+
+/* Cross-route View Transitions (React Router `viewTransition`). A quick,
+   premium cross-fade between the work grid and case studies. Killed entirely
+   under reduced-motion so navigation stays instant. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

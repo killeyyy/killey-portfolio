@@ -173,4 +173,91 @@ export const links = [
   { label: "Gmail", href: "https://mail.google.com", icon: "Mail" },
 ];
 
-export default { site, socials, services, process, projects, leads, pipeline, links };
+// Slugs of indexable work pages (one source of truth for routing + sitemap + SEO).
+export const workSlugs = projects.map((p) => p.slug);
+
+/**
+ * Rich case-study content per project (keyed by slug). Truthful and qualitative
+ * — NO invented metrics. Sourced from the project notes in /vault/projects.
+ * CaseStudy.jsx merges this with the matching `projects` entry.
+ * @type {Record<string, {tagline:string,intent:string,approach:{t:string,d:string}[],outcome:string,highlights:string[],stack:string[],role:string}>}
+ */
+export const caseStudies = {
+  "empire-rise": {
+    tagline: "A film you play — rise from nothing to the top of the city.",
+    intent:
+      "Make an interactive story that feels like a film, runs anywhere, and shows off cinematic choice design — playable straight from the portfolio, no install.",
+    approach: [
+      { t: "Pin the feeling first", d: "Define what 'cinematic' means here: a noir tone, weighty decisions, and consequences that stick to the story." },
+      { t: "Direct AI through the build", d: "Drive AI tools through the writing, branching logic and UI — iterating fast on the story tree and the moment-to-moment feel." },
+      { t: "Ship it playable", d: "Deploy a real, instant-play build to the browser and embed it live in the portfolio so the work speaks for itself." },
+    ],
+    outcome:
+      "A live, playable cinematic crime game you can open in one click — branching paths and a climb from zero to the top, with nothing to download.",
+    highlights: ["Branching choices with real consequences", "Cinematic, film-like pacing", "Plays instantly in the browser"],
+    stack: ["AI-first workflow", "Branching narrative design", "Web / single-page build", "Deployed on Vercel"],
+    role: "Concept, writing direction, build & ship — solo, AI-directed.",
+  },
+  "bmla-quest": {
+    tagline: "Turn exam prep into a quest you actually want to play.",
+    intent:
+      "Make revising Business Maths & Linear Algebra genuinely engaging by reframing it as a game — progression and momentum instead of a wall of practice problems.",
+    approach: [
+      { t: "Reframe study as a game", d: "Layer a quest/progression loop onto real coursework so each session feels like advancing, not grinding." },
+      { t: "Build the loop with AI", d: "Direct AI tools through content structuring, the progression system and the UI — fast iterations on what feels rewarding." },
+      { t: "Ship browser-first", d: "Deploy an instant-open build so a student can start in seconds on any device." },
+    ],
+    outcome:
+      "A live, playable study tool where Business Maths & Linear Algebra revision becomes a quest with momentum — sibling to the calmer BMLA Prep Command Center.",
+    highlights: ["Gamified progression on real coursework", "Instant to open, mobile-friendly", "Built fast with an AI-first workflow"],
+    stack: ["AI-first workflow", "Gamified progression loop", "Web / browser", "Deployed on Vercel"],
+    role: "Concept, content structuring, build & ship — solo, AI-directed.",
+  },
+  "bmla-prep-command-center": {
+    tagline: "One calm command center for everything exam prep.",
+    intent:
+      "Prep was scattered across notes and files. Centralize it into a single calm dashboard that cuts friction and decision-fatigue.",
+    approach: [
+      { t: "Give prep a home", d: "Pull materials, tasks and progress into one focused place instead of scattered tabs and files." },
+      { t: "Design for calm focus", d: "Direct AI tools through a clean dashboard layout and data model that stays quiet and out of the way." },
+      { t: "Ship it usable", d: "Deploy a browser-first dashboard that's ready to open and work in immediately." },
+    ],
+    outcome:
+      "A live, focused study dashboard — the no-noise companion to BMLA Quest's gamified side.",
+    highlights: ["Everything in one focused view", "Calm, low-friction by design", "Browser-first, always available"],
+    stack: ["AI-first workflow", "Dashboard UI + data model", "Web / browser", "Deployed on Vercel"],
+    role: "Concept, design direction, build & ship — solo, AI-directed.",
+  },
+  "shadow-kombat": {
+    tagline: "An original 2D fighter built for impact — MK-style.",
+    intent:
+      "Build a real, juicy fighting game with proper game-feel: weighty hits, hit-stop, and cinematic slow-motion KOs.",
+    approach: [
+      { t: "Chase game-feel", d: "Target the feel first — impact frames, hit-stop and KO slow-mo that make every hit land hard." },
+      { t: "Build in Godot", d: "Native 2D engine work in Godot for fighter systems and movement, AI-assisted on systems and art direction where it helps." },
+      { t: "Develop in the open", d: "In active development and marked honestly as a work in progress — no invented release date." },
+    ],
+    outcome:
+      "A native 2D fighter in active development, going for Mortal-Kombat-style impact. Shown on the portfolio as an honest WIP (no playable embed yet).",
+    highlights: ["Weighty hits + hit-stop", "Cinematic slow-motion KOs", "Original characters & direction"],
+    stack: ["Godot engine", "2D fighter systems", "Game-feel / hit-stop", "AI-assisted production"],
+    role: "Concept, game-feel and production direction — in progress.",
+  },
+  "ascent-zero-to-hero": {
+    tagline: "A web-series you climb — ranked zero, chapter by chapter.",
+    intent:
+      "Make reading a web-series feel cinematic and game-like: ranks, chapters, and a real sense of ascending from the bottom.",
+    approach: [
+      { t: "Make reading feel like climbing", d: "Frame the experience around progression — start 'ranked zero' and ascend through chapters." },
+      { t: "Build cinematic on the web", d: "Direct AI tools through the content and a cinematic chapter-based UI." },
+      { t: "Ship the first ascent", d: "In development; building toward a first showable chapter — honest WIP." },
+    ],
+    outcome:
+      "A cinematic, chapter-based reading experience in development — power-fantasy progression on the web.",
+    highlights: ["Chapter-based progression", "Cinematic, game-like framing", "Web-first reading experience"],
+    stack: ["AI-first workflow", "Cinematic web UI", "Chapter progression", "Web / browser"],
+    role: "Concept, narrative and UI direction — in progress.",
+  },
+};
+
+export default { site, socials, services, process, projects, leads, pipeline, links, caseStudies, workSlugs };

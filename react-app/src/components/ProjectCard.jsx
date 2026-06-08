@@ -74,6 +74,7 @@ export default function ProjectCard({ project, featured }) {
           <span className="text-xs text-muted">{project.metric}</span>
           <Link
             to={`/work/${project.slug}`}
+            viewTransition
             className="inline-flex items-center gap-1 text-sm text-silver transition-colors hover:text-crimson"
           >
             Case study <ArrowUpRight size={15} aria-hidden="true" />
