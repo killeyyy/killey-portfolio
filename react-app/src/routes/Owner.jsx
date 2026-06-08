@@ -7,6 +7,7 @@ import {
 import { site, projects, pipeline, links } from "../data/site.js";
 import Icon from "../lib/icons.jsx";
 import StatusPill from "../components/StatusPill.jsx";
+import { Counter, Sparkline, ProgressRing, Heatmap, StatusBadge, Tile } from "../components/cockpit/viz.jsx";
 import { cn } from "../lib/cn.js";
 
 // INTERIM gate only. Replaced in Phase 4 by a Vercel serverless signed-cookie
@@ -98,18 +99,46 @@ export default function Owner() {
 
         {section === "overview" && (
           <section>
-            <h1 className="mb-5 font-serif text-fluid-xl font-semibold text-silver">Overview</h1>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {[
-                { label: "Live projects", value: live },
-                { label: "In progress", value: wip },
-                { label: "Open tasks", value: todos },
-              ].map((s) => (
-                <div key={s.label} className="rounded-xl2 border border-line/70 bg-surface/50 p-5">
-                  <p className="font-serif text-fluid-2xl font-semibold text-crimson">{s.value}</p>
-                  <p className="mt-1 text-sm text-muted">{s.label}</p>
+            <div className="mb-5 flex items-center justify-between">
+              <h1 className="font-serif text-fluid-xl font-semibold text-silver">Overview</h1>
+              <StatusBadge state="sample" />
+            </div>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              <Tile glow className="col-span-2">
+                <p className="font-mono text-xs uppercase tracking-wider text-muted">Projects</p>
+                <p className="mt-1 font-serif text-[3rem] font-semibold leading-none text-silver">
+                  <Counter to={projects.length} />
+                </p>
+                <p className="mt-1 text-sm text-muted">{live} live · {wip} in progress</p>
+                <div className="mt-4 text-crimson-bright">
+                  <Sparkline data={[3, 5, 4, 6, 7, 6, 8, 9]} />
                 </div>
-              ))}
+              </Tile>
+              <Tile>
+                <p className="font-mono text-xs uppercase tracking-wider text-muted">Live now</p>
+                <p className="mt-1 font-serif text-[3rem] font-semibold leading-none text-jade-bright">
+                  <Counter to={live} />
+                </p>
+                <p className="mt-3"><StatusBadge state="live" /></p>
+              </Tile>
+              <Tile className="flex flex-col items-center justify-center text-center">
+                <ProgressRing value={72} label="72%" />
+                <p className="mt-3 text-sm text-muted">Portfolio v2</p>
+              </Tile>
+              <Tile glow className="col-span-2 lg:col-span-3">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="font-mono text-xs uppercase tracking-wider text-muted">Build activity</p>
+                  <StatusBadge state="sample" />
+                </div>
+                <Heatmap />
+              </Tile>
+              <Tile>
+                <p className="font-mono text-xs uppercase tracking-wider text-muted">Open tasks</p>
+                <p className="mt-1 font-serif text-[3rem] font-semibold leading-none text-gold">
+                  <Counter to={todos} />
+                </p>
+                <p className="mt-2 text-sm text-muted">in pipeline</p>
+              </Tile>
             </div>
           </section>
         )}
