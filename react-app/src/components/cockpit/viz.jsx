@@ -71,13 +71,21 @@ export function ProgressRing({ value = 0, size = 84, stroke = 8, className = "te
   );
 }
 
-/** GitHub-style contribution heatmap (garnet ramp by intensity 0..4). */
-export function Heatmap({ weeks = 18, days = 7, seed = 7 }) {
-  // deterministic pseudo-random so it's stable across renders (sample data)
-  const cells = [];
-  let s = seed;
-  const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
-  for (let i = 0; i < weeks * days; i++) cells.push(Math.floor(rand() * 5));
+/** GitHub-style contribution heatmap (garnet ramp by intensity 0..4).
+ *  Pass `data` (array of per-day counts) for the LIVE feed; otherwise renders
+ *  a stable deterministic sample. */
+export function Heatmap({ weeks = 18, days = 7, seed = 7, data = null }) {
+  let cells;
+  if (Array.isArray(data) && data.length) {
+    const max = Math.max(...data, 1);
+    cells = data.map((c) => (c <= 0 ? 0 : Math.min(4, Math.ceil((c / max) * 4))));
+  } else {
+    // deterministic pseudo-random so it's stable across renders (sample data)
+    cells = [];
+    let s = seed;
+    const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+    for (let i = 0; i < weeks * days; i++) cells.push(Math.floor(rand() * 5));
+  }
   const ramp = ["bg-white/5", "bg-crimson/20", "bg-crimson/40", "bg-crimson/70", "bg-crimson"];
   return (
     <div className="grid grid-flow-col gap-1" style={{ gridTemplateRows: `repeat(${days}, 1fr)` }} aria-hidden="true">
