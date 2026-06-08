@@ -553,7 +553,7 @@ function StatusBadge({ status='live' }) {
 
 **LOCKED approach (matches ADR-007):** a **stateless, zero-dependency** HMAC-signed session in an
 httpOnly cookie via `node:crypto`. Shared `api/_lib/session.js` (underscore dir = not routed) exposes
-`issueCookie`/`clearCookie`/`verifySession`. Password is **scrypt-hashed** in env (`OWNER_PASS_HASH`),
+`issueCookie`/`clearCookie`/`verifySession`. Password is **scrypt-hashed** in env (`OWNER_PASSWORD_HASH`),
 compared with `timingSafeEqual` **after an equal-length guard**. Cookie flags:
 `HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=28800`. Logout re-issues with `Max-Age=0`. Every
 protected `/api` route calls `verifySession(req)` first. Dynamic OG via `@vercel/og` in `api/og.tsx`
@@ -591,13 +591,13 @@ export function verifySession(req){
 ```js
 import crypto from 'node:crypto';
 import { issueCookie } from '../_lib/session.js';
-// OWNER_PASS_HASH = "<saltHex>:<scryptHex>", generated once offline:
+// OWNER_PASSWORD_HASH = "<saltHex>:<scryptHex>", generated once offline:
 //  node -e "const c=require('crypto');const s=c.randomBytes(16);const h=c.scryptSync('MYPASS',s,64);console.log(s.toString('hex')+':'+h.toString('hex'))"
 export default function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error:'method' });
   const { password } = req.body || {};
   if (typeof password !== 'string') return res.status(400).json({ error:'bad' });
-  const [saltHex,hashHex] = (process.env.OWNER_PASS_HASH||'').split(':');
+  const [saltHex,hashHex] = (process.env.OWNER_PASSWORD_HASH||'').split(':');
   if (!saltHex || !hashHex) return res.status(500).json({ error:'unconfigured' });
   const salt=Buffer.from(saltHex,'hex'), stored=Buffer.from(hashHex,'hex');
   const candidate = crypto.scryptSync(password, salt, stored.length);

@@ -35,8 +35,10 @@ re-running this and updating the value.)
 | `NOTION_TOKEN` + `NOTION_DB_ID` | leads / clients / pipeline from Notion | notion.so/my-integrations → new integration → copy the secret; share your DB with it; `NOTION_DB_ID` = the database id from its URL |
 | `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` + `GOOGLE_REFRESH_TOKEN` | recent Google Drive files | Google Cloud console → OAuth credentials (Drive **read-only** scope), then a one-time refresh-token exchange |
 
-> Tip: wire **GitHub + Vercel first** (easiest, most impressive). Notion + Drive can come later.
-> Each cockpit tile shows a truthful **Live** or **Sample** badge based on whether its token is set.
+> Note: the **GitHub** feed is already **live with no token** (public data). `VERCEL_TOKEN`,
+> `NOTION_*` and `GOOGLE_*` add their feeds. Live **Vercel/Notion/Drive** data is owner-only, so it
+> only turns on once you've also set up the **secure login** above (§1) — set `SESSION_SECRET` +
+> `OWNER_PASSWORD_HASH` first, then add these. Each tile shows a truthful **Live**/**Sample** badge.
 
 ---
 

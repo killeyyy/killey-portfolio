@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 // Stateless HMAC-signed session in an httpOnly cookie (zero deps, node:crypto).
 // docs/PLAYBOOK.md Recipe 7.1 / ADR-007. Secrets live ONLY in Vercel env:
 //   SESSION_SECRET   — 32+ random bytes (signs the cookie)
-//   OWNER_PASS_HASH  — "<saltHex>:<scryptHex>" of the owner password
+//   OWNER_PASSWORD_HASH  — "<saltHex>:<scryptHex>" of the owner password
 // If those env vars are absent the app falls back to the interim passcode gate,
 // so the preview is always usable.
 
@@ -15,7 +15,7 @@ function secret() {
 }
 
 export function isConfigured() {
-  return Boolean(process.env.SESSION_SECRET && process.env.OWNER_PASS_HASH);
+  return Boolean(process.env.SESSION_SECRET && process.env.OWNER_PASSWORD_HASH);
 }
 
 function sign(payload) {

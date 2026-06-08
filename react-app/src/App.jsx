@@ -5,6 +5,7 @@ import Home from "./routes/Home.jsx";
 import SmoothScroll from "./lib/SmoothScroll.jsx";
 import Cursor from "./components/Cursor.jsx";
 import Preloader from "./components/Preloader.jsx";
+import ErrorBoundary from "./lib/ErrorBoundary.jsx";
 
 // Code-split the secondary routes out of the landing bundle. Home stays eager
 // (it's the LCP route); the cockpit + case studies load on navigation.
@@ -28,8 +29,10 @@ export default function App() {
     <LazyMotion features={loadFeatures} strict>
       <MotionConfig reducedMotion="user">
         <BrowserRouter>
-          <Preloader />
-          <Cursor />
+          <ErrorBoundary>
+            <Preloader />
+            <Cursor />
+          </ErrorBoundary>
           <a
             href="#main"
             className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[120] focus:rounded focus:bg-crimson focus:px-4 focus:py-2 focus:text-sm focus:text-silver"

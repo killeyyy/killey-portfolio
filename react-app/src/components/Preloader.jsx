@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, m } from "framer-motion";
-import { useReducedMotion } from "../lib/useReducedMotion.js";
 
 /** Cinematic preloader: oversized counter 0→100 over ink, then a curtain wipe.
- *  Shows once per session. Reduced-motion → instant short fade. */
+ *  Shows once per session. Pure CSS transition (no framer-motion) so it can never
+ *  block first paint, and respects prefers-reduced-motion. */
 export default function Preloader() {
-  const reduced = useReducedMotion();
-  const [done, setDone] = useState(() =>
-    typeof window !== "undefined" && sessionStorage.getItem("preloaded") === "1",
+  const [done, setDone] = useState(
+    () => typeof window !== "undefined" && sessionStorage.getItem("preloaded") === "1",
   );
+  const [leaving, setLeaving] = useState(false);
   const [pct, setPct] = useState(0);
 
   useEffect(() => {
     if (done) return;
+    const reduced =
+      typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       setPct(100);
-      const t = setTimeout(finish, 250);
+      const t = setTimeout(finish, 200);
       return () => clearTimeout(t);
     }
     let raf;
@@ -23,7 +24,6 @@ export default function Preloader() {
     const tick = () => {
       cur += Math.max(1, (100 - cur) * 0.04);
       if (cur >= 100) {
-        cur = 100;
         setPct(100);
         setTimeout(finish, 350);
         return;
@@ -38,28 +38,31 @@ export default function Preloader() {
 
   function finish() {
     sessionStorage.setItem("preloaded", "1");
-    setDone(true);
+    setLeaving(true);
+    const reduced =
+      typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTimeout(() => setDone(true), reduced ? 0 : 750);
   }
 
+  if (done) return null;
+
   return (
-    <AnimatePresence>
-      {!done && (
-        <m.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-ink"
-          initial={{ opacity: 1 }}
-          exit={{ y: "-100%" }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-        >
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.4em] text-gold">KILLEYYY</p>
-          <p className="font-serif text-[18vw] font-semibold leading-none text-silver md:text-[10vw]">
-            {pct}
-            <span className="text-crimson">%</span>
-          </p>
-          <div className="mt-6 h-px w-56 overflow-hidden bg-white/10">
-            <div className="h-full bg-gradient-to-r from-crimson to-gold transition-[width] duration-150" style={{ width: `${pct}%` }} />
-          </div>
-        </m.div>
-      )}
-    </AnimatePresence>
+    <div
+      aria-hidden="true"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-ink transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none"
+      style={{ transform: leaving ? "translateY(-100%)" : "translateY(0)" }}
+    >
+      <p className="mb-4 font-mono text-xs uppercase tracking-[0.4em] text-gold">KILLEYYY</p>
+      <p className="font-serif text-[18vw] font-semibold leading-none text-silver md:text-[10vw]">
+        {pct}
+        <span className="text-crimson">%</span>
+      </p>
+      <div className="mt-6 h-px w-56 overflow-hidden bg-white/10">
+        <div
+          className="h-full bg-gradient-to-r from-crimson to-gold transition-[width] duration-150"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
   );
 }

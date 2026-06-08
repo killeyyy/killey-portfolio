@@ -11,14 +11,16 @@ import { Counter, Sparkline, ProgressRing, Heatmap, StatusBadge, Tile } from "..
 import { cn } from "../lib/cn.js";
 
 // Interim passcode is used ONLY until secure serverless auth is configured
-// (set SESSION_SECRET + OWNER_PASS_HASH in Vercel — see docs/SETUP-ENV.md).
+// (set SESSION_SECRET + OWNER_PASSWORD_HASH in Vercel — see docs/SETUP-ENV.md).
 // When those env vars exist, /api/auth/session reports configured:true and this
 // gate is replaced by the real signed-cookie login.
 const INTERIM_PASSCODE = import.meta.env.VITE_OWNER_PASSCODE || "killey-2026";
 
 function relativeTime(iso) {
   if (!iso) return "";
-  const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+  const ms = new Date(iso).getTime();
+  if (Number.isNaN(ms)) return "";
+  const s = Math.max(0, (Date.now() - ms) / 1000);
   if (s < 60) return "just now";
   if (s < 3600) return `${Math.floor(s / 60)}m ago`;
   if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
@@ -206,7 +208,7 @@ export default function Owner() {
         ) : (
           <div className="mb-6 flex items-start gap-2 rounded-lg border border-gold/30 bg-gold/10 px-4 py-3 text-xs text-gold">
             <ShieldAlert size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-            <span>Interim passcode gate. Add SESSION_SECRET + OWNER_PASS_HASH in Vercel for the secure login (docs/SETUP-ENV.md). GitHub data below is already live.</span>
+            <span>Interim passcode gate. Add SESSION_SECRET + OWNER_PASSWORD_HASH in Vercel for the secure login (docs/SETUP-ENV.md). GitHub data below is already live.</span>
           </div>
         )}
 

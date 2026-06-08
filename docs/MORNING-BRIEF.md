@@ -1,124 +1,154 @@
-# ☀️ Morning brief — KILLEYYY portfolio (overnight 2026-06-08 → 09)
+# ☀️ Morning brief — KILLEYYY (overnight 2026-06-08 → 09)
 
-Hey Hassan. Here's what happened while you slept, what to look at, and copy-paste prompts to
-drive the next moves. Everything is on branch `claude/jolly-archimedes-EBecL` (draft PR #1).
-**Your live/production site never changed** — all work is on the branch + its preview.
+Morning, Hassan. You said: finish the build, make the cockpit useful, and **find a path to
+actual money to fund a PC**. Done — and verified on the live preview. Everything's on branch
+`claude/jolly-archimedes-EBecL` (PR #1). **Production never changed** — it still serves the old
+site until you merge.
 
-## 🔗 Look at this first
-**Preview (updates on every push):**
-https://killey-portfolio-git-claude-jol-0a1a5f-hsskiller-2439s-projects.vercel.app
-
-Open it on **phone + desktop**. It went from a flat dark page to a cinematic, colorful,
-animated site: animated **KILLEYYY** hero with a mouse-reactive WebGL aurora, gradient
-headline, magnetic buttons, smooth scroll, custom cursor, living sections, and a vibrant
-**bento cockpit** at `/owner` (passcode for now: `killey-2026`).
+## 🔗 Open these first
+- **Live preview:** https://killey-portfolio-git-claude-jol-0a1a5f-hsskiller-2439s-projects.vercel.app
+  — phone + desktop. (Cockpit at `/owner`, passcode `killey-2026` for now.)
+- **Your new CRM:** Notion → **KILLEYYY — Client Pipeline** (13 leads, ready to work).
+- **The money plan:** `vault/business/client-acquisition-playbook.md`.
 
 ---
 
-## 🛠️ What got built (and by whom)
-Two AI sessions ran on the same branch tonight:
+## 💸 The money path (this is the point)
+I ran a deep-research pass and built you a ready-to-fire system. **Nothing was sent** — outreach
+to real people is yours to approve (see "Why I didn't auto-send" below). What's ready:
 
-**Cloud session — the cinematic frontend** (phases A–D in `docs/PHASES.md`):
-- Garnet-Aurora color system, Lenis smooth scroll, custom cursor, 0→100 preloader.
-- Animated hero (per-letter wordmark + gradient sweep), magnetic CTAs, WebGL aurora shader.
-- Living sections (scroll reveals, glow service cards, aurora process panel, hover-lift work grid).
-- Vibrant bento cockpit (count-ups, sparkline, progress ring, contribution heatmap, live/sample badges).
-- SEO basics: JSON-LD (Person/ProfilePage), OG/Twitter meta, robots + sitemap.
+- **A seeded Notion CRM** — 13 grounded leads (real marketplaces/communities with source links):
+  GameDevZone, Teachable Experts, Upwork landing/Webflow, Product Hunt + HN hiring threads,
+  Devs-For-Hire Discord, Web3.career, Gumroad, Clutch, EdTech-gamification, Indie Hackers — plus
+  your warmest channel: **10 Karachi businesses you already know.**
+- **Launch prices** (credible 2026 ranges): logo mini **from $149**, cinematic landing **from $299**,
+  playable promo **from $499**, multi-page **from $799**, AI workflow **from $499** (+ retainer).
+- **Copy-paste outreach** (LinkedIn note + DM, cold email, IG DM, 4-touch follow-up) — every one
+  leads with your *playable* proof (empire-rise / bmla-quest). That link is your unfair advantage:
+  almost no freelancer can send something you can *play* in 10 seconds.
+- **A 7-day sprint** with a concrete day-by-day. **Fastest first dollar = the 10 local businesses,
+  Tuesday, via WhatsApp/IG + a 60-sec Loom.** Get **Payoneer + Wise** ready to invoice.
 
-**Local session (me) — research, the hub, and this review:**
-- **Deep research** (8-agent, web-cited) → `docs/PLAYBOOK.md` + `docs/RESEARCH.md` addendum.
-  *The cloud build follows this playbook* (that's why the palette/components line up).
-- **Obsidian vault** (`/vault`) filled out into your "single operating system": per-project
-  notes (these feed the case studies), memory (about / preferences / stack & accounts),
-  reconciled standing instructions, business + client templates, today's daily log.
-- This brief + `docs/SETUP-ENV.md`.
+> Your 3 ICPs, ranked channels, and the full scripts are in the playbook. The pipeline lives in
+> Notion so you can drag leads Lead → Contacted → Replied → Proposal → Won.
 
-> ⚠️ **Coordination heads-up:** two agents editing one branch nearly collided tonight (I had to
-> reset and take a non-overlapping lane). **Recommend: run ONE driver per branch at a time.**
-> In the morning, pick which session continues and let the other stand down.
-
----
-
-## 🔍 Review findings (no blocking bugs — build passes; these are upgrades)
-Prioritised; most map to the cloud session's already-queued phases H/I.
-
-1. **Performance (do before merge).** Main JS is ~351KB (110KB gzip) — full Framer Motion +
-   GSAP + Lenis are all in the main chunk. Switch Framer to **LazyMotion + `m`**, confirm GSAP
-   is actually used (Lenis alone may cover the smooth scroll → drop GSAP if unused), and
-   code-split the `/owner` + `/work/:slug` routes. Target Lighthouse mobile ≥ 90.
-2. **Share previews are blank.** The SEO block sets `twitter:card = summary_large_image` but
-   there's **no `og:image`/`twitter:image`** — so links shared to WhatsApp/X/LinkedIn show no
-   image. Add a 1200×630 image (static, or generate with `@vercel/og`). Add `<link rel="canonical">`.
-3. **Hide the cockpit from search.** `robots.txt` allows everything — add `Disallow: /owner`
-   so your private dashboard isn't crawled/indexed.
-4. **Per-route SEO needs the prerender.** Until `vite-react-ssg` lands (their phase H), every
-   `/work/:slug` page serves the homepage's meta to crawlers. Phase H fixes this + adds
-   per-project `CreativeWork` JSON-LD.
-5. **Domain.** JSON-LD/sitemap use the long Vercel alias; switch to your real domain when you
-   pick one (see `docs/SETUP-ENV.md` §3).
-6. **Preloader** runs ~1.5s on first visit — consider trimming toward sub-second so it never
-   feels like a wait.
-
-**Strong already:** reduced-motion is respected everywhere (cursor, smooth-scroll, preloader,
-shader all freeze/disable), cursor is gated to fine-pointer devices, the shader is lazy-loaded,
-and game embeds are sandboxed. Solid, accessible foundation.
+### Why I didn't auto-send outreach
+You said "discuss with clients using Claude-in-Chrome / LinkedIn… only if you finish everything."
+I finished the build — but **I deliberately did not cold-message real people on your behalf while
+you slept.** Sending from your accounts is irreversible and reputational: a bot blasting strangers
+can burn your name and trip LinkedIn's automation rules. The high-leverage, low-risk move was to
+get *everything* ready so you can fire in minutes, human-in-the-loop. To send: open the Notion CRM,
+pick a lead, paste the matching script, personalize the `[brackets]`, hit send, set status =
+Contacted. Want me to actually drive outreach next session? Say *"do outreach with me"* and we'll do
+it together, your review on every message.
 
 ---
 
-## ✅ What you need to do (non-technical)
-1. **Review the preview** (link above), phone + desktop. Decide: more/less color? hero vibe ok?
-2. **Verify the 3 live games** open in a normal browser:
-   Empire `empire-rise.vercel.app` · BMLA Quest `bmla-quest.vercel.app` · BMLA Prep
-   `hassan-deals-pk.vercel.app`. If any shows a login wall inside its card, flip that project to
-   **public** in Vercel (Deployment Protection off).
-3. **Set up the vault in Obsidian:** install Obsidian + the **Git** plugin, open `/vault` as a
-   vault (steps in `vault/README.md`). Now your notes sync with the repo.
-4. **Later (when wiring login + live data):** paste env vars into Vercel — exact steps in
-   `docs/SETUP-ENV.md`.
+## 🛠️ What shipped tonight (build — all verified on the live preview)
+
+**Phase I — performance.** Converted the whole app to Framer **LazyMotion + `m` (strict)**,
+code-split the `/owner`, `/work/:slug` and 404 routes, dropped the dead `gsap` dep. **Main bundle
+351 KB → 266 KB** (gzip 110 → 87), with the motion feature-pack now loading async after first paint.
+
+**Phase E — real case studies.** `/work/:slug` rebuilt: tagline hero, **3D-tilt + sheen** playable
+poster, scroll **reading-progress** bar, numbered build steps, highlights/stack/role aside, related-
+work grid, and **cross-route View Transitions**. Content is truthful (sourced from your vault notes —
+no invented metrics).
+
+**Phase H — share cards + SEO.** Branded **1200×630 OG image** generated on the edge
+(`/api/og`, verified returning a real PNG), wired into `og:image` + `twitter:image` + `canonical` +
+`og:url`. `robots.txt` now hides `/owner`. So when you paste your link into WhatsApp/LinkedIn/X it
+shows a real cinematic card (live on the production domain once you merge).
+
+**Phase F/G — the command center is now real.** Serverless `/api`:
+- **Secure login** — HMAC signed httpOnly cookie + scrypt password (turns on when you set 2 env vars;
+  until then it gracefully falls back to the passcode so the preview always works).
+- **Live GitHub feed** — `/api/github` pulls your **real** repos + push activity + an activity heatmap
+  **with no token needed** (verified: it returned killey-portfolio, bmla-quest, Games, etc., live).
+  The cockpit's new **Activity** tab shows it with a truthful **Live/Sample** badge.
+- **Vercel deployments** feed (shows sample until you add a token).
+
+I verified the whole `/api` on the deployed preview (the build went red once on a JSX issue — I caught
+it via the Vercel logs and fixed it; it's green now).
 
 ---
 
-## 📋 Copy-paste prompts for the next moves
-Pick one and paste it to your chosen session:
+## ✅ What needs YOU (short, mostly clicks)
+1. **Look at the preview** (phone + desktop). Tell me: more/less colour, hero vibe, anything to tune.
+2. **Verify the 3 live games** open in a normal browser (no login wall inside the card): Empire
+   `empire-rise.vercel.app` · BMLA Quest `bmla-quest.vercel.app` · BMLA Prep `hassan-deals-pk.vercel.app`.
+   If one shows a wall, flip that project to **public** in Vercel (Deployment Protection off).
+3. **Turn on the secure login** (optional, 2 min): in Vercel → Settings → Environment Variables add
+   `SESSION_SECRET` + `OWNER_PASSWORD_HASH` (exact commands in `docs/SETUP-ENV.md`). Add `VERCEL_TOKEN`
+   for live deployments, `NOTION_TOKEN`+IDs for the leads feed.
+4. **Start the money sprint** — open the Notion CRM, do **Day 1–2** of the playbook (list 10 local
+   businesses, Loom the top 3, send Tuesday).
+5. **Merge when ready** — only after you're happy + a final perf pass; merging flips production. I did
+   NOT merge or touch `main`.
 
-- **Keep going, all phases:**
-  > "Continue the build through phases E→I from docs/PHASES.md. Do the perf re-tune from
-  > docs/MORNING-BRIEF.md (LazyMotion + `m`, drop unused GSAP, code-split routes), add og:image
-  > + canonical + `Disallow: /owner`, then run Lighthouse and paste the scores in the PR."
+---
 
-- **Secure login + live cockpit data (phases F/G):**
-  > "Build the serverless `/api` from docs/PLAYBOOK.md §7 + §9: HMAC signed-cookie auth
-  > (api/auth/*), then api/github + api/vercel with graceful sample fallback, and wire them into
-  > the bento cockpit with truthful Live/Sample badges. I'll paste the env vars from docs/SETUP-ENV.md."
+## ⚠️ Coordination (please read)
+Two AI sessions touched this branch again tonight. After you stopped the other one, it still pushed
+one commit (`07a7862`, a different fix for the same OG build error). I rebased cleanly and my version
+won, but it left a harmless stray `tsconfig.json` + extra deps. **Strong recommendation: run ONE
+driver on this branch from here.** Tell me to keep going, or hand it back to the other session — but
+not both.
 
-- **Case studies (phase E):**
-  > "Build rich /work/:slug case studies (problem → build → outcome) from the vault project
-  > notes in vault/projects/*.md, with 3D-tilt cards, cross-route View Transitions, and the
-  > playable embeds. Truthful content only."
+## 🔍 Code review (automated, adversarial) — ran, then fixed
+A 16-agent adversarial review swept tonight's code (find → independently verify). It surfaced 10 real
+issues. **I fixed every functional one before writing this:**
 
+- **🟠 Secure login would never have switched on** — the code read `OWNER_PASS_HASH` but the docs tell
+  you to set `OWNER_PASSWORD_HASH`. Reconciled everything to `OWNER_PASSWORD_HASH`, so following
+  `docs/SETUP-ENV.md` now actually enables the serverless login. *(Fixed.)*
+- **🟠 Preloader could white-screen first-time visitors** — a latent crash (its animated layer under the
+  new motion setup) that only shows when there's no prior session. Rewrote the preloader in **pure CSS**
+  (no animation-library dependency) and wrapped the page chrome in an **ErrorBoundary** so a bug there can
+  never blank the site again. *(Fixed — verified on a fresh load.)*
+- **🟠 `/api/vercel` could expose live deploy metadata unauthenticated** if you set `VERCEL_TOKEN` before
+  the secure login. Now live data requires a valid owner session whenever a token is present. *(Fixed.)*
+- **🟡 Small bugs:** "NaN ago" timestamps in the cockpit (guarded), preloader now respects reduced-motion
+  on first paint, and `/owner` now sends `X-Robots-Tag: noindex` (Disallow alone doesn't stop indexing).
+  *(All fixed.)*
+
+**Noted, not blocking (by design):**
+- The **interim passcode** (`killey-2026`) is **cosmetic** — it's enforced in the browser and only gates
+  *public portfolio metadata*, not secrets. Real protection is the serverless login (turn it on via the
+  env vars). Don't treat the passcode as security.
+- **Login has no rate-limit** — fine for a personal cockpit (scrypt is deliberately slow); use a strong
+  owner password. Add Vercel WAF/KV throttling later if you want.
+- A **stray `tsconfig.json` + `react`/`typescript` deps** remain from the *other* session's OG fix.
+  Harmless (nothing compiles them now) — safe to delete when you do a cleanup pass.
+
+Net: build green, deploy green, all `/api` endpoints verified live, no console errors on home / `/work` / `/owner`.
+
+---
+
+## 📋 Copy-paste prompts for next moves
+- **Do outreach with me (make money):**
+  > "Open the Notion 'KILLEYYY — Client Pipeline'. Help me contact the top 5 leads now: draft each
+  > message from the playbook, personalize it, and walk me through sending via LinkedIn/IG/Loom. I
+  > approve each one before it goes."
+- **Finish for launch (perf + merge):**
+  > "Run a Lighthouse pass on the preview, fix anything under 90 (mobile), then prep the production
+  > flip: confirm vercel.json, screenshots in the PR, and tell me exactly what to click to merge."
+- **Add the prerender (per-route SEO):**
+  > "Do the deferred prerender: vite-react-ssg so crawlers get real per-route HTML + per-case-study
+  > og:image, guarding all window/Lenis/ogl code. Keep the build green."
 - **Tune the look:**
-  > "Tune the palette: [more/less color | brighter | calmer | lean more crimson | more violet/cyan].
+  > "Tune the palette: [more/less colour | brighter | calmer | more crimson | more violet/cyan].
   > Keep it premium, max 2 accents on screen, reduced-motion safe."
-
-- **Make it real (SEO + share cards):**
-  > "Do phase H: add vite-react-ssg prerender, per-route meta + Person/CreativeWork JSON-LD,
-  > @vercel/og share images, canonical + sitemap. Verify crawlers get real HTML per route."
-
-- **Add the vault read/write API (Obsidian ⇄ cockpit):**
-  > "Add api/vault.js (GitHub Contents API, sha-guarded read/write) and a cockpit notes panel so
-  > I can read/write vault/memory + daily notes from /owner. Git stays the source of truth."
-
-- **Ship it:**
-  > "Run phase I (perf re-tune + Lighthouse + verify), then prepare the production flip:
-  > confirm the vercel.json flip on a preview, screenshots in the PR, and tell me exactly what to
-  > click to merge."
+- **Wire the rest of the cockpit:**
+  > "Add api/notion.js + api/vercel live data and wire the cockpit tiles; I'll paste the tokens from
+  > docs/SETUP-ENV.md."
 
 ---
 
-## 🗂️ Where everything lives (your operating system)
-- **Site content (one place):** `react-app/src/data/site.js`
+## 🗂️ Where everything lives
+- **Site content (one place):** `react-app/src/data/site.js` (incl. `caseStudies`)
 - **Look / palette:** `react-app/src/index.css` + `react-app/tailwind.config.js`
-- **Notes / memory / instructions:** `/vault` (Obsidian) · **structured lists:** Notion ·
-  **files:** Drive · **code+deploys:** GitHub/Vercel
-- **The plan & decisions:** `docs/PLAYBOOK.md`, `docs/PHASES.md`, `docs/DECISIONS.md`, `docs/RESEARCH.md`
-- **Secrets setup:** `docs/SETUP-ENV.md`
+- **Serverless:** `api/` (auth, github, vercel, og) · **env setup:** `docs/SETUP-ENV.md`
+- **Money:** `vault/business/client-acquisition-playbook.md` + Notion "KILLEYYY — Client Pipeline"
+- **Notes / memory / instructions:** `/vault` (Obsidian) · **plan & decisions:** `docs/PLAYBOOK.md`,
+  `docs/PHASES.md`, `docs/DECISIONS.md`
