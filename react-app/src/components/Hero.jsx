@@ -1,9 +1,10 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { m } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, ChevronDown } from "lucide-react";
 import { useReducedMotion } from "../lib/useReducedMotion.js";
 import Magnetic from "../lib/Magnetic.jsx";
-import { site } from "../data/site.js";
+import { site, projects } from "../data/site.js";
+import { Counter } from "./cockpit/viz.jsx";
 import StaticHero from "./hero/StaticHero.jsx";
 
 const ShaderHero = lazy(() => import("./hero/ShaderHero.jsx"));
@@ -19,6 +20,14 @@ function supportsWebGL() {
 
 const EASE = [0.22, 1, 0.36, 1];
 const WORD = "KILLEYYY".split("");
+
+// Truthful, derived live from the single content source — never hand-typed.
+const SHOWN = projects.filter((p) => p.client);
+const STATS = [
+  { value: SHOWN.filter((p) => p.status === "Live").length, label: "live right now" },
+  { value: SHOWN.filter((p) => !!p.embed).length, label: "playable in-browser" },
+  { value: SHOWN.length, label: "products in the open" },
+];
 
 export default function Hero() {
   const reduced = useReducedMotion();
@@ -41,6 +50,9 @@ export default function Hero() {
           </Suspense>
         )}
         <div className="aurora absolute inset-0 opacity-70" />
+        {/* floating depth orbs */}
+        <div aria-hidden="true" className="absolute -left-24 top-1/4 h-72 w-72 animate-float rounded-full bg-violet/20 blur-[100px]" />
+        <div aria-hidden="true" className="absolute -right-16 top-1/2 h-80 w-80 animate-float rounded-full bg-crimson/20 blur-[110px] [animation-delay:-3s]" />
         <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-ink/50 to-ink" />
       </div>
 
@@ -121,7 +133,46 @@ export default function Hero() {
             </a>
           </Magnetic>
         </m.div>
+
+        {/* truthful stats, derived from the projects data */}
+        <m.dl
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE, delay: 0.9 }}
+          className="mt-14 flex flex-wrap gap-x-10 gap-y-5 border-t border-line/50 pt-7"
+        >
+          {STATS.map((s) => (
+            <div key={s.label}>
+              <dt className="sr-only">{s.label}</dt>
+              <dd>
+                <span className="font-serif text-fluid-xl font-semibold text-gradient-warm">
+                  <Counter to={s.value} />
+                </span>
+                <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+                  {s.label}
+                </span>
+              </dd>
+            </div>
+          ))}
+          <div className="self-center">
+            <span className="rounded-full border border-gold/30 bg-gold/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-gold">
+              AI-directed · end to end
+            </span>
+          </div>
+        </m.dl>
       </div>
+
+      {/* scroll cue */}
+      <m.a
+        href="#work"
+        aria-label="Scroll to work"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 animate-float text-muted transition-colors hover:text-gold"
+      >
+        <ChevronDown size={22} aria-hidden="true" />
+      </m.a>
     </section>
   );
 }

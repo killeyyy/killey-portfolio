@@ -19,8 +19,8 @@ export default function Contact() {
         <div className="grid gap-10 md:grid-cols-2">
           <div>
             <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-gold">Contact</p>
-            <h2 className="text-fluid-xl font-semibold leading-tight text-silver">
-              Have something to build? Let's make it cinematic.
+            <h2 className="font-serif text-fluid-2xl font-semibold leading-[1.04] text-silver">
+              Have something to build? Let's make it <span className="text-gradient">cinematic</span>.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted">
               Tell me what you're imagining — a game, a site, a brand. I reply to real messages.

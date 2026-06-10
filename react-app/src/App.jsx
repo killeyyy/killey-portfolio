@@ -5,6 +5,8 @@ import Home from "./routes/Home.jsx";
 import SmoothScroll from "./lib/SmoothScroll.jsx";
 import Cursor from "./components/Cursor.jsx";
 import Preloader from "./components/Preloader.jsx";
+import CommandPalette from "./components/CommandPalette.jsx";
+import EasterEgg from "./components/EasterEgg.jsx";
 import ErrorBoundary from "./lib/ErrorBoundary.jsx";
 
 // Code-split the secondary routes out of the landing bundle. Home stays eager
@@ -32,6 +34,8 @@ export default function App() {
           <ErrorBoundary>
             <Preloader />
             <Cursor />
+            <CommandPalette />
+            <EasterEgg />
           </ErrorBoundary>
           <a
             href="#main"
