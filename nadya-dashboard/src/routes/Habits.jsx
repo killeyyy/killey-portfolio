@@ -1,0 +1,135 @@
+import { useMemo, useState } from "react";
+import { Plus, RotateCcw } from "lucide-react";
+import { PageHeader } from "../components/ui/PageHeader.jsx";
+import { Tile } from "../components/ui/Tile.jsx";
+import { HabitHeatmap } from "../components/charts/HabitHeatmap.jsx";
+import { HabitForm } from "../components/habits/HabitForm.jsx";
+import { useStore } from "../store/StoreProvider.jsx";
+import { addDays, rangeKeys, todayKey, weekStartKey } from "../lib/dates.js";
+import { habitAdherence, habitHeatValues, habitStreaks } from "../lib/insights.js";
+
+export default function Habits() {
+  const { settings, habits, habitLog, saveHabits } = useStore();
+  const [form, setForm] = useState(null); // { habit } | { habit: null }
+  const today = todayKey();
+
+  // 12 aligned heatmap columns ending in the current (possibly partial) week.
+  const heatKeys = useMemo(
+    () => rangeKeys(weekStartKey(addDays(today, -77), settings.weekStart), today),
+    [today, settings.weekStart],
+  );
+  const last28 = useMemo(() => rangeKeys(addDays(today, -27), today), [today]);
+
+  const active = habits.filter((h) => !h.archivedAt);
+  const archived = habits.filter((h) => h.archivedAt);
+
+  const upsert = (habit) => {
+    const exists = habits.some((h) => h.id === habit.id);
+    saveHabits(exists ? habits.map((h) => (h.id === habit.id ? habit : h)) : [...habits, habit]);
+    setForm(null);
+  };
+
+  const setArchived = (id, archivedAt) => {
+    saveHabits(habits.map((h) => (h.id === id ? { ...h, archivedAt } : h)));
+    setForm(null);
+  };
+
+  return (
+    <div className="space-y-4">
+      <PageHeader
+        title="Habits"
+        back
+        action={
+          <button
+            type="button"
+            onClick={() => setForm({ habit: null })}
+            className="inline-flex items-center gap-1 rounded-xl bg-rose px-3 py-1.5 text-xs font-semibold text-ink active:scale-95"
+          >
+            <Plus size={14} aria-hidden="true" /> New
+          </button>
+        }
+      />
+
+      {active.length === 0 && (
+        <Tile>
+          <p className="text-sm text-muted">
+            Small daily promises to yourself — add one and tick it from the Today screen.
+          </p>
+        </Tile>
+      )}
+
+      {active.map((h) => {
+        const { current, best } = habitStreaks(habitLog, h.id, today);
+        const adherence = habitAdherence(habitLog, h, last28, today);
+        return (
+          <Tile
+            key={h.id}
+            title={
+              <>
+                {h.emoji && <span className="mr-1.5">{h.emoji}</span>}
+                {h.name}
+              </>
+            }
+            action={
+              <button
+                type="button"
+                onClick={() => setForm({ habit: h })}
+                className="text-xs font-semibold text-muted hover:text-cream"
+              >
+                Edit
+              </button>
+            }
+          >
+            <div className="mb-3 flex gap-4 text-xs text-muted">
+              <span>
+                Streak{" "}
+                <span className="font-semibold tabular-nums text-coral">🔥 {current}</span>
+              </span>
+              <span>
+                Best <span className="font-semibold tabular-nums text-cream">{best}</span>
+              </span>
+              <span>
+                Last 4 weeks{" "}
+                <span className="font-semibold tabular-nums text-cream">
+                  {adherence.pct === null ? "—" : `${adherence.pct}%`}
+                </span>
+              </span>
+            </div>
+            <HabitHeatmap values={habitHeatValues(habitLog, h.id, heatKeys)} />
+          </Tile>
+        );
+      })}
+
+      {archived.length > 0 && (
+        <Tile title="Archived">
+          <ul className="space-y-2">
+            {archived.map((h) => (
+              <li key={h.id} className="flex items-center gap-2 text-sm text-muted">
+                <span className="min-w-0 flex-1 truncate">
+                  {h.emoji && <span className="mr-1">{h.emoji}</span>}
+                  {h.name}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setArchived(h.id, null)}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-rose-bright"
+                >
+                  <RotateCcw size={12} aria-hidden="true" /> Restore
+                </button>
+              </li>
+            ))}
+          </ul>
+        </Tile>
+      )}
+
+      {form && (
+        <HabitForm
+          habit={form.habit}
+          onClose={() => setForm(null)}
+          onSave={upsert}
+          onArchive={form.habit ? () => setArchived(form.habit.id, Date.now()) : undefined}
+        />
+      )}
+    </div>
+  );
+}

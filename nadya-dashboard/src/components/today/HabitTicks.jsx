@@ -1,0 +1,76 @@
+import { Link } from "react-router-dom";
+import { Check, Flame, Pencil } from "lucide-react";
+import { Tile } from "../ui/Tile.jsx";
+import { cn } from "../../lib/cn.js";
+import { useStore } from "../../store/StoreProvider.jsx";
+import { todayKey } from "../../lib/dates.js";
+import { habitStreaks } from "../../lib/insights.js";
+
+/** Today's habit checklist with streak counts. */
+export function HabitTicks() {
+  const { habits, habitLog, toggleHabitTick } = useStore();
+  const today = todayKey();
+  const active = habits.filter((h) => !h.archivedAt);
+  const tickedToday = habitLog[today] || [];
+
+  return (
+    <Tile
+      title="Habits"
+      action={
+        <Link to="/habits" aria-label="Manage habits" className="rounded-lg p-1.5 text-muted hover:text-cream">
+          <Pencil size={16} />
+        </Link>
+      }
+    >
+      {active.length === 0 ? (
+        <p className="text-sm text-muted">
+          No habits yet —{" "}
+          <Link to="/habits" className="font-semibold text-rose-bright">
+            add your first one
+          </Link>
+          .
+        </p>
+      ) : (
+        <ul className="space-y-2">
+          {active.map((h) => {
+            const done = tickedToday.includes(h.id);
+            const { current } = habitStreaks(habitLog, h.id, today);
+            return (
+              <li key={h.id}>
+                <button
+                  type="button"
+                  onClick={() => toggleHabitTick(today, h.id)}
+                  aria-pressed={done}
+                  className={cn(
+                    "flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors duration-150",
+                    done ? "border-mint/50 bg-mint/10" : "border-line bg-surface2",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "grid h-6 w-6 shrink-0 place-items-center rounded-full border",
+                      done ? "animate-pop border-mint bg-mint text-ink" : "border-line text-transparent",
+                    )}
+                    aria-hidden="true"
+                  >
+                    <Check size={14} strokeWidth={3} />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium text-cream">
+                    {h.emoji && <span className="mr-1.5">{h.emoji}</span>}
+                    {h.name}
+                  </span>
+                  {current > 0 && (
+                    <span className="flex shrink-0 items-center gap-1 text-xs font-semibold tabular-nums text-coral">
+                      <Flame size={13} aria-hidden="true" />
+                      {current}
+                    </span>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </Tile>
+  );
+}

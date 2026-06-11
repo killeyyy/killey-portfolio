@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Ruang Nadya design tokens — warm rose-on-ink system.
+   RGB triples (space-separated) so Tailwind alpha utilities work.
+   Tune the whole palette here.
+   ============================================================ */
+:root {
+  --c-ink: 15 11 13; /* #0F0B0D base background (near-black, warm cast) */
+  --c-surface: 24 18 22; /* #181216 cards */
+  --c-surface-2: 34 26 32; /* #221A20 raised: sheets, chips */
+  --c-line: 50 38 48; /* #322630 hairline borders */
+  --c-cream: 244 237 234; /* #F4EDEA primary text */
+  --c-muted: 169 152 159; /* #A9989F secondary text/labels */
+  --c-rose: 226 92 114; /* #E25C72 lead accent */
+  --c-rose-bright: 247 141 163; /* #F78DA3 rose as text on ink (AA-safe) */
+  --c-coral: 242 135 107; /* #F2876B secondary warm accent */
+  --c-sand: 221 188 142; /* #DDBC8E savings/money accent */
+  --c-mint: 126 212 178; /* #7ED4B2 success accent */
+  --c-sky: 133 184 227; /* #85B8E3 category color */
+  --c-lavender: 180 156 232; /* #B49CE8 category color */
+  --c-mauve: 154 123 140; /* #9A7B8C category color (deliberately muted) */
+
+  /* motion tokens */
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    @apply bg-ink text-cream font-sans antialiased;
+    margin: 0;
+    text-rendering: optimizeLegibility;
+  }
+  /* Selection in rose */
+  ::selection {
+    background: rgb(var(--c-rose));
+    color: rgb(var(--c-ink));
+  }
+  /* Visible, on-brand keyboard focus (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-rose-bright));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+@layer utilities {
+  /* The app's single gradient: rose → coral, for hero numbers + greeting. */
+  .text-gradient-warm {
+    background-image: linear-gradient(100deg, rgb(var(--c-rose-bright)), rgb(var(--c-coral)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ============================================================
+   Reduced motion: neutralize non-essential animation globally.
+   Use 0.01ms (not 0) — some engines treat 0 as falsy.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
