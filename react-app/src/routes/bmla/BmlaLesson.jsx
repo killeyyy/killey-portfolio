@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, CircleCheck, Clock, Loader2 } from "lucide-react
 import Nav from "../../components/Nav.jsx";
 import Footer from "../../components/Footer.jsx";
 import LessonRenderer from "../../components/bmla/LessonRenderer.jsx";
+import ExamStyle from "../../components/bmla/ExamStyle.jsx";
 import NotFound from "../NotFound.jsx";
 import { loadLesson, lessonIndex } from "../../data/bmla/index.js";
 import { getProgress, markLessonDone } from "../../lib/bmla/progress.js";
@@ -55,8 +56,9 @@ export default function BmlaLesson() {
               <p className="mt-3 text-sm leading-relaxed text-jade-bright">{lesson.objective}</p>
             </header>
 
-            <article className="mt-10 max-w-3xl">
+            <article className="mt-10 max-w-3xl space-y-6">
               <LessonRenderer lesson={lesson} />
+              <ExamStyle moduleSlug={lesson.moduleSlug} />
             </article>
 
             <div className="mt-12 flex max-w-3xl flex-wrap items-center justify-between gap-4 border-t border-line/50 pt-6">

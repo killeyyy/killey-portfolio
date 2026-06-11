@@ -10,6 +10,7 @@ import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
 import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
+import EmailCapture from "../../components/bmla/EmailCapture.jsx";
 
 const LEVEL_CLS = {
   intro: "text-jade-bright border-jade/40 bg-jade/10",
@@ -78,8 +79,9 @@ export default function Bmla() {
         <section id="curriculum" className="mx-auto max-w-content px-6 py-20 md:py-24">
           <SectionHeading kicker="Curriculum" title="Mapped to the real exam, module by module." />
           <Stagger className="grid gap-4 sm:grid-cols-2" gap={0.06}>
-            {curriculum.map((mod) => {
+            {curriculum.map((mod, mi) => {
               const live = mod.lessonSlugs.length > 0;
+              const num = String(mi + 1).padStart(2, "0");
               return (
                 <Item key={mod.slug} className="h-full">
                   <div className={`h-full rounded-[18px] border border-line/70 bg-surface/50 p-6 ${live ? "glow-card" : "opacity-80"}`}>
@@ -91,11 +93,16 @@ export default function Bmla() {
                         {mod.level}
                       </span>
                     </div>
-                    <h3 className="text-fluid-lg font-semibold text-silver">{mod.title}</h3>
+                    <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+                      Module {num}{mod.ref ? ` · ${mod.ref}` : ""}
+                    </p>
+                    <h3 className="mt-1 text-fluid-lg font-semibold text-silver">{mod.title}</h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-muted">{mod.summary}</p>
                     <ul className="mt-3 flex flex-wrap gap-1.5">
-                      {mod.topics.slice(0, 4).map((t) => (
-                        <li key={t} className="rounded-full border border-line/60 px-2.5 py-0.5 text-[11px] text-muted">{t}</li>
+                      {mod.topics.slice(0, 4).map((t, ti) => (
+                        <li key={t} className="rounded-full border border-line/60 px-2.5 py-0.5 text-[11px] text-muted">
+                          <span className={mod.accent}>{num}.{ti + 1}</span> {t}
+                        </li>
                       ))}
                       {mod.topics.length > 4 && (
                         <li className="px-1 text-[11px] text-muted">+{mod.topics.length - 4} more</li>
@@ -181,6 +188,7 @@ export default function Bmla() {
                 Claim free beta access <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </Magnetic>
+            <EmailCapture />
           </div>
         </section>
       </main>
