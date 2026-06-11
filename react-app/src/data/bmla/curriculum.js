@@ -61,7 +61,7 @@ export const curriculum = [
     summary: "Cofactor expansion, determinant rules, invertibility, and solving by inverse.",
     icon: "SquareDivide", accent: "text-gold", level: "core",
     topics: ["Cofactor expansion", "Determinant properties (det of AB, Aᵀ, A⁻¹, kA, Aⁿ)", "Invertibility & singularity", "Solve systems by inversion", "Cramer's rule"],
-    lessonSlugs: [],
+    lessonSlugs: ["determinants-cofactor", "cramers-rule"],
   },
   {
     slug: "transformations",
@@ -77,7 +77,7 @@ export const curriculum = [
     summary: "Characteristic equation, eigenspaces, and matrix powers in closed form.",
     icon: "Sparkles", accent: "text-magenta", level: "advanced",
     topics: ["Eigenvalues & eigenvectors", "Characteristic equation", "Eigenspaces · algebraic vs geometric multiplicity", "Eigen-behaviour under A², A⁻¹, A+cI", "Diagonalization · Aⁿ via PDⁿP⁻¹"],
-    lessonSlugs: [],
+    lessonSlugs: ["eigenvalues", "diagonalization"],
   },
   {
     slug: "applied",
@@ -93,7 +93,7 @@ export const curriculum = [
     summary: "The heavy hitter: model it, solve it graphically and by Simplex, and read the tableau.",
     icon: "Spline", accent: "text-crimson-bright", level: "advanced",
     topics: ["LP formulation (standard form)", "Graphical method", "Simplex (two-phase · Big-M)", "Reading tableaux: optimal / unbounded / infeasible / multiple / degenerate", "Duality & primal recovery"],
-    lessonSlugs: [],
+    lessonSlugs: ["lp-graphical", "simplex-method"],
   },
   {
     slug: "networks",
