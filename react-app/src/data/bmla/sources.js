@@ -5,6 +5,22 @@
 // themselves, plus any notes KILLEYYY personally authored.
 // ============================================================
 
+/** Course textbooks — cited as references (we never host the books). */
+export const textbooks = [
+  {
+    title: "Linear Algebra and Its Applications (3rd ed.) — David C. Lay",
+    by: "course textbook · cited as reference",
+    href: "https://www.pearson.com/en-us/subject-catalog/p/linear-algebra-and-its-applications/P200000006235",
+    topics: ["matrices", "vectors", "determinants", "transformations", "eigen"],
+  },
+  {
+    title: "Applied Mathematics for Business, Economics & the Social Sciences (3rd ed.) — Frank S. Budnick",
+    by: "course textbook · cited as reference",
+    href: "https://www.mheducation.com/",
+    topics: ["applied", "linear-programming", "networks"],
+  },
+];
+
 /** Free, openly-licensed / publicly-available references (legal to link). */
 export const freeResources = [
   {

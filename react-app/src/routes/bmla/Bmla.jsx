@@ -9,7 +9,7 @@ import { Stagger, Item } from "../../lib/motion.jsx";
 import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
-import { freeResources, sourcesNote } from "../../data/bmla/sources.js";
+import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
 
 const LEVEL_CLS = {
   intro: "text-jade-bright border-jade/40 bg-jade/10",
@@ -152,7 +152,7 @@ export default function Bmla() {
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">Sources & further reading</p>
               <p className="mt-2 text-sm text-muted">{sourcesNote}</p>
               <ul className="mt-4 space-y-2">
-                {freeResources.map((r) => (
+                {[...textbooks, ...freeResources].map((r) => (
                   <li key={r.href}>
                     <a href={r.href} target="_blank" rel="noreferrer noopener" className="group inline-flex items-start gap-2 text-sm text-silver underline-offset-4 hover:text-cyan hover:underline">
                       <ExternalLink size={13} className="mt-1 shrink-0 text-muted group-hover:text-cyan" aria-hidden="true" />
