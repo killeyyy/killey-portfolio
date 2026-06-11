@@ -5,7 +5,7 @@ export default {
   title: "Matrices, Notation & Multiplication",
   objective: "By the end you can read matrix dimensions, add/scale matrices, and multiply two matrices correctly.",
   minutes: 14,
-  tools: ["flashcards:matrix-terms", "quiz:matrix-basics"],
+  tools: ["flashcards"],
   blocks: [
     {
       type: "prose",

@@ -5,7 +5,7 @@ export default {
   title: "Vectors, Combinations & Span",
   objective: "By the end you can form linear combinations, and explain span and linear independence in plain words.",
   minutes: 15,
-  tools: ["quiz:vectors", "flashcards:matrix-terms"],
+  tools: ["flashcards"],
   blocks: [
     {
       type: "prose",

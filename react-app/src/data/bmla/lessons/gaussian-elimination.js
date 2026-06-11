@@ -5,7 +5,7 @@ export default {
   title: "Gaussian Elimination & RREF",
   objective: "By the end you can row-reduce any system to reduced row-echelon form and read off the solution.",
   minutes: 18,
-  tools: ["rref", "quiz:linear-systems"],
+  tools: ["rref"],
   blocks: [
     {
       type: "prose",

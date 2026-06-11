@@ -6,6 +6,7 @@ import { cn } from "../lib/cn.js";
 
 const NAV = [
   { label: "Work", href: "/#work" },
+  { label: "BMLA", href: "/bmla" },
   { label: "About", href: "/#about" },
   { label: "Contact", href: "/#contact" },
 ];

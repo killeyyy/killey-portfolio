@@ -5,6 +5,7 @@
   "outputDirectory": "react-app/dist",
   "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }],
   "headers": [
-    { "source": "/owner", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }
+    { "source": "/owner", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] },
+    { "source": "/bmla/learn", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }
   ]
 }

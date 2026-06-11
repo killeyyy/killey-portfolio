@@ -11,6 +11,13 @@ import {
   Mail,
   Instagram,
   Linkedin,
+  Grid3x3,
+  Move3d,
+  TrendingUp,
+  SquareDivide,
+  FlipHorizontal2,
+  Spline,
+  Network,
 } from "lucide-react";
 
 const MAP = {
@@ -25,6 +32,13 @@ const MAP = {
   Mail,
   Instagram,
   Linkedin,
+  Grid3x3,
+  Move3d,
+  TrendingUp,
+  SquareDivide,
+  FlipHorizontal2,
+  Spline,
+  Network,
 };
 
 /** Render a lucide icon by name; renders nothing if the name is unknown. */

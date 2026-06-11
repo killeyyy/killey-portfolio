@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Search, Home, FolderKanban, User, Mail, Lock, Gamepad2, ArrowUpRight,
-  Copy, Check, Instagram, Linkedin, Github, Sparkles,
+  Copy, Check, Instagram, Linkedin, Github, Sparkles, GraduationCap,
 } from "lucide-react";
 import { site, socials, projects } from "../data/site.js";
 import { cn } from "../lib/cn.js";
@@ -79,6 +79,8 @@ export default function CommandPalette() {
       { group: "Go to", label: "About", icon: User, keywords: "bio hassan who", run: () => goToSection("about") },
       { group: "Go to", label: "Contact", icon: Mail, keywords: "email hire talk", run: () => goToSection("contact") },
       { group: "Go to", label: "Owner cockpit", icon: Lock, keywords: "dashboard admin login private", run: () => { close(); navigate("/owner"); } },
+      { group: "Learn", label: "BMLA Mastery — overview", icon: GraduationCap, keywords: "bmla math linear algebra course study edtech", run: () => { close(); navigate("/bmla"); } },
+      { group: "Learn", label: "BMLA dashboard — my progress", icon: GraduationCap, keywords: "bmla learn lessons practice flashcards", run: () => { close(); navigate("/bmla/learn"); } },
     ];
     for (const p of projects.filter((x) => x.client)) {
       a.push({

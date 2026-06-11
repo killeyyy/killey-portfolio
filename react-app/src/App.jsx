@@ -14,6 +14,9 @@ import ErrorBoundary from "./lib/ErrorBoundary.jsx";
 const CaseStudy = lazy(() => import("./routes/CaseStudy.jsx"));
 const Owner = lazy(() => import("./routes/Owner.jsx"));
 const NotFound = lazy(() => import("./routes/NotFound.jsx"));
+const Bmla = lazy(() => import("./routes/bmla/Bmla.jsx"));
+const BmlaLearn = lazy(() => import("./routes/bmla/BmlaLearn.jsx"));
+const BmlaLesson = lazy(() => import("./routes/bmla/BmlaLesson.jsx"));
 
 // Framer Motion's feature pack loads in its own async chunk after first paint.
 const loadFeatures = () => import("./lib/features.js").then((mod) => mod.default);
@@ -49,6 +52,9 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/work/:slug" element={<CaseStudy />} />
+                <Route path="/bmla" element={<Bmla />} />
+                <Route path="/bmla/learn" element={<BmlaLearn />} />
+                <Route path="/bmla/lesson/:slug" element={<BmlaLesson />} />
                 <Route path="/owner" element={<Owner />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

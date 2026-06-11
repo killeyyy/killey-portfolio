@@ -1,11 +1,11 @@
 /** @type {import("../curriculum.js").Lesson} */
 export default {
   slug: "break-even",
-  moduleSlug: "business-math",
+  moduleSlug: "applied",
   title: "Cost, Revenue & Break-Even",
   objective: "By the end you can build cost/revenue functions and find the break-even quantity two ways.",
   minutes: 12,
-  tools: ["break-even", "quiz:break-even"],
+  tools: ["break-even"],
   blocks: [
     {
       type: "prose",

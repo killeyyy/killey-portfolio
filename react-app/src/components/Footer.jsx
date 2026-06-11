@@ -32,6 +32,7 @@ export default function Footer() {
             <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-gold">Explore</p>
             <ul className="space-y-2 text-sm">
               <li><a href="/#work" className="text-muted transition-colors hover:text-silver">Work</a></li>
+              <li><Link to="/bmla" className="text-muted transition-colors hover:text-silver">BMLA Mastery</Link></li>
               <li><a href="/#about" className="text-muted transition-colors hover:text-silver">About</a></li>
               <li><a href="/#contact" className="text-muted transition-colors hover:text-silver">Contact</a></li>
               <li><Link to="/owner" className="text-muted transition-colors hover:text-silver">Owner cockpit</Link></li>
