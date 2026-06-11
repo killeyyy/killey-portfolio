@@ -1,0 +1,14 @@
+{
+  "name": "killey-portfolio-api",
+  "private": true,
+  "type": "module",
+  "description": "Root manifest for Vercel serverless functions in /api (ESM). The site itself builds from react-app/ (see vercel.json).",
+  "dependencies": {
+    "@vercel/og": "^0.6.8",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "typescript": "^5.9.3"
+  }
+}

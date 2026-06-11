@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   KILLEYYY design tokens — premium jewel-tone system.
+   RGB triples (space-separated) so Tailwind alpha utilities work.
+   Tune the whole palette here.
+   ============================================================ */
+:root {
+  --c-ink: 14 14 16; /* #0E0E10 base background (not pure black → avoids halation) */
+  --c-surface: 23 23 27; /* #17171B cards */
+  --c-surface-2: 31 31 36; /* #1F1F24 raised */
+  --c-line: 58 54 47; /* hairline border (warm champagne-tinted) */
+  --c-silver: 232 230 225; /* #E8E6E1 primary text */
+  --c-muted: 167 162 154; /* #A7A29A secondary text/labels */
+  --c-garnet: 123 30 43; /* #7B1E2B deep accent */
+  --c-crimson: 200 50 60; /* #C8323C lead accent */
+  --c-jade: 31 111 92; /* #1F6F5C restrained "live/shipped" accent */
+  --c-gold: 201 168 106; /* #C9A86A champagne metallic detail */
+  --c-plum: 139 74 168; /* #8B4AA8 jewel accent (gradients/glow) */
+  --c-azure: 56 130 196; /* #3882C4 jewel accent (gradients/glow) */
+
+  /* "Garnet Aurora" extended set (aligned with docs/PLAYBOOK.md §1).
+     *-bright variants are AA-safe (>=4.5:1) when used AS TEXT on ink. */
+  --c-crimson-bright: 240 86 106; /* #F0566A crimson as text (~4.6:1) */
+  --c-jade-bright: 52 211 153; /* #34D399 live/shipped text/badge (~9:1) */
+  --c-violet: 124 92 255; /* #7C5CFF cool-axis glow/gradient */
+  --c-violet-bright: 167 139 255; /* #A78BFF violet as text (~5.2:1) */
+  --c-cyan: 34 211 238; /* #22D3EE cool-axis (~8.9:1) */
+  --c-magenta: 255 79 216; /* #FF4FD8 rare "wow" pop (~6.1:1) */
+  --c-amber: 255 183 3; /* #FFB703 rare "wow" pop (~10:1) */
+
+  /* motion tokens */
+  --dur-fast: 140ms;
+  --dur-base: 240ms;
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ink text-silver font-sans antialiased;
+    margin: 0;
+    text-rendering: optimizeLegibility;
+  }
+  /* Headings default to the display serif */
+  h1, h2, h3 {
+    @apply font-serif;
+  }
+  /* Selection in brand crimson */
+  ::selection {
+    background: rgb(var(--c-crimson));
+    color: rgb(var(--c-ink));
+  }
+  /* Visible, on-brand keyboard focus (WCAG 2.4.7 / 2.4.11). */
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-gold));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  /* Give anchored sections room under a sticky header (2.4.11). */
+  :target {
+    scroll-margin-top: 6rem;
+  }
+}
+
+@layer components {
+  /* Film-grain overlay: tile a static SVG noise, very low opacity, behind text. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* ============================================================
+   Reduced motion: neutralize non-essential animation globally.
+   Use 0.01ms (not 0) — some engines treat 0 as falsy.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Colorful + flashy utilities (premium jewel-tone, restrained chaos)
+   ============================================================ */
+@layer utilities {
+  /* Animated gradient text — crimson → gold → plum → azure sweep */
+  .text-gradient {
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--c-crimson-bright)),
+      rgb(var(--c-amber)),
+      rgb(var(--c-magenta)),
+      rgb(var(--c-violet-bright)),
+      rgb(var(--c-cyan)),
+      rgb(var(--c-crimson-bright))
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-pan 8s linear infinite;
+  }
+  .text-gradient-warm {
+    background-image: linear-gradient(100deg, rgb(var(--c-crimson)), rgb(var(--c-gold)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Glow halos */
+  .glow-crimson { box-shadow: 0 0 0 1px rgb(var(--c-crimson) / 0.25), 0 8px 40px -8px rgb(var(--c-crimson) / 0.55); }
+  .glow-gold { box-shadow: 0 0 0 1px rgb(var(--c-gold) / 0.25), 0 8px 40px -8px rgb(var(--c-gold) / 0.5); }
+  /* Conic/aurora animated background for feature panels */
+  .aurora {
+    background:
+      radial-gradient(40% 60% at 20% 20%, rgb(var(--c-crimson) / 0.30), transparent 70%),
+      radial-gradient(40% 60% at 80% 30%, rgb(var(--c-plum) / 0.26), transparent 70%),
+      radial-gradient(50% 60% at 60% 90%, rgb(var(--c-azure) / 0.22), transparent 70%),
+      radial-gradient(40% 50% at 30% 80%, rgb(var(--c-jade) / 0.18), transparent 70%);
+    background-size: 180% 180%;
+    animation: aurora-pan 18s ease-in-out infinite;
+  }
+  /* Gradient hairline border via mask */
+  .border-gradient {
+    position: relative;
+  }
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgb(var(--c-crimson) / 0.6), rgb(var(--c-gold) / 0.4), rgb(var(--c-azure) / 0.4));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@keyframes gradient-pan {
+  to { background-position: 250% 0; }
+}
+@keyframes aurora-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ============================================================
+   Lenis smooth scroll (only active when not reduced-motion)
+   ============================================================ */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ============================================================
+   Custom cursor (desktop fine-pointer only; never on touch)
+   ============================================================ */
+@media (hover: hover) and (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * { cursor: none !important; }
+}
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  pointer-events: none;
+  border-radius: 9999px;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+}
+.cursor-dot { width: 7px; height: 7px; background: rgb(var(--c-crimson)); }
+.cursor-ring {
+  width: 38px; height: 38px;
+  border: 1.5px solid rgb(var(--c-gold) / 0.7);
+  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+.cursor-ring.is-active {
+  width: 64px; height: 64px;
+  border-color: rgb(var(--c-crimson) / 0.8);
+  background: rgb(var(--c-crimson) / 0.12);
+}
+
+/* ============================================================
+   Conic glow border (GPU, ~120fps) for featured cards / CTAs.
+   docs/PLAYBOOK.md Recipe 1.4. Animated angle via @property.
+   ============================================================ */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.glow-card {
+  position: relative;
+  border-radius: 18px;
+}
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--angle),
+    rgb(var(--c-violet)),
+    rgb(var(--c-cyan)),
+    rgb(var(--c-crimson)),
+    rgb(var(--c-magenta)),
+    rgb(var(--c-violet))
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: angle-spin 6s linear infinite;
+  pointer-events: none;
+}
+.glow-card:hover::before,
+.glow-card:focus-within::before {
+  opacity: 1;
+}
+@keyframes angle-spin {
+  to { --angle: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-card::before { animation: none; }
+}
+
+/* Cross-route View Transitions (React Router `viewTransition`). A quick,
+   premium cross-fade between the work grid and case studies. Killed entirely
+   under reduced-motion so navigation stays instant. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
