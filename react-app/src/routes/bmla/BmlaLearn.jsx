@@ -67,7 +67,7 @@ export default function BmlaLearn() {
 
         {/* modules + lessons */}
         <div className="mt-12 space-y-8">
-          {curriculum.map((mod) => {
+          {curriculum.map((mod, mi) => {
             const lessons = lessonIndex.filter((l) => l.moduleSlug === mod.slug);
             return (
               <section key={mod.slug}>
@@ -75,7 +75,12 @@ export default function BmlaLearn() {
                   <span className={`inline-flex rounded-lg border border-line/70 bg-ink/40 p-2 ${mod.accent}`}>
                     <Icon name={mod.icon} size={16} aria-hidden="true" />
                   </span>
-                  <h2 className="text-fluid-lg font-semibold text-silver">{mod.title}</h2>
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+                      Module {String(mi + 1).padStart(2, "0")}{mod.ref ? ` · ${mod.ref}` : ""}
+                    </p>
+                    <h2 className="text-fluid-lg font-semibold text-silver">{mod.title}</h2>
+                  </div>
                 </div>
                 {lessons.length ? (
                   <ul className="space-y-2">

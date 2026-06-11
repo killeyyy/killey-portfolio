@@ -33,7 +33,8 @@
  * @property {string} icon
  * @property {string} accent            literal text-* class
  * @property {("intro"|"core"|"advanced")} level
- * @property {string[]} topics          concepts covered (display)
+ * @property {string=} ref              textbook chapter classification (Lay/Budnick)
+ * @property {string[]} topics          numbered subtopics (display)
  * @property {string[]} lessonSlugs     authored lessons available now
  */
 
@@ -41,6 +42,7 @@
 export const curriculum = [
   {
     slug: "matrices",
+    ref: "Lay Ch. 1.1–1.2",
     title: "Linear Systems & Matrix Foundations",
     summary: "Row-reduce anything, read pivots & rank, and multiply matrices without slips.",
     icon: "Grid3x3", accent: "text-crimson-bright", level: "intro",
@@ -49,6 +51,7 @@ export const curriculum = [
   },
   {
     slug: "vectors",
+    ref: "Lay Ch. 1.3–1.7",
     title: "Vectors & Vector Spaces",
     summary: "Linear combinations, span, independence, and the equation Ax = b.",
     icon: "Move3d", accent: "text-violet-bright", level: "intro",
@@ -57,6 +60,7 @@ export const curriculum = [
   },
   {
     slug: "determinants",
+    ref: "Lay Ch. 2–3",
     title: "Determinants & Inverses",
     summary: "Cofactor expansion, determinant rules, invertibility, and solving by inverse.",
     icon: "SquareDivide", accent: "text-gold", level: "core",
@@ -65,14 +69,16 @@ export const curriculum = [
   },
   {
     slug: "transformations",
+    ref: "Lay Ch. 1.8–1.9",
     title: "Linear Transformations",
     summary: "Standard matrices, one-to-one & onto, and the geometric maps of the plane.",
     icon: "FlipHorizontal2", accent: "text-cyan", level: "core",
     topics: ["Linear operators", "One-to-one (injective) & range (onto)", "Standard matrix & change of basis", "Inverse operators", "Reflection / rotation / projection / shear / scaling"],
-    lessonSlugs: [],
+    lessonSlugs: ["linear-transformations", "geometric-transformations"],
   },
   {
     slug: "eigen",
+    ref: "Lay Ch. 5",
     title: "Eigenvalues & Diagonalization",
     summary: "Characteristic equation, eigenspaces, and matrix powers in closed form.",
     icon: "Sparkles", accent: "text-magenta", level: "advanced",
@@ -81,14 +87,16 @@ export const curriculum = [
   },
   {
     slug: "applied",
+    ref: "Lay Ch. 4.9 · Budnick",
     title: "Applied & Stochastic Models",
     summary: "Where the algebra pays off: input-output economics and Markov chains.",
     icon: "TrendingUp", accent: "text-jade-bright", level: "core",
     topics: ["Cost · revenue · break-even", "Leontief input-output / equilibrium pricing", "Markov chains: transition matrices", "State evolution & steady-state vectors"],
-    lessonSlugs: ["break-even"],
+    lessonSlugs: ["break-even", "markov-chains"],
   },
   {
     slug: "linear-programming",
+    ref: "Budnick Ch. 10–11",
     title: "Linear Programming & Simplex",
     summary: "The heavy hitter: model it, solve it graphically and by Simplex, and read the tableau.",
     icon: "Spline", accent: "text-crimson-bright", level: "advanced",
@@ -97,11 +105,12 @@ export const curriculum = [
   },
   {
     slug: "networks",
+    ref: "Budnick Ch. 12",
     title: "Transportation & Assignment",
     summary: "Allocation models: balance supply & demand, then optimize the schedule.",
     icon: "Network", accent: "text-violet-bright", level: "advanced",
     topics: ["Transportation problem (balanced & unbalanced)", "NW-corner · least-cost · stepping-stone", "Assignment problem · Hungarian method", "Minimum-cost schedules"],
-    lessonSlugs: [],
+    lessonSlugs: ["transportation-problem", "assignment-hungarian"],
   },
 ];
 
