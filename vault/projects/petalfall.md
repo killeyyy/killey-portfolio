@@ -1,4 +1,4 @@
-# Ruang — your quiet space
+# Petalfall — a quiet space to grow (formerly Ruang)
 
 **Status:** fully live (Era 2 + 2.5 + sync + revenue rails, ~22 PRs on 2026-06-12) · waiting on owner steps
 **Live:** https://ruang-nadya.vercel.app (`/welcome` landing · `/privacy`)
@@ -17,7 +17,7 @@ same day rebranded Ruang and rebuilt for the masses. ~34 production PRs.
 
 ## The $1k/30-days plan (set 2026-06-12)
 
-- **Product:** Ruang Pro **$19 once** (cloud sync + themes/pets + founding
+- **Product:** Petalfall Pro **$19 once** (cloud sync + themes/pets + founding
   badge). Checkout = paste Gumroad/Lemon Squeezy link into
   `nadya-dashboard/src/data/pro.js` → buy button appears on /welcome.
   53 sales = $1k.

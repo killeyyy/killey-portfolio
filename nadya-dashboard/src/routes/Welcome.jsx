@@ -63,10 +63,10 @@ export default function Welcome() {
         {/* Wordmark */}
         <div className="mb-2 inline-flex items-center gap-2">
           <Sprout size={28} className="text-rose" aria-hidden="true" />
-          <span className="font-serif text-2xl font-bold text-cream">Ruang</span>
+          <span className="font-serif text-2xl font-bold text-cream">Petalfall</span>
         </div>
         <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-          your quiet space
+          a quiet space to grow
         </p>
 
         <h1 className="mt-6 font-serif text-3xl font-bold leading-snug text-cream">
@@ -109,7 +109,7 @@ export default function Welcome() {
           Install as an app
         </h2>
         <p className="mt-1.5 text-sm leading-relaxed text-muted">
-          Ruang is a Progressive Web App — no app store needed. In your browser
+          Petalfall is a Progressive Web App — no app store needed. In your browser
           menu, tap{" "}
           <span className="font-semibold text-cream">Add to Home Screen</span>{" "}
           (or <span className="font-semibold text-cream">Install app</span> on
@@ -131,7 +131,7 @@ export default function Welcome() {
           </div>
           <p className="mt-1.5 text-sm leading-relaxed text-muted">
             Everything you saw above is free, on your device, no account needed.
-            Ruang Pro is{" "}
+            Petalfall Pro is{" "}
             <span className="font-semibold text-cream">
               {PRO.price} — {PRO.period}
             </span>
@@ -150,7 +150,7 @@ export default function Welcome() {
               href={PRO.checkoutUrl}
               className="mt-4 block w-full rounded-xl bg-gradient-to-r from-rose to-coral py-3 text-center text-sm font-bold text-ink active:scale-95"
             >
-              Get Ruang Pro · {PRO.price}
+              Get Petalfall Pro · {PRO.price}
             </a>
           ) : (
             <p className="mt-4 rounded-xl bg-mint/10 px-3 py-2.5 text-center text-xs font-semibold text-mint">
@@ -171,7 +171,7 @@ export default function Welcome() {
           viewTransition
           className="block w-full rounded-xl bg-gradient-to-r from-rose to-coral py-3 text-sm font-bold text-ink shadow-[0_8px_24px_-8px_rgb(226_92_114/0.5)] active:scale-95"
         >
-          Open Ruang
+          Open Petalfall
         </Link>
         <Link
           to="/privacy"

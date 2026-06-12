@@ -1,5 +1,5 @@
 // Hand-rolled GoTrue (Supabase auth) client over plain fetch — a few KB
-// instead of auth-js's 16, because Ruang only needs email-OTP codes, token
+// instead of auth-js's 16, because Petalfall only needs email-OTP codes, token
 // refresh and sign-out. Codes, not magic links: PKCE links die in email-app
 // in-app browsers and across devices.
 // Offline rule (roadmap): NEVER sign out because a refresh failed — local

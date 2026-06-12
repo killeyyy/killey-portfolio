@@ -11,8 +11,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "icons/apple-touch-icon.png"],
       manifest: {
-        name: "Ruang — your quiet space",
-        short_name: "Ruang",
+        name: "Petalfall — a quiet space to grow",
+        short_name: "Petalfall",
         description: "Your quiet space — activities, habits, savings & journal.",
         display: "standalone",
         start_url: "/",

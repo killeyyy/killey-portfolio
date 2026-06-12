@@ -1,4 +1,4 @@
-// Ruang Pro license plumbing. Honest by design:
+// Petalfall Pro license plumbing. Honest by design:
 // - While PRO.checkoutUrl is empty (the founding window) NOTHING is gated —
 //   sync stays free, exactly as /welcome promises. Early sign-ins get a
 //   founding flag that travels with their account (it's a synced key).

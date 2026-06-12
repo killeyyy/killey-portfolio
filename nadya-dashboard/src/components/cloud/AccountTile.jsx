@@ -14,7 +14,7 @@ import * as storage from "../../lib/storage.js";
  * place sign-in exists. Sync itself ships in the next update; signing in
  * today just reserves her space.
  */
-/** Ruang Pro status — only ever shown to signed-in / founding / Pro users. */
+/** Petalfall Pro status — only ever shown to signed-in / founding / Pro users. */
 function ProSection({ signedIn }) {
   const toast = useToast();
   const [key, setKey] = useState("");
@@ -25,7 +25,7 @@ function ProSection({ signedIn }) {
   if (!signedIn && !pro && !founding) return null;
 
   return (
-    <Tile title="Ruang Pro">
+    <Tile title="Petalfall Pro">
       {pro ? (
         <p className="text-sm text-cream">
           ✨ <span className="font-semibold">Pro is active</span> — thank you for supporting a
@@ -168,7 +168,7 @@ export default function AccountTile() {
     <>
     <Tile title="Account" action={<span className="text-xs text-muted">optional, always</span>}>
       <p className="mb-3 text-xs text-muted">
-        Ruang works fully on this device, signed in or not. Sign in and your space quietly
+        Petalfall works fully on this device, signed in or not. Sign in and your space quietly
         follows you to any device — newest change wins, nothing is ever lost.
       </p>
       {stage === "email" ? (

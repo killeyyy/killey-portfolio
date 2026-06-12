@@ -37,7 +37,7 @@ export function downloadExport() {
   a.href = url;
   // Filename follows the brand; the "nadya-dashboard" identifier INSIDE the
   // file must never change (old backups carry it).
-  a.download = `ruang-backup-${todayKey()}.json`;
+  a.download = `petalfall-backup-${todayKey()}.json`;
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -55,7 +55,7 @@ export function parseImport(text) {
   if (payload?.app !== "nadya-dashboard" || !payload?.data) {
     // NB: the "nadya-dashboard" app identifier above must never change —
     // every existing backup file carries it.
-    throw new Error("That file doesn't look like a Ruang backup.");
+    throw new Error("That file doesn't look like a Petalfall backup.");
   }
   if ((payload.schemaVersion || 0) > CURRENT_SCHEMA) {
     throw new Error("That backup is from a newer version of the app.");

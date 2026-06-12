@@ -1,11 +1,11 @@
-# Ruang — case study & launch ammo (owner's outreach kit)
+# Petalfall — case study & launch ammo (owner's outreach kit)
 
 Live: https://ruang-nadya.vercel.app · Landing: /welcome · Privacy: /privacy
 Everything below is true and verifiable in this repo — use it as-is in
 posts, the portfolio, and client pitches. No invented numbers.
 
 ## One-liner
-**Ruang — your quiet space.** A local-first life tracker (activities,
+**Petalfall — a quiet space to grow.** A local-first life tracker (activities,
 habits, money, journal) where your real days grow a living 3D garden.
 No ads, no tracking, works offline, syncs when you sign in.
 
@@ -33,9 +33,9 @@ No ads, no tracking, works offline, syncs when you sign in.
 ## Launch checklist (owner)
 1. Supabase email template + Site URL (docs/CLOUD-SETUP.md) — sign-in codes.
 2. Custom SMTP (Resend/Brevo free) — before strangers sign in.
-3. Gumroad / Lemon Squeezy product: "Ruang Pro — $19, once, forever" →
+3. Gumroad / Lemon Squeezy product: "Petalfall Pro — $19, once, forever" →
    paste the link into `src/data/pro.js` `checkoutUrl` (one line).
-4. Domain: ruang.life ($2.99/yr) or getruang.com — vercel.com/domains,
+4. Domain: petalfall.app ($9.99/yr) — vercel.com/domains,
    attach to the ruang-nadya project; rename the project while there.
 5. Screenshots/screen-recordings for posts: Today hero tilt (desktop),
    Journey 3D garden, Wrapped story, a Money month. Dark room, phone +
@@ -46,12 +46,12 @@ No ads, no tracking, works offline, syncs when you sign in.
 **X / Threads:**
 > I built a life tracker that refuses to guilt-trip you.
 > No streak loss. No red marks. Your quiet weeks still grow something.
-> It's called Ruang — local-first, free, runs in your browser, and your
+> It's called Petalfall — local-first, free, runs in your browser, and your
 > weeks literally grow a 3D garden.
 > [link] — would love brutal feedback.
 
 **LinkedIn (client-fishing version):**
-> Shipped: Ruang — a local-first life-tracking PWA with a real-time 3D
+> Shipped: Petalfall — a local-first life-tracking PWA with a real-time 3D
 > garden grown from your data. 31 production PRs, AI-directed build,
 > Supabase sync with row-level security, 119KB core bundle.
 > This is what a one-person, AI-accelerated product team looks like in

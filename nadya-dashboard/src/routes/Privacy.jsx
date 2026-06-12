@@ -122,7 +122,7 @@ export default function Privacy() {
         <Section title="Changes">
           <p>
             If this policy changes meaningfully, the &ldquo;Last updated&rdquo; date
-            above will change. Ruang does not have a mailing list — check back
+            above will change. Petalfall does not have a mailing list — check back
             here if you want to stay informed.
           </p>
         </Section>
@@ -136,7 +136,7 @@ export default function Privacy() {
           viewTransition
           className="inline-block rounded-xl bg-rose px-5 py-2.5 text-sm font-semibold text-ink active:scale-95"
         >
-          Open Ruang
+          Open Petalfall
         </Link>
       </div>
     </div>
