@@ -11,9 +11,12 @@ import { useStore } from "../store/StoreProvider.jsx";
 import { addMonths, monthKey } from "../lib/dates.js";
 import { formatDayLabel, formatMoney, formatMonthLabel, formatMonthShort } from "../lib/format.js";
 import { savingsForMonth } from "../lib/insights.js";
+import { confettiBurst } from "../lib/confetti.js";
+import { useToast } from "../components/ui/Toast.jsx";
 
 export default function Savings() {
   const { settings, savings, setMonthGoal, upsertSavingsEntry, deleteSavingsEntry } = useStore();
+  const toast = useToast();
   const [anchor, setAnchor] = useState(() => monthKey());
   const [goalOpen, setGoalOpen] = useState(false);
   const [entrySheet, setEntrySheet] = useState(null); // { entry } | { entry: null }
@@ -147,8 +150,16 @@ export default function Savings() {
           entry={entrySheet.entry}
           onClose={() => setEntrySheet(null)}
           onSave={(entry) => {
+            const before = saved;
             upsertSavingsEntry(anchor, entry);
             setEntrySheet(null);
+            const after =
+              entries.filter((e) => e.id !== entry.id).reduce((s, e) => s + e.amount, 0) +
+              entry.amount;
+            if (goal > 0 && before < goal && after >= goal) {
+              confettiBurst();
+              toast.show("Monthly savings goal met 🎉");
+            }
           }}
           onDelete={
             entrySheet.entry

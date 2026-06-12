@@ -5,7 +5,8 @@ import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
 import { Sheet } from "../components/ui/Sheet.jsx";
 import { Chip } from "../components/ui/Chip.jsx";
-import { Field, TextInput, Select } from "../components/ui/Field.jsx";
+import { Field, TextInput, Select, NumberStepper } from "../components/ui/Field.jsx";
+import { formatMinutes } from "../lib/format.js";
 import { useToast } from "../components/ui/Toast.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { COLOR_META, COLOR_NAMES, CURRENCIES } from "../data/defaults.js";
@@ -90,6 +91,16 @@ export default function Settings() {
                 { value: "1", label: "Monday" },
                 { value: "0", label: "Sunday" },
               ]}
+            />
+          </Field>
+          <Field label="Daily productive goal" hint="Drives the rose ring on Today.">
+            <NumberStepper
+              value={settings.dailyTarget ?? 180}
+              onChange={(v) => updateSettings({ dailyTarget: v })}
+              step={15}
+              min={30}
+              max={720}
+              format={formatMinutes}
             />
           </Field>
         </div>

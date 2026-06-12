@@ -215,6 +215,7 @@ export default function Stats() {
         </Tile>
       </div>
 
+      <div className="grid gap-4 lg:grid-cols-2">
       <Tile title="Time per day">
         {empty ? (
           <EmptyNote />
@@ -346,6 +347,7 @@ export default function Stats() {
           </span>
         </Link>
       </Tile>
+      </div>
     </div>
   );
 }

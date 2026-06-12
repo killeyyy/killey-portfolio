@@ -1,17 +1,39 @@
 import { Link } from "react-router-dom";
 import { Check, Flame, Pencil } from "lucide-react";
 import { Tile } from "../ui/Tile.jsx";
+import { useToast } from "../ui/Toast.jsx";
 import { cn } from "../../lib/cn.js";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { todayKey } from "../../lib/dates.js";
 import { habitStreaks } from "../../lib/insights.js";
+import { confettiBurst } from "../../lib/confetti.js";
 
-/** Today's habit checklist with streak counts. */
+const MILESTONES = new Set([3, 7, 14, 30, 50, 100, 365]);
+
+/** Today's habit checklist with streak counts + milestone celebrations. */
 export function HabitTicks() {
   const { habits, habitLog, toggleHabitTick } = useStore();
+  const toast = useToast();
   const today = todayKey();
   const active = habits.filter((h) => !h.archivedAt);
   const tickedToday = habitLog[today] || [];
+
+  const onTick = (h) => {
+    const wasDone = tickedToday.includes(h.id);
+    toggleHabitTick(today, h.id);
+    if (wasDone) return;
+    // Celebrate with the tick applied (state lands next render).
+    const nextLog = { ...habitLog, [today]: [...tickedToday, h.id] };
+    const { current } = habitStreaks(nextLog, h.id, today);
+    const allDone = active.every((x) => x.id === h.id || tickedToday.includes(x.id));
+    if (MILESTONES.has(current)) {
+      confettiBurst();
+      toast.show(`🔥 ${current}-day streak — ${h.name}!`);
+    } else if (allDone && active.length > 1) {
+      confettiBurst();
+      toast.show("All habits done today ✨");
+    }
+  };
 
   return (
     <Tile
@@ -39,7 +61,7 @@ export function HabitTicks() {
               <li key={h.id}>
                 <button
                   type="button"
-                  onClick={() => toggleHabitTick(today, h.id)}
+                  onClick={() => onTick(h)}
                   aria-pressed={done}
                   className={cn(
                     "flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors duration-150",
