@@ -296,6 +296,10 @@ export default function Garden3D({ plots }) {
 
     // instanced plants — newest week closest to camera
     const n = plots.length;
+    // A young garden is a close portrait, not a wide field: centre the few
+    // plants, grow them, and (below) bring the camera in to meet them.
+    const cols = Math.min(n, PER_ROW);
+    const intimate = n <= PER_ROW;
     const iPos = new Float32Array(n * 3);
     const iScale = new Float32Array(n);
     const iHue = new Float32Array(n * 3);
@@ -306,10 +310,10 @@ export default function Garden3D({ plots }) {
       const col = k % PER_ROW;
       const row = Math.floor(k / PER_ROW);
       const seed = Number(p.start.replaceAll("-", "")) % 9973;
-      iPos[k * 3] = (col - (PER_ROW - 1) / 2) * 0.62 + (jitter(seed, 1) - 0.5) * 0.3;
+      iPos[k * 3] = (col - (cols - 1) / 2) * (intimate ? 0.5 : 0.62) + (jitter(seed, 1) - 0.5) * (intimate ? 0.16 : 0.3);
       iPos[k * 3 + 1] = 0;
-      iPos[k * 3 + 2] = -row * ROW_DEPTH - (jitter(seed, 2) * 0.4);
-      iScale[k] = (0.5 + p.stars * 0.16) * (0.85 + jitter(seed, 3) * 0.3);
+      iPos[k * 3 + 2] = -row * ROW_DEPTH - (jitter(seed, 2) * (intimate ? 0.15 : 0.4));
+      iScale[k] = (0.5 + p.stars * 0.16) * (0.85 + jitter(seed, 3) * 0.3) * (intimate ? 1.45 : 1);
       const hex = (COLOR_META[p.color] || COLOR_META.rose).hex;
       const [r, g, b] = hexVec3(hex);
       iHue[k * 3] = r; iHue[k * 3 + 1] = g; iHue[k * 3 + 2] = b;
@@ -373,8 +377,10 @@ export default function Garden3D({ plots }) {
     new Mesh(gl, { geometry: moteGeo, program: moteProg }).setParent(scene);
 
     // camera: gentle drift + pointer parallax (lerped)
-    const lookY = 0.4;
-    const lookZ = -Math.min(rows * ROW_DEPTH * 0.4, 2.5);
+    const camY = intimate ? 0.85 : 1.35;
+    const camZ = intimate ? 1.55 : 2.5;
+    const lookY = intimate ? 0.38 : 0.4;
+    const lookZ = intimate ? -0.4 : -Math.min(rows * ROW_DEPTH * 0.4, 2.5);
     let px = 0, tx = 0;
     const onPointer = (e) => {
       const r = host.getBoundingClientRect();
@@ -413,7 +419,7 @@ export default function Garden3D({ plots }) {
       px += (tx - px) * 0.05;
       plantProg.uniforms.uTime.value = s;
       moteProg.uniforms.uTime.value = s;
-      camera.position.set(px + Math.sin(s * 0.12) * 0.12, 1.35, 2.5);
+      camera.position.set(px * (intimate ? 0.6 : 1) + Math.sin(s * 0.12) * 0.12, camY, camZ);
       camera.lookAt([0, lookY, lookZ]);
       renderer.render({ scene, camera });
       raf = requestAnimationFrame(loop);
