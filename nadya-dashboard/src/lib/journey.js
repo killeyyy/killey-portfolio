@@ -66,7 +66,12 @@ export function computeJourney({ habits, habitLog, journal, savings, dailyTarget
   let savingsEntries = 0;
   for (const m of Object.values(savings.months || {})) {
     savingsEntries += (m.entries || []).length;
-    const saved = (m.entries || []).reduce((s, e) => s + (e.amount || 0), 0);
+    // Only money put aside counts toward the goal (income/expense entries
+    // are ledger lines, not savings; legacy entries have no kind = saved).
+    const saved = (m.entries || []).reduce(
+      (s, e) => s + (!e.kind || e.kind === "save" ? e.amount || 0 : 0),
+      0,
+    );
     if (m.goal > 0 && saved >= m.goal) goalsMet += 1;
   }
   xp += savingsEntries * 10 + goalsMet * 50;

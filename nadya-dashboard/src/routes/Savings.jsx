@@ -21,10 +21,16 @@ export default function Savings() {
   const [goalOpen, setGoalOpen] = useState(false);
   const [entrySheet, setEntrySheet] = useState(null); // { entry } | { entry: null }
 
-  const { goal, saved, entries } = useMemo(() => savingsForMonth(savings, anchor), [savings, anchor]);
+  const { goal, saved, income, spent, entries } = useMemo(
+    () => savingsForMonth(savings, anchor),
+    [savings, anchor],
+  );
   const money = (v) => formatMoney(v, settings.currency, settings.locale);
   const pct = goal ? Math.min(100, (saved / goal) * 100) : 0;
   const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date));
+  const out = spent + saved;
+  const flowMax = Math.max(income, out, 1);
+  const inHand = income - out;
 
   const history = useMemo(
     () =>
@@ -39,7 +45,7 @@ export default function Savings() {
 
   return (
     <div className="space-y-4">
-      <PageHeader title="Savings" sub={formatMonthLabel(anchor)} />
+      <PageHeader title="Money" sub={formatMonthLabel(anchor)} />
 
       <div className="flex items-center justify-end gap-1">
         <button
@@ -86,8 +92,58 @@ export default function Savings() {
         </div>
       </Tile>
 
+      {(income > 0 || spent > 0) && (
+        <Tile title="This month's flow">
+          <div className="grid grid-cols-3 gap-2">
+            <div className="rounded-xl bg-mint/10 px-3 py-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-mint">In</p>
+              <p className="mt-0.5 truncate text-sm font-semibold tabular-nums text-cream">
+                {money(income)}
+              </p>
+            </div>
+            <div className="rounded-xl bg-coral/10 px-3 py-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-coral">Spent</p>
+              <p className="mt-0.5 truncate text-sm font-semibold tabular-nums text-cream">
+                {money(spent)}
+              </p>
+            </div>
+            <div className="rounded-xl bg-sand/10 px-3 py-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-sand">Saved</p>
+              <p className="mt-0.5 truncate text-sm font-semibold tabular-nums text-cream">
+                {money(saved)}
+              </p>
+            </div>
+          </div>
+          <div className="mt-3 space-y-1.5" aria-hidden="true">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-white/5">
+              <div
+                className="h-full rounded-full bg-mint/80 transition-all duration-700 ease-out"
+                style={{ width: `${(income / flowMax) * 100}%` }}
+              />
+            </div>
+            <div className="flex h-2 w-full gap-px overflow-hidden rounded-full bg-white/5">
+              <div
+                className="h-full bg-coral/80 transition-all duration-700 ease-out"
+                style={{ width: `${(spent / flowMax) * 100}%` }}
+              />
+              <div
+                className="h-full bg-sand/80 transition-all duration-700 ease-out"
+                style={{ width: `${(saved / flowMax) * 100}%` }}
+              />
+            </div>
+          </div>
+          {income > 0 && (
+            <p className="mt-2 text-xs tabular-nums text-muted">
+              {inHand >= 0
+                ? `Still in hand: ${money(inHand)}`
+                : `${money(-inHand)} more out than in this month`}
+            </p>
+          )}
+        </Tile>
+      )}
+
       <Tile
-        title="Entries"
+        title="This month"
         action={
           <button
             type="button"
@@ -99,26 +155,46 @@ export default function Savings() {
         }
       >
         {sorted.length === 0 ? (
-          <p className="text-sm text-muted">Nothing saved this month yet.</p>
+          <p className="text-sm text-muted">
+            No money moves this month yet — add savings, income or expenses.
+          </p>
         ) : (
           <ul className="divide-y divide-line/60">
-            {sorted.map((e) => (
-              <li key={e.id}>
-                <button
-                  type="button"
-                  onClick={() => setEntrySheet({ entry: e })}
-                  className="flex w-full items-center gap-3 py-2.5 text-left"
-                >
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold tabular-nums text-cream">
-                      {money(e.amount)}
+            {sorted.map((e) => {
+              const kind = e.kind || "save";
+              const meta =
+                kind === "income"
+                  ? { sign: "+", cls: "text-mint", tag: "income" }
+                  : kind === "expense"
+                    ? { sign: "−", cls: "text-coral", tag: "expense" }
+                    : { sign: "♥", cls: "text-sand", tag: "saved" };
+              return (
+                <li key={e.id}>
+                  <button
+                    type="button"
+                    onClick={() => setEntrySheet({ entry: e })}
+                    className="flex w-full items-center gap-3 py-2.5 text-left"
+                  >
+                    <span
+                      className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/5 text-sm font-bold ${meta.cls}`}
+                      aria-hidden="true"
+                    >
+                      {meta.sign}
                     </span>
-                    {e.note && <span className="block truncate text-xs text-muted">{e.note}</span>}
-                  </span>
-                  <span className="shrink-0 text-xs text-muted">{formatDayLabel(e.date)}</span>
-                </button>
-              </li>
-            ))}
+                    <span className="min-w-0 flex-1">
+                      <span className={`block text-sm font-semibold tabular-nums ${meta.cls}`}>
+                        {money(e.amount)}
+                      </span>
+                      <span className="block truncate text-xs text-muted">
+                        {meta.tag}
+                        {e.note ? ` · ${e.note}` : ""}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-xs text-muted">{formatDayLabel(e.date)}</span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </Tile>
@@ -153,9 +229,12 @@ export default function Savings() {
             const before = saved;
             upsertSavingsEntry(anchor, entry);
             setEntrySheet(null);
+            // Only save-kind entries move the goal ring (legacy = save).
             const after =
-              entries.filter((e) => e.id !== entry.id).reduce((s, e) => s + e.amount, 0) +
-              entry.amount;
+              entries
+                .filter((e) => e.id !== entry.id && (!e.kind || e.kind === "save"))
+                .reduce((s, e) => s + e.amount, 0) +
+              (entry.kind === "save" ? entry.amount : 0);
             if (goal > 0 && before < goal && after >= goal) {
               confettiBurst();
               toast.show("Monthly savings goal met 🎉");

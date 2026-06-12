@@ -11,7 +11,7 @@ const NAV = [
   { to: "/", icon: Home, label: "Today", end: true },
   { to: "/stats", icon: BarChart3, label: "Stats" },
   { to: "/journey", icon: Sprout, label: "Journey" },
-  { to: "/savings", icon: PiggyBank, label: "Savings" },
+  { to: "/savings", icon: PiggyBank, label: "Money" },
   { to: "/journal", icon: NotebookPen, label: "Journal" },
   { to: "/habits", icon: Repeat, label: "Habits" },
   { to: "/tend", icon: Droplets, label: "Tend" },
