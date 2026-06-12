@@ -93,6 +93,15 @@
   .glow-rose {
     box-shadow: 0 0 48px -12px rgb(var(--c-rose) / 0.35);
   }
+  /* Wrapped story progress fill (duration set inline per card) */
+  @keyframes bar-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
   /* Occasional blink for Mawar's eyes */
   .blink {
     animation: blink 6s ease-in-out infinite;

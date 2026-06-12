@@ -35,7 +35,7 @@ levels, milestones, achievements, celebrations, progress paths, streak pet",
 - [x] Mood trend line in Stats + weekday profile chart
 
 ## Pass 3 — Wrapped + onboarding
-- [ ] Weekly Wrapped (/wrapped): Spotify-Wrapped-style recap of last week — total time, top category, productive %, best day, habit champion, mood avg, gratitude count; poster-grade gradient design; link appears on Today every Monday
+- [x] Weekly Wrapped (/wrapped): Spotify-Wrapped-style recap of last week — total time, top category, productive %, best day, habit champion, mood avg, gratitude count; poster-grade gradient design; link appears on Today every Monday
 - [ ] First-run onboarding: welcome → name → week start → daily target → starter habits pack
 - [ ] Year heatmap (GitHub-style) of activity volume in Stats month view
 
@@ -58,3 +58,16 @@ levels, milestones, achievements, celebrations, progress paths, streak pet",
 - [x] Mawar v2: gradient petals, blink, soil + pot detail, butterfly at radiant
 - [x] Celebration v2: petal confetti, full-screen level-up moment, haptic buzz on log/tick
 - [x] Empty-state flourishes + warmer microcopy
+
+## Upgrade C — Weekly Wrapped masterpiece (shipped)
+Research-driven (Wrapped/Duolingo/Strava teardowns): stories grammar, two-beat
+tease-then-reveal, one giant stat per card, persona identity claim, peak-end
+sequencing, positive-only copy, client-side canvas share poster.
+- [x] /wrapped: full-screen story player — segmented progress bars (animation-end
+      advances), tap zones (back ⅓ / next ⅔), hold-to-pause, per-card radial tint,
+      reduced-motion = tap-only with static bars
+- [x] lib/wrapped.js: last-complete-week stats + weekly persona rules + relatable
+      equivalents; node-tested (week bounds, exclusions, XP math)
+- [x] lib/poster.js: 1080×1920 canvas poster (fonts preloaded before fillText),
+      Web Share API files with download fallback, zero deps
+- [x] Entry points: Monday/Tuesday ritual card on Today + "Last week, wrapped" on Journey

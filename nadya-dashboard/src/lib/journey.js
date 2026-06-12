@@ -15,8 +15,13 @@ export function xpFloor(i) {
   return 50 * i * (i + 1);
 }
 
-function journalHasContent(e) {
+export function journalHasContent(e) {
   return Boolean(e && (e.highlight?.trim() || e.mood || e.grateful?.some((g) => g.trim())));
+}
+
+/** XP for a single activity entry (shared with the weekly Wrapped). */
+export function entryXP(e) {
+  return 5 + Math.min(15, Math.round((e.minutes || 0) / 10));
 }
 
 /** Flat { dateKey: entries[] } across every stored month shard. */
@@ -41,7 +46,7 @@ export function computeJourney({ habits, habitLog, journal, savings, dailyTarget
   for (const [day, entries] of Object.entries(actDays)) {
     for (const e of entries) {
       totalLogs += 1;
-      xp += 5 + Math.min(15, Math.round((e.minutes || 0) / 10));
+      xp += entryXP(e);
       if (new Date(e.at).getHours() < 8) earlyBird = true;
       if (productiveIds.has(e.categoryId)) {
         productiveByDay[day] = (productiveByDay[day] || 0) + e.minutes;

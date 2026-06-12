@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { Flame, Lock, Star } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Clapperboard, Flame, Lock, Star } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
 import { CountUp } from "../components/ui/CountUp.jsx";
@@ -78,6 +79,17 @@ export default function Journey() {
               Everything you've ever logged counts — activities, habits, journal, savings.
             </p>
           </Tile>
+
+          <Link
+            to="/wrapped"
+            className="flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-medium text-cream transition-colors duration-150 hover:border-rose/40"
+          >
+            <span className="flex items-center gap-3">
+              <Clapperboard size={18} className="text-rose-bright" aria-hidden="true" />
+              Last week, wrapped
+            </span>
+            <span className="text-xs text-muted">the story →</span>
+          </Link>
 
           {/* Achievements */}
           <Tile title={`Achievements · ${journey.earnedCount}/${journey.achievements.length}`}>

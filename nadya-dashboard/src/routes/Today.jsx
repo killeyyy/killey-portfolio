@@ -124,6 +124,19 @@ export default function Today() {
         </div>
       </Tile>
 
+      {/* Monday/Tuesday ritual: last week's story (Wrapped concept) */}
+      {[settings.weekStart, (settings.weekStart + 1) % 7].includes(new Date().getDay()) && (
+        <Link
+          to="/wrapped"
+          className="block rounded-2xl bg-gradient-to-r from-rose/25 via-surface to-coral/20 p-px"
+        >
+          <span className="flex items-center justify-between rounded-[15px] bg-surface px-4 py-3">
+            <span className="text-sm font-semibold text-cream">Your week, wrapped 🌹</span>
+            <span className="text-xs text-muted">tap for the story →</span>
+          </span>
+        </Link>
+      )}
+
       <DayTimeline />
 
       <div className="space-y-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
