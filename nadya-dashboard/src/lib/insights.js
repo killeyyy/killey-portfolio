@@ -93,8 +93,12 @@ export function habitAdherence(habitLog, habit, dayKeys, today = todayKey()) {
   const createdKey = toDateKey(new Date(habit.createdAt || 0));
   const eligibleKeys = dayKeys.filter((k) => k >= createdKey && k <= today);
   const ticked = eligibleKeys.filter((k) => habitLog[k]?.includes(habit.id)).length;
-  const eligible = eligibleKeys.length;
-  return { ticked, eligible, pct: eligible ? Math.round((ticked / eligible) * 100) : null };
+  if (!eligibleKeys.length) return { ticked, eligible: 0, pct: null };
+  // Weekly-rhythm habits (timesPerWeek < 7) are measured against their own
+  // rhythm, not against every day; doing extra caps at 100 — never penalized.
+  const perWeek = habit.timesPerWeek || 7;
+  const eligible = Math.max(1, Math.round((eligibleKeys.length * perWeek) / 7));
+  return { ticked, eligible, pct: Math.min(100, Math.round((ticked / eligible) * 100)) };
 }
 
 /** 0/1 values (oldest → newest) for a heatmap over dayKeys. */

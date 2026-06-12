@@ -72,16 +72,17 @@ export function weeklyQuests({
     unit: "days",
   });
 
-  // Rotating: one habit, four gentle check-ins.
+  // Rotating: one habit — the ask respects its own weekly rhythm.
   const liveHabits = habits.filter((h) => !h.archivedAt);
   if (liveHabits.length) {
     const h = liveHabits[Math.floor(rand(start, 1) * liveHabits.length)];
+    const target = Math.min(4, h.timesPerWeek || 7);
     pool.push({
       id: `${start}:habit:${h.id}`,
       emoji: h.emoji || "🌿",
-      title: `Tend “${h.name}” 4 days`,
-      desc: "Four check-ins, any four days.",
-      target: 4,
+      title: `Tend “${h.name}” ${target} day${target === 1 ? "" : "s"}`,
+      desc: target === 1 ? "One check-in, any day." : `${target} check-ins, any days.`,
+      target,
       progress: sofar.filter((k) => (habitLog[k] || []).includes(h.id)).length,
       unit: "days",
     });

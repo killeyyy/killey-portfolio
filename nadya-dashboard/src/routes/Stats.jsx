@@ -389,6 +389,11 @@ export default function Stats() {
                   <span className="min-w-0 flex-1 truncate text-cream">
                     {habit.emoji && <span className="mr-1">{habit.emoji}</span>}
                     {habit.name}
+                    {habit.timesPerWeek && (
+                      <span className="ml-1.5 rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] text-muted">
+                        {habit.timesPerWeek}×/wk
+                      </span>
+                    )}
                   </span>
                   <span className="shrink-0 tabular-nums text-muted">
                     {adherence.pct === null ? "—" : `${adherence.pct}%`} · 🔥{streak.current}
