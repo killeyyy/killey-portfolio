@@ -5,6 +5,7 @@ import { Field, TextInput } from "../ui/Field.jsx";
 import { useToast } from "../ui/Toast.jsx";
 import { buzz } from "../../lib/celebrate.js";
 import { getSession, requestCode, signOut, verifyCode } from "../../lib/cloud/auth.js";
+import { activate, canActivate, isFounding, isPro } from "../../lib/license.js";
 import * as storage from "../../lib/storage.js";
 
 /**
@@ -13,6 +14,69 @@ import * as storage from "../../lib/storage.js";
  * place sign-in exists. Sync itself ships in the next update; signing in
  * today just reserves her space.
  */
+/** Ruang Pro status — only ever shown to signed-in / founding / Pro users. */
+function ProSection({ signedIn }) {
+  const toast = useToast();
+  const [key, setKey] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [pro, setPro] = useState(() => isPro());
+  const founding = isFounding();
+
+  if (!signedIn && !pro && !founding) return null;
+
+  return (
+    <Tile title="Ruang Pro">
+      {pro ? (
+        <p className="text-sm text-cream">
+          ✨ <span className="font-semibold">Pro is active</span> — thank you for supporting a
+          quiet corner of the internet.
+        </p>
+      ) : founding ? (
+        <p className="text-sm text-muted">
+          🌱 <span className="font-semibold text-mint">Founding supporter</span> — you signed in
+          during the founding window. Sync is yours, free, for good.
+        </p>
+      ) : canActivate() ? (
+        <div className="flex items-end gap-2">
+          <div className="min-w-0 flex-1">
+            <Field label="License key">
+              <TextInput
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
+                placeholder="from your purchase email"
+              />
+            </Field>
+          </div>
+          <button
+            type="button"
+            disabled={busy || !key.trim()}
+            onClick={async () => {
+              setBusy(true);
+              try {
+                await activate(key);
+                setPro(true);
+                buzz();
+                toast.show("Pro activated ✨");
+              } catch (err) {
+                toast.show(err.message || "Activation failed — try again.");
+              } finally {
+                setBusy(false);
+              }
+            }}
+            className="shrink-0 rounded-xl bg-rose px-4 py-2.5 text-sm font-semibold text-ink active:scale-95 disabled:opacity-40"
+          >
+            {busy ? "Checking…" : "Activate"}
+          </button>
+        </div>
+      ) : (
+        <p className="text-sm text-muted">
+          Pro checkout opens soon — and as an early sign-in you won't lose anything when it does.
+        </p>
+      )}
+    </Tile>
+  );
+}
+
 export default function AccountTile() {
   const toast = useToast();
   const [session, setSession] = useState(() => getSession());
@@ -58,6 +122,7 @@ export default function AccountTile() {
     const pending = Object.keys(storage.get("syncDirty", {})).length;
     const lastPull = storage.get("syncMeta")?.lastPullAt;
     return (
+      <>
       <Tile
         title="Account"
         action={
@@ -94,10 +159,13 @@ export default function AccountTile() {
           </button>
         </div>
       </Tile>
+      <ProSection signedIn />
+      </>
     );
   }
 
   return (
+    <>
     <Tile title="Account" action={<span className="text-xs text-muted">optional, always</span>}>
       <p className="mb-3 text-xs text-muted">
         Ruang works fully on this device, signed in or not. Sign in and your space quietly
@@ -161,5 +229,7 @@ export default function AccountTile() {
         </div>
       )}
     </Tile>
+    <ProSection signedIn={false} />
+    </>
   );
 }

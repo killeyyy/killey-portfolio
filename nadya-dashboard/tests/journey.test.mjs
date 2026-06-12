@@ -28,7 +28,7 @@ const base = computeJourney(empty);
 assert.equal(base.xp, 0);
 assert.equal(base.levelIndex, 0);
 assert.equal(base.earnedCount, 0);
-assert.equal(base.achievements.length, 17); // 12 original + 3 wish + 2 tend
+assert.equal(base.achievements.length, 18); // 12 original + 3 wish + 2 tend + founding
 console.log("OK baseline");
 
 // ---- wish XP: append-only log feeds XP + achievements ----
