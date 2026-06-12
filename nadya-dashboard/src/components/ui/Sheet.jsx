@@ -34,7 +34,7 @@ export function Sheet({ open, onClose, title, children, className }) {
         aria-label={title}
         className={cn(
           "absolute inset-x-0 bottom-0 mx-auto w-full max-w-md animate-sheet-up",
-          "rounded-t-3xl border-t border-line bg-surface2 px-4 pt-2",
+          "glass rounded-t-3xl border-t border-line/70 bg-surface2/90 px-4 pt-2",
           "pb-[max(1rem,env(safe-area-inset-bottom))]",
           "sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:animate-modal-in",
           "sm:rounded-3xl sm:border sm:px-6 sm:pb-6 sm:pt-4 sm:shadow-2xl sm:shadow-ink/60",

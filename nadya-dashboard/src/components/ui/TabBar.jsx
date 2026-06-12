@@ -47,7 +47,7 @@ export function TabBar({ onPlus }) {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-ink/95 pb-[env(safe-area-inset-bottom)]"
+      className="glass fixed inset-x-0 bottom-0 z-40 border-t border-line/60 bg-ink/80 pb-[env(safe-area-inset-bottom)]"
     >
       <div className="mx-auto flex w-full max-w-md items-stretch px-2">
         {LEFT.map((t) => (
