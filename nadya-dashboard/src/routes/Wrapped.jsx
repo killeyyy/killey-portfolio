@@ -232,7 +232,7 @@ export default function Wrapped() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              navigate("/");
+              navigate("/", { viewTransition: true });
             }}
             className="mx-auto rounded-xl px-6 py-2 text-sm font-semibold text-muted"
           >
@@ -266,7 +266,7 @@ export default function Wrapped() {
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex flex-col bg-ink"
+      className="fixed inset-0 z-[70] flex flex-col bg-ink [view-transition-name:wrapped]"
       onPointerDown={onDown}
       onPointerUp={onUp}
       role="region"
@@ -311,7 +311,7 @@ export default function Wrapped() {
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            navigate(-1);
+            navigate(-1, { viewTransition: true });
           }}
           aria-label="Close"
           className="rounded-lg p-2 text-muted hover:text-cream"

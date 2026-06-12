@@ -41,7 +41,7 @@ export function HabitTicks() {
     <Tile
       title="Habits"
       action={
-        <Link to="/habits" aria-label="Manage habits" className="rounded-lg p-1.5 text-muted hover:text-cream">
+        <Link to="/habits" viewTransition aria-label="Manage habits" className="rounded-lg p-1.5 text-muted hover:text-cream">
           <Pencil size={16} />
         </Link>
       }
@@ -49,7 +49,7 @@ export function HabitTicks() {
       {active.length === 0 ? (
         <p className="text-sm text-muted">
           No habits yet —{" "}
-          <Link to="/habits" className="font-semibold text-rose-bright">
+          <Link to="/habits" viewTransition className="font-semibold text-rose-bright">
             add your first one
           </Link>
           .

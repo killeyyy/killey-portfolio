@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  Outlet, RouterProvider, createBrowserRouter, useLocation, useNavigate,
+} from "react-router-dom";
 import { StoreProvider, useStore } from "./store/StoreProvider.jsx";
 import { ToastProvider, useToast } from "./components/ui/Toast.jsx";
 import { TabBar } from "./components/ui/TabBar.jsx";
@@ -20,15 +22,36 @@ import { computeJourney } from "./lib/journey.js";
 import { confettiBurst } from "./lib/confetti.js";
 import { levelUpMoment } from "./lib/celebrate.js";
 
+// Data router (vs <BrowserRouter>): required for react-router's
+// `viewTransition` support on Link/NavLink/navigate (≥6.30).
+const router = createBrowserRouter([
+  {
+    element: <Root />,
+    children: [
+      { path: "/", element: <Today /> },
+      { path: "/stats", element: <Stats /> },
+      { path: "/savings", element: <Savings /> },
+      { path: "/journal", element: <Journal /> },
+      { path: "/journey", element: <Journey /> },
+      { path: "/wrapped", element: <Wrapped /> },
+      { path: "/habits", element: <Habits /> },
+      { path: "/settings", element: <Settings /> },
+      { path: "*", element: <Today /> },
+    ],
+  },
+]);
+
 export default function App() {
+  return <RouterProvider router={router} />;
+}
+
+function Root() {
   return (
-    <BrowserRouter>
-      <StoreProvider>
-        <ToastProvider>
-          <Shell />
-        </ToastProvider>
-      </StoreProvider>
-    </BrowserRouter>
+    <StoreProvider>
+      <ToastProvider>
+        <Shell />
+      </ToastProvider>
+    </StoreProvider>
   );
 }
 
@@ -45,6 +68,33 @@ function Ambient() {
 }
 
 const KEY_ROUTES = { 1: "/", 2: "/stats", 3: "/journey", 4: "/journal", 5: "/savings" };
+
+// Spatial order for direction-aware view transitions (Family's "fly, don't
+// teleport"): navigating to a higher index slides forward, lower slides back.
+const ROUTE_ORDER = {
+  "/": 0, "/stats": 1, "/journey": 2, "/journal": 3,
+  "/savings": 4, "/habits": 5, "/settings": 6,
+};
+
+/**
+ * Sets `data-nav-dir` on <html> during the route update so the
+ * ::view-transition CSS can pick a directional slide. Routes outside
+ * ROUTE_ORDER (e.g. /wrapped, which morphs) get the default crossfade.
+ */
+function useNavDirection() {
+  const { pathname } = useLocation();
+  const prev = useRef(pathname);
+  useLayoutEffect(() => {
+    const from = ROUTE_ORDER[prev.current];
+    const to = ROUTE_ORDER[pathname];
+    if (from !== undefined && to !== undefined && from !== to) {
+      document.documentElement.dataset.navDir = to > from ? "forward" : "back";
+    } else {
+      delete document.documentElement.dataset.navDir;
+    }
+    prev.current = pathname;
+  }, [pathname]);
+}
 
 /** Celebrates level-ups and newly earned achievements (once each). */
 function JourneyWatcher() {
@@ -98,7 +148,7 @@ function Shell() {
   const [logOpen, setLogOpen] = useState(false);
   const [onboarding, setOnboarding] = useState(freshProfile);
   const navigate = useNavigate();
-  const location = useLocation();
+  useNavDirection();
 
   // Desktop shortcuts: L = quick log, 1–5 = navigate. Never while typing.
   useEffect(() => {
@@ -110,7 +160,7 @@ function Shell() {
         e.preventDefault();
         setLogOpen(true);
       } else if (KEY_ROUTES[e.key]) {
-        navigate(KEY_ROUTES[e.key]);
+        navigate(KEY_ROUTES[e.key], { viewTransition: true });
       }
     };
     window.addEventListener("keydown", onKey);
@@ -122,20 +172,9 @@ function Shell() {
       <Ambient />
       <Sidebar onPlus={() => setLogOpen(true)} />
       <main className="mx-auto w-full max-w-md px-4 pb-32 pt-5 lg:max-w-5xl lg:px-10 lg:pb-16 lg:pt-10">
-        {/* keyed wrapper = every screen arrives with a soft rise */}
-        <div key={location.pathname} className="animate-route-in">
-        <Routes>
-          <Route path="/" element={<Today />} />
-          <Route path="/stats" element={<Stats />} />
-          <Route path="/savings" element={<Savings />} />
-          <Route path="/journal" element={<Journal />} />
-          <Route path="/journey" element={<Journey />} />
-          <Route path="/wrapped" element={<Wrapped />} />
-          <Route path="/habits" element={<Habits />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="*" element={<Today />} />
-        </Routes>
-        </div>
+        {/* Screen transitions are view-transition driven (see index.css);
+            browsers without support get an instant swap. */}
+        <Outlet />
       </main>
       <JourneyWatcher />
       <TimerPill />

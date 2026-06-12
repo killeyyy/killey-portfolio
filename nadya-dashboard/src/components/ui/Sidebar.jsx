@@ -36,6 +36,7 @@ export function Sidebar({ onPlus }) {
             key={to}
             to={to}
             end={end}
+            viewTransition
             className={({ isActive }) =>
               cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition duration-150 ease-out active:scale-[0.98]",
