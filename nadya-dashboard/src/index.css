@@ -316,3 +316,22 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ---- Petalfield (fx/Petalfield.jsx): glacial falling petals ---- */
+@keyframes petal-drift {
+  0% { transform: translate3d(0, -6vh, 0) rotate(0deg); opacity: 0; }
+  8% { opacity: var(--petal-o, 0.4); }
+  90% { opacity: var(--petal-o, 0.4); }
+  100% { transform: translate3d(var(--petal-x, 6vw), 106vh, 0) rotate(290deg); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  top: 0;
+  border-radius: 80% 0 80% 0;
+  background: radial-gradient(circle at 30% 30%, rgb(var(--c-rose) / 0.55), rgb(var(--c-coral) / 0.15));
+  animation: petal-drift linear infinite;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .petal { display: none; }
+}

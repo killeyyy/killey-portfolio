@@ -10,6 +10,7 @@ import { Sidebar } from "./components/ui/Sidebar.jsx";
 import { QuickLogSheet } from "./components/today/QuickLogSheet.jsx";
 import { TimerPill } from "./components/ui/TimerPill.jsx";
 import { Onboarding } from "./components/onboarding/Onboarding.jsx";
+import { Petalfield } from "./components/fx/Petalfield.jsx";
 import Today from "./routes/Today.jsx";
 import Stats from "./routes/Stats.jsx";
 import Savings from "./routes/Savings.jsx";
@@ -121,6 +122,7 @@ function Ambient() {
           <AmbientGL key={theme.id} speed={theme.gl.speed} warp={theme.gl.warp} />
         </Suspense>
       )}
+      <Petalfield />
       <div className="grain absolute inset-0" />
     </div>
   );
