@@ -15,7 +15,8 @@ globalThis.window = {
   },
 };
 
-const { habitAdherence, habitsDueToday } = await import("../src/lib/insights.js");
+const { habitAdherence, habitWeekStreak, habitsDueToday } = await import("../src/lib/insights.js");
+const { weeklyTickTarget } = await import("../src/lib/journey.js");
 const { weeklyQuests } = await import("../src/lib/quests.js");
 
 const TODAY = "2026-06-14";
@@ -99,5 +100,36 @@ assert.deepEqual(
   ["d3", "o3"],
 );
 console.log("OK habitsDueToday");
+
+// ---- habitWeekStreak: weeks kept, with current-week grace ----
+// Weeks: Mon 05-25, 06-01, 06-08 (current; today Wed 06-10).
+const tw = { id: "w2", timesPerWeek: 2 };
+const wlog = {
+  "2026-05-26": ["w2"], "2026-05-28": ["w2"], // week of 05-25 met (2)
+  "2026-06-02": ["w2"], "2026-06-04": ["w2"], // week of 06-01 met (2)
+  "2026-06-09": ["w2"], // current week: 1 of 2 so far
+};
+assert.equal(habitWeekStreak(wlog, tw, "2026-06-10", 1), 2, "in-progress week doesn't break");
+wlog["2026-06-10"] = ["w2"]; // current week met
+assert.equal(habitWeekStreak(wlog, tw, "2026-06-10", 1), 3, "met current week counts");
+delete wlog["2026-06-02"];
+delete wlog["2026-06-04"];
+assert.equal(habitWeekStreak(wlog, tw, "2026-06-10", 1), 1, "a missed week stops the count");
+console.log("OK habitWeekStreak");
+
+// ---- weeklyTickTarget: the rhythm-fair habit star ----
+assert.equal(weeklyTickTarget([]), 4); // no habits → unchanged (star unearned)
+assert.equal(weeklyTickTarget([{ id: "a" }]), 4); // one daily → classic 4
+assert.equal(weeklyTickTarget([{ id: "a", timesPerWeek: 1 }]), 1); // reachable
+assert.equal(weeklyTickTarget([{ id: "a", timesPerWeek: 3 }]), 3);
+assert.equal(
+  weeklyTickTarget([{ id: "a", timesPerWeek: 1 }, { id: "b", timesPerWeek: 1 }]),
+  2,
+);
+assert.equal(
+  weeklyTickTarget([{ id: "a", timesPerWeek: 1 }, { id: "b", archivedAt: 9 }]),
+  1, // archived habits don't raise the bar
+);
+console.log("OK weeklyTickTarget");
 
 console.log("\nAll habit-rhythm tests passed ✓");

@@ -25,7 +25,8 @@ import {
 import { formatDayLabel, formatMinutes, formatMonthLabel } from "../lib/format.js";
 import {
   buildInsights, categoryShare, dailyTotals, habitAdherence, habitStreaks,
-  moodPoints, periodTotals, productiveShare, savingsForMonth, weekdayProfile,
+  habitWeekStreak, moodPoints, periodTotals, productiveShare, savingsForMonth,
+  weekdayProfile,
 } from "../lib/insights.js";
 import { MOODS } from "../components/today/JournalCard.jsx";
 import { monthRecap, moodHabitLinks, timeOfDay } from "../lib/correlations.js";
@@ -189,7 +190,11 @@ export default function Stats() {
   const habitRows = activeHabits.map((h) => ({
     habit: h,
     adherence: habitAdherence(habitLog, h, dayKeys, today),
-    streak: habitStreaks(habitLog, h.id, today),
+    // Rhythm habits count weeks kept; daily habits keep the day streak.
+    streak:
+      h.timesPerWeek && h.timesPerWeek < 7
+        ? { current: habitWeekStreak(habitLog, h, today, settings.weekStart ?? 1), weekly: true }
+        : habitStreaks(habitLog, h.id, today),
   }));
   const overall = (() => {
     const eligible = habitRows.reduce((s, r) => s + r.adherence.eligible, 0);
@@ -397,6 +402,7 @@ export default function Stats() {
                   </span>
                   <span className="shrink-0 tabular-nums text-muted">
                     {adherence.pct === null ? "—" : `${adherence.pct}%`} · 🔥{streak.current}
+                    {streak.weekly ? " wk" : ""}
                   </span>
                 </li>
               ))}
