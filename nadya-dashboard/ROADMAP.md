@@ -71,3 +71,7 @@ sequencing, positive-only copy, client-side canvas share poster.
 - [x] lib/poster.js: 1080×1920 canvas poster (fonts preloaded before fillText),
       Web Share API files with download fallback, zero deps
 - [x] Entry points: Monday/Tuesday ritual card on Today + "Last week, wrapped" on Journey
+
+## Upgrade F — Mawar's Garden (shipped)
+- [x] weeklyGarden(): every week since her first recorded day → a plot (same star criteria as the path; dominant category colors the bloom; quiet weeks sprout, never empty)
+- [x] SVG meadow on Journey: deterministic natural variation (tilt/height/sway per week), soil rows, current-week halo, tooltips with week range + stars
