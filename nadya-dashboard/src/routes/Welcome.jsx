@@ -13,6 +13,7 @@
 import { Link } from "react-router-dom";
 import { BookOpen, Check, Flame, Leaf, PiggyBank, Sprout } from "lucide-react";
 import { PRO } from "../data/pro.js";
+import { PublicBackdrop } from "../components/fx/PublicBackdrop.jsx";
 
 const FEATURES = [
   {
@@ -57,9 +58,19 @@ function FeatureTile({ icon: Icon, title, body, color }) {
 export default function Welcome() {
   return (
     <div className="mx-auto min-h-screen w-full max-w-md px-4 pb-16 pt-[max(3rem,env(safe-area-inset-top))]">
+      <PublicBackdrop />
 
       {/* Hero */}
-      <div className="animate-fade-up text-center">
+      <div className="relative animate-fade-up text-center">
+        {/* the slow-turning light from the Today hero, welcoming strangers */}
+        <span
+          aria-hidden="true"
+          className="absolute left-1/2 top-8 -z-10 h-64 w-64 -translate-x-1/2 animate-spin rounded-full opacity-40 blur-2xl [animation-duration:18s] motion-reduce:hidden"
+          style={{
+            background:
+              "conic-gradient(from 0deg, rgb(var(--c-rose) / 0.25), transparent 30%, rgb(var(--c-lavender) / 0.18) 52%, transparent 75%, rgb(var(--c-coral) / 0.22))",
+          }}
+        />
         {/* Wordmark */}
         <div className="mb-2 inline-flex items-center gap-2">
           <Sprout size={28} className="text-rose" aria-hidden="true" />

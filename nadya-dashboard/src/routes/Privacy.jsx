@@ -15,6 +15,7 @@
 
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
+import { PublicBackdrop } from "../components/fx/PublicBackdrop.jsx";
 
 function Section({ title, children }) {
   return (
@@ -28,6 +29,7 @@ function Section({ title, children }) {
 export default function Privacy() {
   return (
     <div className="mx-auto max-w-md px-4 pb-16 pt-[max(2rem,env(safe-area-inset-top))]">
+      <PublicBackdrop />
 
       {/* Back nav */}
       <Link
