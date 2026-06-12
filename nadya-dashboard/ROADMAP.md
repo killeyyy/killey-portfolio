@@ -49,3 +49,12 @@ levels, milestones, achievements, celebrations, progress paths, streak pet",
 - Branch `claude/kind-bohr-tif247` → PR → squash-merge to main (auto-deploys ruang-nadya).
 - `npm run build` must exit 0 before every commit; never touch root config or `react-app/`.
 - All day keys via `src/lib/dates.js` (local time). Additive schema changes only (optional fields + fallbacks); bump `CURRENT_SCHEMA` only for breaking shape changes.
+
+## Upgrade B — Visual Masterpass (shipped)
+- [x] Time-of-day greeting gradient + streak-aware microcopy
+- [x] Gradient-frame glow Tile variant on hero cards (+ desktop hover lift)
+- [x] Chart beauty: gradient Ring stroke, rounded Donut caps, gradient bar fills + tap value chips, mint glow on met goals, today marker on heatmaps
+- [x] Living nav: gradient FAB with halo pulse, tab indicator dots, route transitions, sidebar gradient pill
+- [x] Mawar v2: gradient petals, blink, soil + pot detail, butterfly at radiant
+- [x] Celebration v2: petal confetti, full-screen level-up moment, haptic buzz on log/tick
+- [x] Empty-state flourishes + warmer microcopy

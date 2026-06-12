@@ -1,5 +1,7 @@
 // Mawar 🌹 — the streak pet. She only ever GROWS with the day-streak;
 // there is no wilt/decay state by design (no failure-shaming).
+import { useId } from "react";
+
 const STAGES = [
   { min: 30, key: "radiant" },
   { min: 14, key: "double" },
@@ -22,7 +24,7 @@ export const PET_COPY = {
   radiant: "Mawar is radiant. A month of showing up for yourself. 🌟",
 };
 
-const Flower = ({ cx, cy, r }) => (
+const Flower = ({ cx, cy, r, petalFill }) => (
   <g>
     {[0, 60, 120, 180, 240, 300].map((a) => (
       <circle
@@ -30,7 +32,7 @@ const Flower = ({ cx, cy, r }) => (
         cx={cx + r * 0.85 * Math.cos((a * Math.PI) / 180)}
         cy={cy + r * 0.85 * Math.sin((a * Math.PI) / 180)}
         r={r * 0.62}
-        fill="#E25C72"
+        fill={petalFill}
       />
     ))}
     <circle cx={cx} cy={cy} r={r * 0.62} fill="#F78DA3" />
@@ -40,9 +42,19 @@ const Flower = ({ cx, cy, r }) => (
 
 const Face = ({ cx, cy }) => (
   <g fill="#0F0B0D">
-    <circle cx={cx - 5} cy={cy - 2} r={1.6} />
-    <circle cx={cx + 5} cy={cy - 2} r={1.6} />
+    <g className="blink">
+      <circle cx={cx - 5} cy={cy - 2} r={1.6} />
+      <circle cx={cx + 5} cy={cy - 2} r={1.6} />
+    </g>
     <path d={`M ${cx - 4} ${cy + 3} Q ${cx} ${cy + 6.5} ${cx + 4} ${cy + 3}`} fill="none" stroke="#0F0B0D" strokeWidth="1.6" strokeLinecap="round" />
+  </g>
+);
+
+const Butterfly = ({ x, y }) => (
+  <g transform={`translate(${x} ${y}) rotate(-12)`}>
+    <ellipse cx="-3" cy="0" rx="3.4" ry="2.3" fill="#B49CE8" />
+    <ellipse cx="3" cy="0" rx="3.4" ry="2.3" fill="#85B8E3" />
+    <rect x="-0.7" y="-2.6" width="1.4" height="5.2" rx="0.7" fill="#0F0B0D" />
   </g>
 );
 
@@ -56,6 +68,8 @@ const Leaf = ({ x, y, flip = false }) => (
 /** size ≈ rendered px height. */
 export function StreakPet({ streak = 0, size = 150 }) {
   const stage = petStage(streak);
+  const gradId = useId();
+  const petalFill = `url(#${gradId})`;
   return (
     <svg
       viewBox="0 0 120 140"
@@ -64,6 +78,12 @@ export function StreakPet({ streak = 0, size = 150 }) {
       aria-label={`Mawar the rose, ${stage} stage`}
       role="img"
     >
+      <defs>
+        <radialGradient id={gradId} cx="35%" cy="30%" r="80%">
+          <stop offset="0%" stopColor="#F78DA3" />
+          <stop offset="100%" stopColor="#C8323C" />
+        </radialGradient>
+      </defs>
       {/* plant sways; pot stays still */}
       <g className="sway">
         {stage !== "seed" && (
@@ -82,27 +102,30 @@ export function StreakPet({ streak = 0, size = 150 }) {
         {stage === "bud" && <ellipse cx="60" cy="48" rx="9" ry="12" fill="#C8323C" />}
         {["bloom", "double", "radiant"].includes(stage) && (
           <g>
-            <Flower cx={60} cy={42} r={15} />
+            <Flower cx={60} cy={42} r={15} petalFill={petalFill} />
             <Face cx={60} cy={42} />
           </g>
         )}
         {["double", "radiant"].includes(stage) && (
           <g>
             <path d="M60 70 q -16 -2 -24 -14" fill="none" stroke="#1F6F5C" strokeWidth="3" strokeLinecap="round" />
-            <Flower cx={33} cy={52} r={9} />
+            <Flower cx={33} cy={52} r={9} petalFill={petalFill} />
           </g>
         )}
         {stage === "radiant" && (
-          <g fill="#C9A86A">
+          <g fill="#C9A86A" className="animate-pulse">
             <path d="M88 28 l 2.2 5 5 2.2 -5 2.2 -2.2 5 -2.2 -5 -5 -2.2 5 -2.2 z" />
             <path d="M24 22 l 1.8 4 4 1.8 -4 1.8 -1.8 4 -1.8 -4 -4 -1.8 4 -1.8 z" />
             <circle cx="92" cy="60" r="2" />
           </g>
         )}
+        {stage === "radiant" && <Butterfly x={90} y={44} />}
       </g>
 
-      {/* pot */}
+      {/* pot + soil */}
+      <ellipse cx="60" cy="104" rx="20" ry="3.5" fill="#3A2620" />
       <path d="M40 104 L 80 104 L 74 132 L 46 132 Z" fill="#7B4A3A" />
+      <rect x="44" y="114" width="32" height="3" rx="1.5" fill="#94604C" opacity="0.6" />
       <rect x="36" y="100" width="48" height="8" rx="4" fill="#94604C" />
     </svg>
   );

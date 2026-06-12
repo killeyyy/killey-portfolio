@@ -37,7 +37,7 @@ export default function Journey() {
       <div className="space-y-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
         <div className="space-y-4 lg:space-y-6">
           {/* Mawar */}
-          <Tile className="glow-rose animate-fade-up">
+          <Tile glow className="animate-fade-up">
             <div className="flex items-center gap-4">
               <StreakPet streak={journey.streak} size={150} />
               <div className="min-w-0 flex-1">
@@ -55,7 +55,7 @@ export default function Journey() {
           </Tile>
 
           {/* Level + XP */}
-          <Tile title={`Level ${journey.levelIndex + 1} — ${journey.levelName}`}>
+          <Tile glow title={`Level ${journey.levelIndex + 1} — ${journey.levelName}`}>
             <div className="mb-2 flex items-end justify-between">
               <p className="font-serif text-3xl font-bold">
                 <CountUp value={journey.xp} className="text-gradient-warm tabular-nums" />

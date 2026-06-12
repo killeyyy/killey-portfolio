@@ -19,7 +19,9 @@ export function GoalBars({ months = [], height = 112 }) {
             <span
               className={cn(
                 "relative w-[60%] rounded-t",
-                m.goal > 0 && m.actual >= m.goal ? "bg-mint" : "bg-sand",
+                m.goal > 0 && m.actual >= m.goal
+                  ? "bg-mint shadow-[0_0_12px] shadow-mint/40"
+                  : "bg-sand",
               )}
               style={{ height: `${(m.actual / max) * 100}%` }}
             />

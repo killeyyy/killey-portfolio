@@ -14,7 +14,13 @@ export function HabitHeatmap({ values = [], cellClass = "h-2.5 w-2.5", className
       {values.map((v, i) => (
         <span
           key={i}
-          className={cn("rounded-[3px]", cellClass, v ? "bg-rose" : "bg-white/5")}
+          className={cn(
+            "rounded-[3px]",
+            cellClass,
+            v ? "bg-rose" : "bg-white/5",
+            // Today (last cell) gets a soft marker so "now" is always visible.
+            i === values.length - 1 && "ring-1 ring-rose-bright/70",
+          )}
         />
       ))}
     </div>

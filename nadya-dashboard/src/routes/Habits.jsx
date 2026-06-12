@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Plus, RotateCcw } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
+import { Flourish } from "../components/ui/Flourish.jsx";
 import { HabitHeatmap } from "../components/charts/HabitHeatmap.jsx";
 import { TrendLine } from "../components/charts/TrendLine.jsx";
 import { HabitForm } from "../components/habits/HabitForm.jsx";
@@ -53,9 +54,12 @@ export default function Habits() {
 
       {active.length === 0 && (
         <Tile>
-          <p className="text-sm text-muted">
-            Small daily promises to yourself — add one and tick it from the Today screen.
-          </p>
+          <div className="py-3 text-center">
+            <Flourish />
+            <p className="text-sm text-muted">
+              Small daily promises to yourself — add one and tick it from the Today screen.
+            </p>
+          </div>
         </Tile>
       )}
 

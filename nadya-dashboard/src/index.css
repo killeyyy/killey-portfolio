@@ -93,6 +93,20 @@
   .glow-rose {
     box-shadow: 0 0 48px -12px rgb(var(--c-rose) / 0.35);
   }
+  /* Occasional blink for Mawar's eyes */
+  .blink {
+    animation: blink 6s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  @keyframes blink {
+    0%, 93%, 100% {
+      transform: scaleY(1);
+    }
+    95%, 97% {
+      transform: scaleY(0.12);
+    }
+  }
   /* Gentle plant sway for the streak pet */
   .sway {
     animation: sway 4.5s ease-in-out infinite alternate;

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
+import { Flourish } from "../components/ui/Flourish.jsx";
 import { Sheet } from "../components/ui/Sheet.jsx";
 import { TextInput, TextArea } from "../components/ui/Field.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
@@ -37,9 +38,13 @@ export default function Journal() {
 
       {groups.length === 0 && (
         <Tile>
-          <p className="text-sm text-muted">
-            No entries yet — tonight's gratitudes go on the Today screen, and they'll collect here.
-          </p>
+          <div className="py-3 text-center">
+            <Flourish />
+            <p className="text-sm text-muted">
+              Tonight's gratitudes go on the Today screen — they'll collect here, ready to re-read
+              on quiet days.
+            </p>
+          </div>
         </Tile>
       )}
 
