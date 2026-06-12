@@ -122,7 +122,7 @@ export function TrackerCard({ tracker: t, onEdit }) {
                 key={k}
                 title={`${parseKey(k).toLocaleDateString("en-GB", { weekday: "short" })} · ${fmtValue(t, week.values[i])}`}
                 className={cn(
-                  "h-2.5 w-2.5 rounded-full",
+                  "h-2.5 w-2.5 rounded-full transition-all duration-500 ease-out",
                   future && "border border-line",
                   k === today && "ring-1 ring-cream/40",
                 )}

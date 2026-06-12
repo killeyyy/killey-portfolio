@@ -12,6 +12,7 @@ import { YearHeatmap } from "../components/charts/YearHeatmap.jsx";
 import { TimeOfDay } from "../components/stats/TimeOfDay.jsx";
 import { MoodLinks } from "../components/stats/MoodLinks.jsx";
 import { MonthRecap } from "../components/stats/MonthRecap.jsx";
+import { Hero3D } from "../components/fx/Hero3D.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { COLOR_META } from "../data/defaults.js";
 import { cn } from "../lib/cn.js";
@@ -301,22 +302,26 @@ export default function Stats() {
         )}
       </Tile>
 
-      <Tile title="Where time went">
+      <Hero3D max={4}>
+        <h2 className="mb-3 font-serif text-base font-bold text-cream">Where time went</h2>
         {empty ? (
           <EmptyNote />
         ) : (
-          <div className="flex items-center gap-4">
-            <Donut
-              slices={slices.map((s) => ({
-                hex: COLOR_META[s.category.color]?.hex || "#E25C72",
-                value: s.minutes,
-              }))}
-              size={132}
-              thickness={14}
-              centerLabel={formatMinutes(totals.total)}
-              centerSub="total"
-            />
-            <ul className="min-w-0 flex-1 space-y-1.5">
+          <div className="flex items-center gap-4 [transform-style:preserve-3d]">
+            <div className="[transform:translateZ(36px)]">
+              <Donut
+                slices={slices.map((s) => ({
+                  hex: COLOR_META[s.category.color]?.hex || "#E25C72",
+                  value: s.minutes,
+                }))}
+                size={132}
+                thickness={14}
+                glow
+                centerLabel={formatMinutes(totals.total)}
+                centerSub="total"
+              />
+            </div>
+            <ul className="min-w-0 flex-1 space-y-1.5 [transform:translateZ(16px)]">
               {slices.map((s) => {
                 const delta = s.minutes - (prevTotals.byCategory[s.category.id] || 0);
                 return (
@@ -346,7 +351,7 @@ export default function Stats() {
             </ul>
           </div>
         )}
-      </Tile>
+      </Hero3D>
 
       <Tile title="Productivity trend">
         {trend.points.every((p) => !p) ? (

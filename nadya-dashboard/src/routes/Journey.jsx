@@ -7,6 +7,7 @@ import { CountUp } from "../components/ui/CountUp.jsx";
 import { StreakPet, petCopy, petStage } from "../components/journey/StreakPet.jsx";
 import { Garden } from "../components/journey/Garden.jsx";
 import { Wishes } from "../components/journey/Wishes.jsx";
+import { Hero3D } from "../components/fx/Hero3D.jsx";
 import { cn } from "../lib/cn.js";
 import { useStore } from "../store/StoreProvider.jsx";
 import { computeJourney, weeklyGarden } from "../lib/journey.js";
@@ -52,11 +53,13 @@ export default function Journey() {
 
       <div className="space-y-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
         <div className="space-y-4 lg:space-y-6">
-          {/* Mawar */}
-          <Tile glow className="animate-fade-up">
-            <div className="flex items-center gap-4">
-              <StreakPet streak={journey.streak} size={150} />
-              <div className="min-w-0 flex-1">
+          {/* The pet — floats out of the card on its own Z plane */}
+          <Hero3D className="animate-fade-up">
+            <div className="flex items-center gap-4 [transform-style:preserve-3d]">
+              <div className="[transform:translateZ(44px)]">
+                <StreakPet streak={journey.streak} size={150} />
+              </div>
+              <div className="min-w-0 flex-1 [transform:translateZ(18px)]">
                 <p className="font-serif text-xl font-bold text-cream">{settings.petName || "Your plant"}</p>
                 {journey.streak > 0 && (
                   <p className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-coral">
@@ -68,12 +71,15 @@ export default function Journey() {
                 <p className="mt-2 text-sm text-muted">{petCopy(petStage(journey.streak), settings.petName || "your plant")}</p>
               </div>
             </div>
-          </Tile>
+          </Hero3D>
 
           {/* Level + XP */}
-          <Tile glow title={`Level ${journey.levelIndex + 1} — ${journey.levelName}`}>
-            <div className="mb-2 flex items-end justify-between">
-              <p className="font-serif text-3xl font-bold">
+          <Hero3D max={4}>
+            <h2 className="mb-3 font-serif text-base font-bold text-cream">
+              Level {journey.levelIndex + 1} — {journey.levelName}
+            </h2>
+            <div className="mb-2 flex items-end justify-between [transform-style:preserve-3d]">
+              <p className="font-serif text-3xl font-bold [transform:translateZ(30px)]">
                 <CountUp value={journey.xp} className="text-gradient-warm tabular-nums" />
                 <span className="ml-1 text-base text-muted">XP</span>
               </p>
@@ -93,7 +99,7 @@ export default function Journey() {
             <p className="mt-2 text-xs text-muted">
               Everything you've ever logged counts — activities, habits, journal, savings.
             </p>
-          </Tile>
+          </Hero3D>
 
           {/* Garden wishes — gentle weekly quests */}
           <Wishes />

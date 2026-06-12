@@ -59,6 +59,17 @@ export function TabBar({ onPlus }) {
               aria-hidden="true"
               className="absolute h-14 w-14 animate-halo rounded-full bg-rose/60"
             />
+            {/* Slow light sweep around the FAB — hidden under reduced motion. */}
+            <span
+              aria-hidden="true"
+              className="absolute h-[60px] w-[60px] animate-spin rounded-full opacity-60 [animation-duration:7s] motion-reduce:hidden"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0deg, rgb(255 255 255 / 0.5) 28deg, transparent 70deg)",
+                WebkitMask: "radial-gradient(closest-side, transparent 87%, black 88%)",
+                mask: "radial-gradient(closest-side, transparent 87%, black 88%)",
+              }}
+            />
             <button
               type="button"
               onClick={onPlus}
