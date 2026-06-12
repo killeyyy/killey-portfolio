@@ -5,7 +5,7 @@ import { useToast } from "../ui/Toast.jsx";
 import { cn } from "../../lib/cn.js";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { todayKey } from "../../lib/dates.js";
-import { habitStreaks } from "../../lib/insights.js";
+import { habitStreaks, habitsDueToday } from "../../lib/insights.js";
 import { confettiBurst } from "../../lib/confetti.js";
 import { buzz } from "../../lib/celebrate.js";
 
@@ -13,11 +13,16 @@ const MILESTONES = new Set([3, 7, 14, 30, 50, 100, 365]);
 
 /** Today's habit checklist with streak counts + milestone celebrations. */
 export function HabitTicks() {
-  const { habits, habitLog, toggleHabitTick } = useStore();
+  const { settings, habits, habitLog, toggleHabitTick } = useStore();
   const toast = useToast();
   const today = todayKey();
   const active = habits.filter((h) => !h.archivedAt);
   const tickedToday = habitLog[today] || [];
+  // Weekly-rhythm habits that met their week aren't "due" — they wear a 🌿
+  // tag instead of looking unticked, and don't block the all-done moment.
+  const dueIds = new Set(
+    habitsDueToday(habits, habitLog, today, settings.weekStart ?? 1).map((h) => h.id),
+  );
 
   const onTick = (h) => {
     const wasDone = tickedToday.includes(h.id);
@@ -27,7 +32,9 @@ export function HabitTicks() {
     // Celebrate with the tick applied (state lands next render).
     const nextLog = { ...habitLog, [today]: [...tickedToday, h.id] };
     const { current } = habitStreaks(nextLog, h.id, today);
-    const allDone = active.every((x) => x.id === h.id || tickedToday.includes(x.id));
+    const allDone = active.every(
+      (x) => x.id === h.id || tickedToday.includes(x.id) || !dueIds.has(x.id),
+    );
     if (MILESTONES.has(current)) {
       confettiBurst();
       toast.show(`🔥 ${current}-day streak — ${h.name}!`);
@@ -58,6 +65,7 @@ export function HabitTicks() {
         <ul className="space-y-2">
           {active.map((h) => {
             const done = tickedToday.includes(h.id);
+            const weekDone = !done && !dueIds.has(h.id);
             const { current } = habitStreaks(habitLog, h.id, today);
             return (
               <li key={h.id}>
@@ -83,6 +91,11 @@ export function HabitTicks() {
                     {h.emoji && <span className="mr-1.5">{h.emoji}</span>}
                     {h.name}
                   </span>
+                  {weekDone && (
+                    <span className="shrink-0 rounded-full bg-mint/10 px-2 py-0.5 text-[10px] font-semibold text-mint">
+                      week done 🌿
+                    </span>
+                  )}
                   {current > 0 && (
                     <span className="flex shrink-0 items-center gap-1 text-xs font-semibold tabular-nums text-coral">
                       <Flame size={13} aria-hidden="true" />
