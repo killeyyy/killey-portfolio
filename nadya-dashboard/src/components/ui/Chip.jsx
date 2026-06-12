@@ -10,7 +10,7 @@ export function Chip({ selected = false, onClick, disabled = false, className, c
       aria-pressed={selected}
       className={cn(
         "inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-sm font-medium",
-        "transition-colors duration-150 active:scale-95",
+        "transition duration-150 ease-out active:scale-95",
         selected
           ? "border-rose bg-rose/15 text-cream"
           : "border-line bg-surface2 text-muted",

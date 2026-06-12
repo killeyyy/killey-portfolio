@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { cn } from "../../lib/cn.js";
 import { useReducedMotion } from "../../lib/useReducedMotion.js";
 
 /** Number that eases to its value on mount and on change. */
@@ -27,5 +28,6 @@ export function CountUp({ value, format = (v) => String(v), duration = 900, clas
     return () => cancelAnimationFrame(raf);
   }, [value, reduced, duration]);
 
-  return <span className={className}>{format(v)}</span>;
+  // tabular-nums: equal-width digits so the layout never jitters mid-count.
+  return <span className={cn("tabular-nums", className)}>{format(v)}</span>;
 }

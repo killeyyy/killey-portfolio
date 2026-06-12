@@ -38,7 +38,7 @@ export function Sidebar({ onPlus }) {
             end={end}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors duration-150",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition duration-150 ease-out active:scale-[0.98]",
                 isActive
                   ? "bg-gradient-to-r from-rose/15 to-coral/10 text-rose-bright"
                   : "text-muted hover:bg-white/5 hover:text-cream",

@@ -78,7 +78,7 @@ export default function Journey() {
             </div>
             <div className="h-3 w-full overflow-hidden rounded-full bg-white/5" aria-hidden="true">
               <div
-                className="h-full rounded-full transition-all duration-700 ease-soft"
+                className="h-full rounded-full transition-[width] duration-700 ease-soft"
                 style={{
                   width: `${Math.max(3, pct)}%`,
                   backgroundImage: "linear-gradient(90deg, #E25C72, #F2876B)",

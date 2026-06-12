@@ -4,6 +4,9 @@
 // Tailwind opacity utilities (e.g. text-rose/70) work against the variables.
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
+  // Gate every hover: variant behind @media (hover:hover) — kills sticky
+  // hover states flashing on touch screens.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
       colors: {
@@ -31,6 +34,10 @@ export default {
       },
       transitionTimingFunction: {
         soft: "cubic-bezier(0.22, 1, 0.36, 1)",
+        // Tokens live in index.css; spring is a real linear() damped spring
+        // on modern engines, back-out overshoot elsewhere.
+        out: "var(--ease-out)",
+        spring: "var(--ease-spring)",
       },
       keyframes: {
         "sheet-up": {
@@ -45,10 +52,11 @@ export default {
           from: { opacity: "0", transform: "translateY(8px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
+        // Overshoot comes from the spring easing now, not baked keyframes —
+        // simple from→to + var(--ease-spring) reads as physics, not tween.
         pop: {
-          "0%": { transform: "scale(0.9)" },
-          "60%": { transform: "scale(1.08)" },
-          "100%": { transform: "scale(1)" },
+          from: { transform: "scale(0.85)" },
+          to: { transform: "scale(1)" },
         },
         "modal-in": {
           from: { opacity: "0", transform: "translate(-50%, -50%) scale(0.96)" },
@@ -71,22 +79,21 @@ export default {
           "100%": { transform: "scale(1.6)", opacity: "0" },
         },
         "spring-in": {
-          "0%": { opacity: "0", transform: "scale(0.6)" },
-          "60%": { opacity: "1", transform: "scale(1.06)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
+          from: { opacity: "0", transform: "scale(0.6)" },
+          to: { opacity: "1", transform: "scale(1)" },
         },
       },
       animation: {
         "sheet-up": "sheet-up 240ms cubic-bezier(0.22,1,0.36,1) both",
         "fade-in": "fade-in 180ms ease-out both",
-        "toast-in": "toast-in 200ms ease-out both",
-        pop: "pop 200ms ease-out",
-        "modal-in": "modal-in 200ms cubic-bezier(0.22,1,0.36,1) both",
+        "toast-in": "toast-in 350ms var(--ease-spring) both",
+        pop: "pop 350ms var(--ease-spring)",
+        "modal-in": "modal-in 300ms var(--ease-spring) both",
         "fade-up": "fade-up 480ms cubic-bezier(0.22,1,0.36,1) both",
         rise: "rise 600ms cubic-bezier(0.22,1,0.36,1) both",
         "route-in": "route-in 240ms cubic-bezier(0.22,1,0.36,1) both",
         halo: "halo 2.6s ease-out infinite",
-        "spring-in": "spring-in 360ms cubic-bezier(0.22,1,0.36,1) both",
+        "spring-in": "spring-in 500ms var(--ease-spring) both",
       },
     },
   },
