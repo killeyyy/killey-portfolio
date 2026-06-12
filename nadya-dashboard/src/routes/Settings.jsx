@@ -15,7 +15,7 @@ import { applyImport, downloadExport, parseImport } from "../lib/backup.js";
 import { uid } from "../lib/uid.js";
 import { cn } from "../lib/cn.js";
 
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "2.0.0"; // Era 2: 3D, accounts + sync, Money, Tend, wishes
 const NUDGE_AFTER_DAYS = 14;
 
 // Lazy: keeps all auth/cloud code out of the main bundle until Settings shows.
