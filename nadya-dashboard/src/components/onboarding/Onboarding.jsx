@@ -4,39 +4,42 @@ import { TextInput, NumberStepper, Field } from "../ui/Field.jsx";
 import { StreakPet } from "../journey/StreakPet.jsx";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { formatMinutes } from "../../lib/format.js";
-import { uid } from "../../lib/uid.js";
 import { confettiBurst } from "../../lib/confetti.js";
+import { SEED_PACKETS } from "../../data/packs.js";
+import { planPacket } from "../../lib/seeds.js";
 import { cn } from "../../lib/cn.js";
 
-const STARTERS = [
-  { emoji: "📖", name: "Read 10 pages", color: "lavender" },
-  { emoji: "💧", name: "Drink enough water", color: "sky" },
-  { emoji: "🚶‍♀️", name: "Take a walk", color: "mint" },
-  { emoji: "🧘‍♀️", name: "Stretch 5 minutes", color: "coral" },
-  { emoji: "📔", name: "Journal tonight", color: "rose" },
-  { emoji: "🛏️", name: "Sleep before 11", color: "mauve" },
-];
-
-/** 3-step first-run welcome: name → rhythm → starter habits. */
+/** 3-step first-run welcome: name → rhythm → seed packets. */
 export function Onboarding({ onDone }) {
-  const { settings, updateSettings, saveHabits } = useStore();
+  const { settings, updateSettings, categories, saveCategories, saveHabits, saveTrackers } =
+    useStore();
   const [step, setStep] = useState(0);
   const [name, setName] = useState(settings.name);
   const [weekStart, setWeekStart] = useState(settings.weekStart);
   const [target, setTarget] = useState(settings.dailyTarget ?? 180);
-  const [picked, setPicked] = useState(() => new Set(["📖", "📔"]));
+  const [picked, setPicked] = useState(() => new Set(["soft-mornings"]));
 
   const finish = () => {
     updateSettings({ name: name.trim(), weekStart, dailyTarget: target });
-    const habits = STARTERS.filter((s) => picked.has(s.emoji)).map((s) => ({
-      id: uid(),
-      name: s.name,
-      emoji: s.emoji,
-      color: s.color,
-      createdAt: Date.now(),
-      archivedAt: null,
-    }));
+    // Plant the chosen packets sequentially — planPacket dedupes against what
+    // earlier packets already planted (shared items like "Stretch 5 minutes").
+    let habits = [];
+    let trackers = [];
+    let cats = categories;
+    for (const packet of SEED_PACKETS.filter((p) => picked.has(p.id))) {
+      const plan = planPacket(packet, { habits, trackers, categories: cats });
+      habits = [...habits, ...plan.newHabits];
+      trackers = [...trackers, ...plan.newTrackers];
+      if (plan.catPatches.length) {
+        cats = cats.map((c) => {
+          const patch = plan.catPatches.find((x) => x.id === c.id);
+          return patch ? { ...c, weeklyTarget: patch.weeklyTarget } : c;
+        });
+      }
+    }
     if (habits.length) saveHabits(habits);
+    if (trackers.length) saveTrackers(trackers);
+    if (cats !== categories) saveCategories(cats);
     confettiBurst();
     onDone();
   };
@@ -113,26 +116,38 @@ export function Onboarding({ onDone }) {
         {step === 2 && (
           <div key={2} className="flex flex-1 animate-fade-up flex-col justify-center">
             <h1 className="text-center font-serif text-2xl font-bold text-cream">
-              Plant a few seeds 🌱
+              Plant a seed packet 🌱
             </h1>
             <p className="mt-1 text-center text-sm text-muted">
-              Small daily promises — pick any, or none. Your plant grows either way.
+              Whole little routines — habits, trackers, gentle aims. Pick any, or none; your
+              plant grows either way.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-2">
-              {STARTERS.map((s) => (
-                <Chip
-                  key={s.emoji}
-                  selected={picked.has(s.emoji)}
+            <div className="mt-6 grid max-h-[46vh] grid-cols-1 gap-2 overflow-y-auto sm:grid-cols-2">
+              {SEED_PACKETS.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  aria-pressed={picked.has(p.id)}
                   onClick={() =>
-                    setPicked((p) => {
-                      const next = new Set(p);
-                      next.has(s.emoji) ? next.delete(s.emoji) : next.add(s.emoji);
+                    setPicked((prev) => {
+                      const next = new Set(prev);
+                      next.has(p.id) ? next.delete(p.id) : next.add(p.id);
                       return next;
                     })
                   }
+                  className={cn(
+                    "rounded-2xl border p-3 text-left transition duration-150 ease-out active:scale-[0.98]",
+                    picked.has(p.id) ? "border-rose bg-rose/10" : "border-line bg-surface2",
+                  )}
                 >
-                  {s.emoji} {s.name}
-                </Chip>
+                  <span className="block text-sm font-semibold text-cream">
+                    {p.emoji} {p.name}
+                  </span>
+                  <span className="mt-0.5 block text-xs text-muted">{p.tagline}</span>
+                  <span className="mt-1 block text-[10px] uppercase tracking-wide text-muted/80">
+                    {p.items.length} seeds
+                  </span>
+                </button>
               ))}
             </div>
           </div>
