@@ -145,3 +145,44 @@ function bestEver(actDays, habitLog, journal) {
   }
   return best;
 }
+
+/**
+ * Mawar's Garden: every week since her first recorded day becomes a flower.
+ * stars use the same criteria as the journey path; quiet weeks grow a small
+ * sprout (never an empty plot — no failure-shaming). Flower color follows the
+ * week's dominant category.
+ */
+export function weeklyGarden({ habits, habitLog, journal, categories = [], weekStart = 1, today = todayKey() }) {
+  const actDays = allActivityDays();
+  const activeKeys = [
+    ...Object.keys(actDays).filter((k) => actDays[k]?.length),
+    ...Object.keys(habitLog).filter((k) => habitLog[k]?.length),
+    ...Object.keys(journal).filter((k) => journalHasContent(journal[k])),
+  ].sort();
+  if (!activeKeys.length) return [];
+
+  const thisWeekStart = weekStartKey(today, weekStart);
+  const plots = [];
+  let start = weekStartKey(activeKeys[0], weekStart);
+  while (start <= thisWeekStart) {
+    const days = rangeKeys(start, addDays(start, 6)).filter((k) => k <= today);
+    const loggedDays = days.filter((k) => (actDays[k]?.length || 0) > 0).length;
+    const tickDays = days.filter((k) => (habitLog[k]?.length || 0) > 0).length;
+    const journaled = days.filter((k) => journalHasContent(journal[k])).length;
+    const stars =
+      (loggedDays >= 4 ? 1 : 0) + (tickDays >= 4 ? 1 : 0) + (journaled >= 3 ? 1 : 0);
+
+    const minutesByCat = {};
+    for (const k of days) {
+      for (const e of actDays[k] || []) {
+        minutesByCat[e.categoryId] = (minutesByCat[e.categoryId] || 0) + e.minutes;
+      }
+    }
+    const domId = Object.entries(minutesByCat).sort((a, b) => b[1] - a[1])[0]?.[0];
+    const color = categories.find((c) => c.id === domId)?.color || "rose";
+
+    plots.push({ start, stars, color, isCurrent: start === thisWeekStart });
+    start = addDays(start, 7);
+  }
+  return plots;
+}

@@ -5,9 +5,10 @@ import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
 import { CountUp } from "../components/ui/CountUp.jsx";
 import { StreakPet, PET_COPY, petStage } from "../components/journey/StreakPet.jsx";
+import { Garden } from "../components/journey/Garden.jsx";
 import { cn } from "../lib/cn.js";
 import { useStore } from "../store/StoreProvider.jsx";
-import { computeJourney } from "../lib/journey.js";
+import { computeJourney, weeklyGarden } from "../lib/journey.js";
 import { addDays, parseKey } from "../lib/dates.js";
 
 function weekLabel(start) {
@@ -27,6 +28,15 @@ export default function Journey() {
     // `months` is the reactive signal that activity data changed.
     [habits, habitLog, journal, savings, settings.dailyTarget, categories, months],
   );
+  const garden = useMemo(
+    () =>
+      weeklyGarden({
+        habits, habitLog, journal, categories,
+        weekStart: settings.weekStart,
+      }),
+    [habits, habitLog, journal, categories, settings.weekStart, months],
+  );
+  const bloomed = garden.filter((p) => p.stars > 0).length;
   const pct = Math.round(
     ((journey.xp - journey.levelFloor) / (journey.nextFloor - journey.levelFloor)) * 100,
   );
@@ -115,8 +125,21 @@ export default function Journey() {
           </Tile>
         </div>
 
+        <div className="space-y-4 lg:space-y-6">
+        {/* Mawar's Garden — every recorded week, planted */}
+        {garden.length > 0 && (
+          <Tile title="Mawar's garden">
+            <p className="-mt-1 mb-3 text-xs text-muted">
+              Every week you finish plants something — quiet weeks grow a sprout,
+              full weeks bloom. {bloomed} of {garden.length} week
+              {garden.length === 1 ? "" : "s"} in flower so far.
+            </p>
+            <Garden plots={garden} />
+          </Tile>
+        )}
+
         {/* Weekly star path */}
-        <Tile title="Your path" className="lg:sticky lg:top-10">
+        <Tile title="Your path">
           <p className="mb-4 -mt-1 text-xs text-muted">
             One step per week — stars for logging, habits and journaling.
           </p>
@@ -163,6 +186,7 @@ export default function Journey() {
             ))}
           </ol>
         </Tile>
+        </div>
       </div>
     </div>
   );
