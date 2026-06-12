@@ -116,7 +116,7 @@ export function Onboarding({ onDone }) {
               Plant a few seeds 🌱
             </h1>
             <p className="mt-1 text-center text-sm text-muted">
-              Small daily promises — pick any, or none. Mawar grows either way.
+              Small daily promises — pick any, or none. Your plant grows either way.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-2">
               {STARTERS.map((s) => (

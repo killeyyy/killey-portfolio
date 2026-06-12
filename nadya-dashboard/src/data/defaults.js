@@ -6,7 +6,7 @@ export const DEFAULT_SETTINGS = {
   locale: "en-US",
   weekStart: 1, // 1 = Monday, 0 = Sunday
   theme: "rose", // see data/themes.js — themes are moods
-  petName: "Mawar", // the streak pet keeps her name unless renamed
+  petName: "", // new installs start unnamed; existing stored names are kept
 };
 
 // Editable in Settings; `productive` drives the productivity stats.
