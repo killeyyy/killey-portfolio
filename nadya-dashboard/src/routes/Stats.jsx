@@ -9,6 +9,9 @@ import { Donut } from "../components/charts/Donut.jsx";
 import { TrendLine } from "../components/charts/TrendLine.jsx";
 import { Ring } from "../components/charts/Ring.jsx";
 import { YearHeatmap } from "../components/charts/YearHeatmap.jsx";
+import { TimeOfDay } from "../components/stats/TimeOfDay.jsx";
+import { MoodLinks } from "../components/stats/MoodLinks.jsx";
+import { MonthRecap } from "../components/stats/MonthRecap.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { COLOR_META } from "../data/defaults.js";
 import { cn } from "../lib/cn.js";
@@ -22,6 +25,7 @@ import {
   moodPoints, periodTotals, productiveShare, savingsForMonth, weekdayProfile,
 } from "../lib/insights.js";
 import { MOODS } from "../components/today/JournalCard.jsx";
+import { monthRecap, moodHabitLinks, timeOfDay } from "../lib/correlations.js";
 
 function weekLabel(startKey) {
   const fmt = (k) => parseKey(k).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
@@ -130,6 +134,21 @@ export default function Stats() {
   const weekdays = useMemo(
     () => weekdayProfile(trendDays, settings.weekStart),
     [trendDays, settings.weekStart],
+  );
+  // Richer stats (lib/correlations.js): time-of-day uses the visible period;
+  // mood×habit links need the 8-week window for honest sample sizes.
+  const dayProfile = useMemo(() => timeOfDay(months, dayKeys), [months, dayKeys]);
+  const links = useMemo(
+    () => moodHabitLinks({ habits, habitLog, journal, dayKeys: trendDayKeys }),
+    [habits, habitLog, journal, trendDayKeys],
+  );
+  const moodDayCount = useMemo(
+    () => trendDayKeys.filter((k) => journal[k]?.mood).length,
+    [trendDayKeys, journal],
+  );
+  const recap = useMemo(
+    () => monthRecap({ days, categories, habitLog, journal, today }),
+    [days, categories, habitLog, journal, today],
   );
 
   const atCurrent = isWeek
@@ -389,6 +408,8 @@ export default function Stats() {
         )}
       </Tile>
 
+      <MoodLinks links={links} moodDayCount={moodDayCount} />
+
       <Tile title="Your rhythm">
         <div className="flex items-end gap-2" style={{ height: 96 }} aria-hidden="true">
           {weekdays.map((d, i) => {
@@ -416,6 +437,10 @@ export default function Stats() {
         </div>
         <p className="mt-1 text-xs text-muted">Average time logged per weekday</p>
       </Tile>
+
+      <TimeOfDay profile={dayProfile} />
+
+      {!isWeek && <MonthRecap recap={recap} />}
 
       {!isWeek && (
         <Tile title="Your year" className="lg:col-span-2">

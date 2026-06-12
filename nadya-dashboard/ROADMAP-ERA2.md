@@ -136,8 +136,13 @@ existing perf gates." Interleaved with the remaining phases, each ONE PR:
   surface one question per day in the journal (`settings.promptPack`).
   Pure planting logic in `lib/seeds.js`, content in `data/packs.js`, both
   node-tested; zero new storage keys.
-- **Richer stats** — mood×habit correlations, monthly recap, time-of-day
-  analysis, trend forecasts.
+- [x] **Richer stats** — shipped on /stats via `lib/correlations.js`
+  (pure, node-tested): "What lifts you" (mood×habit links — positive-only
+  by construction, min 4 samples each side, 8-week window), "When you
+  bloom" (time-of-day bands: dawn/daylight/golden hour/night), and "Your
+  month in bloom" recap (active days, fullest day, leading category,
+  ticks, journal days, mood avg — future days never count against her).
+  *(Trend forecasts deliberately skipped: predictions read as pressure.)*
 - [x] **Journey expansion (data half)** — shipped as **garden wishes**:
   3 weekly quests derived deterministically from her own data (show-up
   target = her 4-week rhythm; rotating habit/tracker/category/journal
