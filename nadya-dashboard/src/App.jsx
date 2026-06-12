@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Outlet, RouterProvider, createBrowserRouter, useLocation, useNavigate,
 } from "react-router-dom";
@@ -55,13 +55,35 @@ function Root() {
   );
 }
 
-/** Soft aurora glows + film grain behind everything. */
+// The WebGL moment loads as its own chunk, after first paint, never under
+// reduced motion. The CSS aurora below stays — it IS the fallback.
+const AmbientGL = lazy(() => import("./components/AmbientGL.jsx"));
+
+/** Soft aurora glows (+ breathing WebGL gradient) + film grain. */
 function Ambient() {
+  const [glOn, setGlOn] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const id = setTimeout(() => {
+      if (!mq.matches) setGlOn(true);
+    }, 600); // post-first-paint: keep LCP clean
+    const onChange = () => setGlOn(!mq.matches);
+    mq.addEventListener?.("change", onChange);
+    return () => {
+      clearTimeout(id);
+      mq.removeEventListener?.("change", onChange);
+    };
+  }, []);
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
       <div className="parallax-slow absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-rose/[0.07] blur-[120px]" />
       <div className="parallax-fast absolute -right-40 top-1/3 h-[420px] w-[420px] rounded-full bg-lavender/[0.06] blur-[120px]" />
       <div className="parallax-mid absolute bottom-0 left-1/4 h-[380px] w-[380px] rounded-full bg-coral/[0.05] blur-[120px]" />
+      {glOn && (
+        <Suspense fallback={null}>
+          <AmbientGL />
+        </Suspense>
+      )}
       <div className="grain absolute inset-0" />
     </div>
   );
