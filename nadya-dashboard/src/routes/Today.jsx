@@ -86,7 +86,7 @@ export default function Today() {
         <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
           <div className="text-center sm:text-left">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Logged today</p>
-            <p className="mt-1 font-serif text-4xl font-semibold lg:text-5xl">
+            <p className="mt-1 font-serif text-5xl font-semibold tracking-tight lg:text-6xl">
               <CountUp
                 value={summary.total}
                 format={formatMinutes}

@@ -10,6 +10,7 @@ import { formatMinutes } from "../lib/format.js";
 import { useToast } from "../components/ui/Toast.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { COLOR_META, COLOR_NAMES, CURRENCIES } from "../data/defaults.js";
+import { THEMES } from "../data/themes.js";
 import { applyImport, downloadExport, parseImport } from "../lib/backup.js";
 import { uid } from "../lib/uid.js";
 import { cn } from "../lib/cn.js";
@@ -22,6 +23,7 @@ export default function Settings() {
   const toast = useToast();
   const fileRef = useRef(null);
   const [name, setName] = useState(settings.name);
+  const [petName, setPetName] = useState(settings.petName ?? "Mawar");
   const [catSheet, setCatSheet] = useState(null); // { category } | { category: null }
 
   const backupAgeDays = useMemo(() => {
@@ -103,6 +105,42 @@ export default function Settings() {
               format={formatMinutes}
             />
           </Field>
+          <Field label="Your plant's name" hint="The little companion growing on Journey.">
+            <TextInput
+              value={petName}
+              onChange={(e) => setPetName(e.target.value)}
+              onBlur={() => updateSettings({ petName: petName.trim() || "Mawar" })}
+              maxLength={20}
+            />
+          </Field>
+        </div>
+      </Tile>
+
+      <Tile title="Mood" action={<span className="text-xs text-muted">colours + how the air moves</span>}>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {THEMES.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => updateSettings({ theme: t.id })}
+              aria-pressed={(settings.theme ?? "rose") === t.id}
+              className={cn(
+                "rounded-2xl border p-3 text-left transition duration-150 ease-out",
+                (settings.theme ?? "rose") === t.id
+                  ? "border-rose bg-rose/10"
+                  : "border-line bg-surface2",
+              )}
+              style={{ backgroundColor: t.preview[0] }}
+            >
+              <span className="flex gap-1.5" aria-hidden="true">
+                {t.preview.slice(1).map((hex) => (
+                  <span key={hex} className="h-4 w-4 rounded-full" style={{ backgroundColor: hex }} />
+                ))}
+              </span>
+              <span className="mt-2 block text-sm font-semibold text-cream">{t.label}</span>
+              <span className="block text-[11px] text-muted">{t.tagline}</span>
+            </button>
+          ))}
         </div>
       </Tile>
 

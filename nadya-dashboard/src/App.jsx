@@ -21,6 +21,7 @@ import * as storage from "./lib/storage.js";
 import { computeJourney } from "./lib/journey.js";
 import { confettiBurst } from "./lib/confetti.js";
 import { levelUpMoment } from "./lib/celebrate.js";
+import { applyTheme, themeById } from "./data/themes.js";
 
 // Data router (vs <BrowserRouter>): required for react-router's
 // `viewTransition` support on Link/NavLink/navigate (≥6.30).
@@ -59,9 +60,17 @@ function Root() {
 // reduced motion. The CSS aurora below stays — it IS the fallback.
 const AmbientGL = lazy(() => import("./components/AmbientGL.jsx"));
 
-/** Soft aurora glows (+ breathing WebGL gradient) + film grain. */
+/** Soft aurora glows (+ theme-mooded WebGL gradient) + film grain. */
 function Ambient() {
+  const { settings } = useStore();
+  const theme = themeById(settings.theme);
   const [glOn, setGlOn] = useState(false);
+
+  // tokens + browser chrome follow the chosen theme
+  useEffect(() => {
+    applyTheme(theme.id);
+  }, [theme.id]);
+
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const id = setTimeout(() => {
@@ -76,12 +85,13 @@ function Ambient() {
   }, []);
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
-      <div className="parallax-slow absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-rose/[0.07] blur-[120px]" />
-      <div className="parallax-fast absolute -right-40 top-1/3 h-[420px] w-[420px] rounded-full bg-lavender/[0.06] blur-[120px]" />
-      <div className="parallax-mid absolute bottom-0 left-1/4 h-[380px] w-[380px] rounded-full bg-coral/[0.05] blur-[120px]" />
+      <div className="parallax-slow absolute -left-40 -top-40 h-[480px] w-[480px] rounded-full bg-rose/[0.13] blur-[120px]" />
+      <div className="parallax-fast absolute -right-40 top-1/3 h-[420px] w-[420px] rounded-full bg-lavender/[0.1] blur-[120px]" />
+      <div className="parallax-mid absolute bottom-0 left-1/4 h-[380px] w-[380px] rounded-full bg-coral/[0.09] blur-[120px]" />
       {glOn && (
         <Suspense fallback={null}>
-          <AmbientGL />
+          {/* keyed by theme: remount re-reads the live tokens + mood */}
+          <AmbientGL key={theme.id} speed={theme.gl.speed} warp={theme.gl.warp} />
         </Suspense>
       )}
       <div className="grain absolute inset-0" />

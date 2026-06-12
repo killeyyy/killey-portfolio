@@ -8,6 +8,13 @@
     <!-- Personal app: keep it out of search engines. -->
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#0F0B0D" />
+    <!-- FOUC guard: apply the saved theme before first paint -->
+    <script>
+      try {
+        var s = JSON.parse(localStorage.getItem("nadya:settings") || "{}");
+        if (s.theme && s.theme !== "rose") document.documentElement.dataset.theme = s.theme;
+      } catch (e) {}
+    </script>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Ruang" />
