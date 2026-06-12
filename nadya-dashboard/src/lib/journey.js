@@ -3,6 +3,7 @@
 // or migrated. Design rule (from Nadya): progress feels fun and rewarding,
 // never like failure — there are no decay/wilt/loss mechanics anywhere.
 import * as activitiesModel from "../models/activities.js";
+import * as trackersModel from "../models/trackers.js";
 import * as storage from "./storage.js";
 import { addDays, rangeKeys, todayKey, weekStartKey } from "./dates.js";
 
@@ -82,6 +83,25 @@ export function computeJourney({ habits, habitLog, journal, savings, dailyTarget
   const wishCount = Object.keys(wishes).length;
   for (const w of Object.values(wishes)) xp += w.xp || 25;
 
+  // Tend (custom trackers) joins the journey: +5 XP per day with any care,
+  // and intention-met days feed two achievements. Read like the shards.
+  const trackers = trackersModel.getTrackers();
+  const trackerLog = trackersModel.getLog();
+  let tendDays = 0;
+  let intentionDays = 0;
+  for (const day of Object.values(trackerLog)) {
+    const entries = Object.entries(day);
+    if (!entries.length) continue;
+    tendDays += 1;
+    const met = entries.some(([id, v]) => {
+      const t = trackers.find((x) => x.id === id);
+      const goal = t ? (t.kind === "check" ? 1 : t.target || 0) : 0;
+      return goal > 0 && v >= goal;
+    });
+    if (met) intentionDays += 1;
+  }
+  xp += tendDays * 5;
+
   // ---- level ----
   let levelIndex = 0;
   while (xp >= xpFloor(levelIndex + 1)) levelIndex += 1;
@@ -120,6 +140,8 @@ export function computeJourney({ habits, habitLog, journal, savings, dailyTarget
     { id: "wish-1", emoji: "🌠", title: "First wish", desc: "Grant a garden wish", earned: wishCount >= 1 },
     { id: "wish-10", emoji: "✨", title: "Wish keeper", desc: "10 wishes granted", earned: wishCount >= 10 },
     { id: "wish-25", emoji: "🌌", title: "Star gardener", desc: "25 wishes granted", earned: wishCount >= 25 },
+    { id: "tend-7", emoji: "💧", title: "Well watered", desc: "Meet a tracker's intention 7 days", earned: intentionDays >= 7 },
+    { id: "tend-30", emoji: "🪴", title: "Caretaker", desc: "Tend your trackers 30 days", earned: tendDays >= 30 },
   ];
 
   // ---- weekly star path (last 8 weeks, oldest → newest) ----
