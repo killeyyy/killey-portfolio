@@ -8,6 +8,8 @@ import { TextInput, TextArea, Select } from "../components/ui/Field.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { monthKey, monthKeyOf } from "../lib/dates.js";
 import { formatDayLabel, formatMonthLabel } from "../lib/format.js";
+import { MOODS } from "../components/today/JournalCard.jsx";
+import { cn } from "../lib/cn.js";
 
 export default function Journal() {
   const { journal, saveJournalEntry, deleteJournalEntry } = useStore();
@@ -166,9 +168,30 @@ export default function Journal() {
 function EntrySheet({ dateKey, entry, onClose, onSave, onDelete }) {
   const [grateful, setGrateful] = useState(entry.grateful);
   const [highlight, setHighlight] = useState(entry.highlight);
+  const [mood, setMood] = useState(entry.mood ?? null);
   return (
     <Sheet open onClose={onClose} title={formatDayLabel(dateKey)}>
       <div className="space-y-3">
+        <p className="font-serif text-sm text-muted">How was the day?</p>
+        <div className="flex justify-between gap-1 sm:justify-start sm:gap-2">
+          {MOODS.map((m) => (
+            <button
+              key={m.value}
+              type="button"
+              onClick={() => setMood((v) => (v === m.value ? null : m.value))}
+              aria-label={m.label}
+              aria-pressed={mood === m.value}
+              className={cn(
+                "grid h-11 w-11 place-items-center rounded-xl border text-xl transition duration-150 ease-out active:scale-90",
+                mood === m.value
+                  ? "scale-110 border-rose bg-rose/15"
+                  : "border-line bg-surface2 opacity-70 grayscale-[0.4]",
+              )}
+            >
+              {m.emoji}
+            </button>
+          ))}
+        </div>
         <p className="font-serif text-sm text-muted">Three things I was grateful for…</p>
         {grateful.map((g, i) => (
           <TextInput
@@ -193,7 +216,7 @@ function EntrySheet({ dateKey, entry, onClose, onSave, onDelete }) {
           </button>
           <button
             type="button"
-            onClick={() => onSave({ grateful, highlight, mood: entry.mood ?? null })}
+            onClick={() => onSave({ grateful, highlight, mood })}
             className="flex-[2] rounded-xl bg-rose py-2.5 text-sm font-semibold text-ink active:scale-95"
           >
             Save
