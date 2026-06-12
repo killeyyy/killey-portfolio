@@ -5,6 +5,7 @@ import assert from "node:assert/strict";
 const { moodHabitLinks, timeOfDay, monthRecap, DAY_BUCKETS } = await import(
   "../src/lib/correlations.js"
 );
+const { buildInsights } = await import("../src/lib/insights.js");
 
 // ---- mood×habit links ----
 const walk = { id: "w", name: "Walk", archivedAt: null };
@@ -89,5 +90,31 @@ assert.equal(recap.ticks, 3); // future tick excluded
 assert.equal(recap.journalDays, 2);
 assert.equal(recap.moodAvg, 4.5);
 console.log("OK month recap");
+
+// ---- insights: tracker-on-a-roll line (positive-only, one line max) ----
+const insightsBase = {
+  trendDays: [], days: [], totals: { total: 0, productive: 0, byCategory: {} },
+  prevTotals: { total: 0, productive: 0, byCategory: {} },
+  habits: [], habitLog: {}, journal: {}, today: "2026-06-10",
+};
+const water2 = { id: "w", name: "Water", emoji: "💧", kind: "count", target: 8 };
+const lines = buildInsights({
+  ...insightsBase,
+  trackers: [water2],
+  trackerLog: {
+    "2026-06-08": { w: 8 }, "2026-06-09": { w: 9 }, "2026-06-10": { w: 8 },
+  },
+});
+assert.ok(lines.some((l) => l.includes("Water") && l.includes("3 days")));
+// A broken run says nothing — silence, not shame.
+const quiet = buildInsights({
+  ...insightsBase,
+  trackers: [water2],
+  trackerLog: { "2026-06-08": { w: 8 }, "2026-06-10": { w: 2 } },
+});
+assert.equal(quiet.some((l) => l.includes("Water")), false);
+// And no trackers at all keeps the old behavior intact.
+assert.deepEqual(buildInsights(insightsBase), []);
+console.log("OK tracker insight line");
 
 console.log("\nAll correlation tests passed ✓");

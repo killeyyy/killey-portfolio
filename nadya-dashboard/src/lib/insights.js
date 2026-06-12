@@ -111,7 +111,7 @@ const hasJournal = (e) =>
  * Up to 3 short insight lines for Stats. POSITIVE FRAMING ONLY (Nadya's rule:
  * the app never reminds her of failures) — negative deltas simply say nothing.
  */
-export function buildInsights({ trendDays, days, totals, prevTotals, habits, habitLog, journal, today }) {
+export function buildInsights({ trendDays, days, totals, prevTotals, habits, habitLog, journal, today, trackers = [], trackerLog = {} }) {
   const out = [];
 
   const delta = totals.productive - prevTotals.productive;
@@ -139,6 +139,22 @@ export function buildInsights({ trendDays, days, totals, prevTotals, habits, hab
     .sort((x, y) => y.a.pct - x.a.pct)[0];
   if (strongest) {
     out.push(`"${strongest.h.name}" is your strongest habit — ${strongest.a.pct}% kept 💪`);
+  }
+
+  // A tracker on a roll: intention met several days running (ending now-ish).
+  for (const t of trackers.filter((x) => !x.archivedAt)) {
+    const goal = t.kind === "check" ? 1 : t.target || 0;
+    if (!goal) continue;
+    let streak = 0;
+    let day = (trackerLog[today]?.[t.id] || 0) >= goal ? today : addDays(today, -1);
+    while ((trackerLog[day]?.[t.id] || 0) >= goal) {
+      streak += 1;
+      day = addDays(day, -1);
+    }
+    if (streak >= 3) {
+      out.push(`${t.emoji} ${t.name} has met its intention ${streak} days running 🌿`);
+      break; // one tracker line max — insights stay scannable
+    }
   }
 
   // Journaling run ending today/yesterday.

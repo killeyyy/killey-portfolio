@@ -42,8 +42,8 @@ function deltaLabel(delta) {
 }
 
 export default function Stats() {
-  const { settings, categories, months, ensureMonths, habits, habitLog, savings, journal } =
-    useStore();
+  const { settings, categories, months, ensureMonths, habits, habitLog, savings, journal,
+    trackers, trackerLog } = useStore();
   const today = todayKey();
   const [mode, setMode] = useState("week");
   const [weekAnchor, setWeekAnchor] = useState(() => weekStartKey(todayKey(), settings.weekStart));
@@ -130,8 +130,12 @@ export default function Stats() {
     [months, trendDayKeys, categories],
   );
   const insights = useMemo(
-    () => buildInsights({ trendDays, days, totals, prevTotals, habits, habitLog, journal, today }),
-    [trendDays, days, totals, prevTotals, habits, habitLog, journal, today],
+    () =>
+      buildInsights({
+        trendDays, days, totals, prevTotals, habits, habitLog, journal, today,
+        trackers, trackerLog,
+      }),
+    [trendDays, days, totals, prevTotals, habits, habitLog, journal, today, trackers, trackerLog],
   );
   const moods = useMemo(() => moodPoints(journal, dayKeys), [journal, dayKeys]);
   const weekdays = useMemo(
