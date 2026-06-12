@@ -35,7 +35,9 @@ export function downloadExport() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `nadya-backup-${todayKey()}.json`;
+  // Filename follows the brand; the "nadya-dashboard" identifier INSIDE the
+  // file must never change (old backups carry it).
+  a.download = `ruang-backup-${todayKey()}.json`;
   document.body.appendChild(a);
   a.click();
   a.remove();
