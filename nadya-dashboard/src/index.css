@@ -93,6 +93,20 @@
   .glow-rose {
     box-shadow: 0 0 48px -12px rgb(var(--c-rose) / 0.35);
   }
+  /* Gentle plant sway for the streak pet */
+  .sway {
+    animation: sway 4.5s ease-in-out infinite alternate;
+    transform-origin: 50% 100%;
+    transform-box: fill-box;
+  }
+  @keyframes sway {
+    from {
+      transform: rotate(-2deg);
+    }
+    to {
+      transform: rotate(2.5deg);
+    }
+  }
   /* SVG line draw-in (pair with pathLength=1 on the element) */
   .draw-line {
     stroke-dasharray: 1;

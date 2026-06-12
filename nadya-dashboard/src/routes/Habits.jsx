@@ -3,6 +3,7 @@ import { Plus, RotateCcw } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
 import { HabitHeatmap } from "../components/charts/HabitHeatmap.jsx";
+import { TrendLine } from "../components/charts/TrendLine.jsx";
 import { HabitForm } from "../components/habits/HabitForm.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { addDays, rangeKeys, todayKey, weekStartKey } from "../lib/dates.js";
@@ -96,6 +97,7 @@ export default function Habits() {
               </span>
             </div>
             <HabitHeatmap values={habitHeatValues(habitLog, h.id, heatKeys)} />
+            <WeeklyLine habit={h} habitLog={habitLog} weekStart={settings.weekStart} today={today} />
           </Tile>
         );
       })}
@@ -130,6 +132,23 @@ export default function Habits() {
           onArchive={form.habit ? () => setArchived(form.habit.id, Date.now()) : undefined}
         />
       )}
+    </div>
+  );
+}
+
+/** Her ask (2026-06-12): a line chart per habit — weekly consistency %. */
+function WeeklyLine({ habit, habitLog, weekStart, today }) {
+  const points = [];
+  for (let w = -7; w <= 0; w++) {
+    const start = addDays(weekStartKey(today, weekStart), w * 7);
+    const days = rangeKeys(start, addDays(start, 6)).filter((k) => k <= today);
+    points.push(habitAdherence(habitLog, habit, days, today).pct ?? 0);
+  }
+  if (points.every((p) => !p)) return null;
+  return (
+    <div className="mt-3">
+      <TrendLine data={points} height={36} className="text-mint" />
+      <p className="mt-1 text-[10px] text-muted">Consistency per week, last 8 weeks</p>
     </div>
   );
 }

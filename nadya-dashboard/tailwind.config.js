@@ -23,8 +23,11 @@ export default {
         mauve: "rgb(var(--c-mauve) / <alpha-value>)", // category color (#9A7B8C)
       },
       fontFamily: {
-        sans: ["Plus Jakarta Sans", "ui-sans-serif", "system-ui", "sans-serif"],
-        serif: ["Lora", "ui-serif", "Georgia", "serif"],
+        // Nadya's pick (2026-06-12): warm chunky display + friendly UI sans.
+        // `serif` intentionally maps to the display font so every existing
+        // font-serif heading upgrades in one place.
+        sans: ["Figtree", "ui-sans-serif", "system-ui", "sans-serif"],
+        serif: ["Baloo 2", "ui-rounded", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       transitionTimingFunction: {
         soft: "cubic-bezier(0.22, 1, 0.36, 1)",

@@ -1,0 +1,109 @@
+// Mawar 🌹 — the streak pet. She only ever GROWS with the day-streak;
+// there is no wilt/decay state by design (no failure-shaming).
+const STAGES = [
+  { min: 30, key: "radiant" },
+  { min: 14, key: "double" },
+  { min: 7, key: "bloom" },
+  { min: 3, key: "bud" },
+  { min: 1, key: "sprout" },
+  { min: 0, key: "seed" },
+];
+
+export function petStage(streak) {
+  return STAGES.find((s) => streak >= s.min).key;
+}
+
+export const PET_COPY = {
+  seed: "Mawar is a tiny seed — log anything today and she'll wake up.",
+  sprout: "Mawar just sprouted! Come back tomorrow and she'll keep growing.",
+  bud: "Mawar has her first bud — she loves your consistency.",
+  bloom: "Mawar is blooming! A full week of showing up.",
+  double: "Mawar is flourishing — two weeks strong.",
+  radiant: "Mawar is radiant. A month of showing up for yourself. 🌟",
+};
+
+const Flower = ({ cx, cy, r }) => (
+  <g>
+    {[0, 60, 120, 180, 240, 300].map((a) => (
+      <circle
+        key={a}
+        cx={cx + r * 0.85 * Math.cos((a * Math.PI) / 180)}
+        cy={cy + r * 0.85 * Math.sin((a * Math.PI) / 180)}
+        r={r * 0.62}
+        fill="#E25C72"
+      />
+    ))}
+    <circle cx={cx} cy={cy} r={r * 0.62} fill="#F78DA3" />
+    <circle cx={cx} cy={cy} r={r * 0.3} fill="#C9A86A" />
+  </g>
+);
+
+const Face = ({ cx, cy }) => (
+  <g fill="#0F0B0D">
+    <circle cx={cx - 5} cy={cy - 2} r={1.6} />
+    <circle cx={cx + 5} cy={cy - 2} r={1.6} />
+    <path d={`M ${cx - 4} ${cy + 3} Q ${cx} ${cy + 6.5} ${cx + 4} ${cy + 3}`} fill="none" stroke="#0F0B0D" strokeWidth="1.6" strokeLinecap="round" />
+  </g>
+);
+
+const Leaf = ({ x, y, flip = false }) => (
+  <path
+    d={`M ${x} ${y} q ${flip ? -14 : 14} -4 ${flip ? -16 : 16} -12 q ${flip ? 4 : -4} 12 ${flip ? 16 : -16} 12 z`}
+    fill="#7ED4B2"
+  />
+);
+
+/** size ≈ rendered px height. */
+export function StreakPet({ streak = 0, size = 150 }) {
+  const stage = petStage(streak);
+  return (
+    <svg
+      viewBox="0 0 120 140"
+      width={size * 0.86}
+      height={size}
+      aria-label={`Mawar the rose, ${stage} stage`}
+      role="img"
+    >
+      {/* plant sways; pot stays still */}
+      <g className="sway">
+        {stage !== "seed" && (
+          <path d="M60 104 C 60 84, 58 72, 60 52" fill="none" stroke="#1F6F5C" strokeWidth="4" strokeLinecap="round" />
+        )}
+        {stage === "seed" && <ellipse cx="60" cy="100" rx="5" ry="6.5" fill="#C9A86A" />}
+        {stage !== "seed" && <Leaf x={60} y={88} />}
+        {["bud", "bloom", "double", "radiant"].includes(stage) && <Leaf x={60} y={74} flip />}
+
+        {stage === "sprout" && (
+          <g>
+            <Leaf x={60} y={58} />
+            <Leaf x={60} y={58} flip />
+          </g>
+        )}
+        {stage === "bud" && <ellipse cx="60" cy="48" rx="9" ry="12" fill="#C8323C" />}
+        {["bloom", "double", "radiant"].includes(stage) && (
+          <g>
+            <Flower cx={60} cy={42} r={15} />
+            <Face cx={60} cy={42} />
+          </g>
+        )}
+        {["double", "radiant"].includes(stage) && (
+          <g>
+            <path d="M60 70 q -16 -2 -24 -14" fill="none" stroke="#1F6F5C" strokeWidth="3" strokeLinecap="round" />
+            <Flower cx={33} cy={52} r={9} />
+          </g>
+        )}
+        {stage === "radiant" && (
+          <g fill="#C9A86A">
+            <path d="M88 28 l 2.2 5 5 2.2 -5 2.2 -2.2 5 -2.2 -5 -5 -2.2 5 -2.2 z" />
+            <path d="M24 22 l 1.8 4 4 1.8 -4 1.8 -1.8 4 -1.8 -4 -4 -1.8 4 -1.8 z" />
+            <circle cx="92" cy="60" r="2" />
+          </g>
+        )}
+      </g>
+
+      {/* pot */}
+      <path d="M40 104 L 80 104 L 74 132 L 46 132 Z" fill="#7B4A3A" />
+      <rect x="36" y="100" width="48" height="8" rx="4" fill="#94604C" />
+    </svg>
+  );
+}

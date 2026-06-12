@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { BarChart3, Home, NotebookPen, PiggyBank, Plus } from "lucide-react";
+import { BarChart3, Home, NotebookPen, Plus, Sprout } from "lucide-react";
 import { cn } from "../../lib/cn.js";
 
 const LEFT = [
@@ -7,7 +7,7 @@ const LEFT = [
   { to: "/stats", icon: BarChart3, label: "Stats" },
 ];
 const RIGHT = [
-  { to: "/savings", icon: PiggyBank, label: "Savings" },
+  { to: "/journey", icon: Sprout, label: "Journey" },
   { to: "/journal", icon: NotebookPen, label: "Journal" },
 ];
 
