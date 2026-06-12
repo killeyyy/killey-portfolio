@@ -177,7 +177,14 @@ existing perf gates." Interleaved with the remaining phases, each ONE PR:
 > ⚠️ Gate: creating the Supabase project + choosing the SMTP provider needs
 > owner approval first (free tier viable, see research notes).
 
-### PR 7 · Supabase foundation + auth (sync OFF)
+### PR 7 · Supabase foundation + auth (sync OFF) — ✅ shipped
+> Live: project `ruang` (`vuyexsgqemslttivlzoy`, ap-southeast-1, $0/mo),
+> kv table + RLS + LWW trigger verified in SQL (cross-user reads = 0 rows,
+> stale updates dropped, >5min skew clamped). Hand-rolled GoTrue fetch
+> client (~2KB lazy with the Account tile — auth-js skipped, budget intact),
+> email-OTP sign-in on Settings, offline-never-signs-out rule node-tested.
+> Owner dashboard steps (email template token + Site URL + custom SMTP
+> before public sign-ins) in `docs/CLOUD-SETUP.md`; keep-alive cron added.
 - Schema: ONE kv table — `(user_id uuid default auth.uid() references
   auth.users on delete cascade, key text, value jsonb, updated_at
   timestamptz, primary key (user_id, key))`. RLS `to authenticated using
