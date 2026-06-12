@@ -5,6 +5,7 @@ import { Field, TextInput } from "../ui/Field.jsx";
 import { useToast } from "../ui/Toast.jsx";
 import { buzz } from "../../lib/celebrate.js";
 import { getSession, requestCode, signOut, verifyCode } from "../../lib/cloud/auth.js";
+import * as storage from "../../lib/storage.js";
 
 /**
  * Account section on Settings (lazy chunk — auth code stays out of the main
@@ -54,8 +55,21 @@ export default function AccountTile() {
   };
 
   if (session) {
+    const pending = Object.keys(storage.get("syncDirty", {})).length;
+    const lastPull = storage.get("syncMeta")?.lastPullAt;
     return (
-      <Tile title="Account">
+      <Tile
+        title="Account"
+        action={
+          <span className="text-xs tabular-nums text-muted">
+            {pending
+              ? `${pending} change${pending === 1 ? "" : "s"} waiting to sync`
+              : lastPull
+                ? "synced ✓"
+                : ""}
+          </span>
+        }
+      >
         <div className="flex items-center gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-sky/15" aria-hidden="true">
             <Cloud size={18} className="text-sky" />

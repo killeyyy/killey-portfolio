@@ -18,6 +18,7 @@ globalThis.window = {
 
 const {
   dayValue, dayGoal, dayFill, weekKeys, weekSummary, categoryWeekMinutes, recentTags,
+  tagMinutes,
 } = await import("../src/lib/tend.js");
 const trackersModel = await import("../src/models/trackers.js");
 
@@ -87,7 +88,14 @@ assert.equal(catMin.rest, undefined);
 
 const tags = recentTags(months, ["2026-06-08", "2026-06-10"]);
 assert.deepEqual(tags, ["thesis", "client"]);
-console.log("OK category week minutes + recent tags");
+
+const byTag = tagMinutes(months, ["2026-06-08", "2026-06-10"]);
+assert.deepEqual(byTag, [
+  { tag: "thesis", minutes: 135 }, // 60 + 30 + 45
+  { tag: "client", minutes: 30 },
+]);
+assert.deepEqual(tagMinutes(months, ["2026-06-01"]), []); // untagged day
+console.log("OK category week minutes + recent tags + tag minutes");
 
 // ---- model round-trip through the storage seam ----
 trackersModel.setTrackers([water, sleep]);
