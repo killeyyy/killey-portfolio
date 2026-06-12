@@ -231,6 +231,30 @@ export default function Settings() {
         <AccountTile />
       </Suspense>
 
+      <Tile title="Evening reminder">
+        <p className="mb-3 text-xs text-muted">
+          A soft nudge inside the app when you open it in the evening and tonight's page is
+          still blank. No notifications, nothing leaves your phone.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { value: 0, label: "Off" },
+            { value: 19, label: "7 pm" },
+            { value: 20, label: "8 pm" },
+            { value: 21, label: "9 pm" },
+            { value: 22, label: "10 pm" },
+          ].map((o) => (
+            <Chip
+              key={o.value}
+              selected={(settings.nudgeHour || 0) === o.value}
+              onClick={() => updateSettings({ nudgeHour: o.value })}
+            >
+              {o.label}
+            </Chip>
+          ))}
+        </div>
+      </Tile>
+
       <p className="px-1 text-center text-xs text-muted">
         Tip: open the browser menu and <span className="font-semibold">Add to Home Screen</span> —
         it feels like a real app and keeps your data safer.

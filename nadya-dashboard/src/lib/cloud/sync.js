@@ -18,7 +18,7 @@ const META = "syncMeta"; // { deviceId, lastPullAt }
 
 // Device-local keys that must never leave this device.
 const EXCLUDED = new Set([
-  "session", "timer", "journeySeen", "wishesSeen", "onboarded",
+  "session", "timer", "journeySeen", "wishesSeen", "nudgeSeen", "onboarded",
   "meta", DIRTY, META,
 ]);
 const excluded = (key) => EXCLUDED.has(key) || key.startsWith("migrated:");

@@ -15,6 +15,9 @@ import { dailyTotals, habitsDueToday, productiveShare, savingsForMonth } from ".
 import { computeJourney } from "../lib/journey.js";
 import { dayFill, dayGoal, dayValue } from "../lib/tend.js";
 import { weeklyQuests } from "../lib/quests.js";
+import { takeNudge } from "../lib/nudge.js";
+import { useToast } from "../components/ui/Toast.jsx";
+import { useEffect } from "react";
 
 // The greeting's gradient follows her clock — dawn sands, warm noons,
 // rose dusks, lavender nights.
@@ -27,8 +30,18 @@ function greeting(h = new Date().getHours()) {
 
 export default function Today() {
   const { settings, categories, months, habits, habitLog, journal, savings } = useStore();
+  const toast = useToast();
   const today = todayKey();
   const target = settings.dailyTarget ?? 180;
+
+  // Gentle evening nudge (opt-in, in-app only, once per evening).
+  useEffect(() => {
+    if (takeNudge(settings, journal)) {
+      toast.show("🕯️ A quiet minute for tonight's page? It's just below.");
+    }
+    // Checked when Today mounts — the natural evening-open moment.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const summary = useMemo(() => {
     const [day] = dailyTotals(months, [today], categories);
