@@ -5,8 +5,9 @@ import { cn } from "../../lib/cn.js";
 /**
  * Animated progress ring; label/sub render in the center.
  * `gradient` swaps the stroke for the app's rose→coral gradient.
+ * `glow` adds a blurred copy of the arc beneath — lit from within.
  */
-export function Ring({ value = 0, size = 96, stroke = 9, className = "text-rose", label, sub, gradient = false }) {
+export function Ring({ value = 0, size = 96, stroke = 9, className = "text-rose", label, sub, gradient = false, glow = false }) {
   const reduced = useReducedMotion();
   const gradId = useId();
   const r = (size - stroke) / 2;
@@ -31,6 +32,25 @@ export function Ring({ value = 0, size = 96, stroke = 9, className = "text-rose"
           stroke="rgb(255 255 255 / 0.06)"
           strokeWidth={stroke}
         />
+        {glow && value > 0 && (
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={r}
+            fill="none"
+            strokeWidth={stroke + 5}
+            strokeLinecap="round"
+            className={className}
+            stroke={gradient ? `url(#${gradId})` : "currentColor"}
+            strokeDasharray={c}
+            strokeDashoffset={off}
+            opacity="0.45"
+            style={{
+              filter: "blur(6px)",
+              transition: reduced ? "none" : "stroke-dashoffset 0.9s cubic-bezier(0.22,1,0.36,1)",
+            }}
+          />
+        )}
         <circle
           cx={size / 2}
           cy={size / 2}
