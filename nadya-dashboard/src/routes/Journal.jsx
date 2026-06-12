@@ -64,7 +64,7 @@ export default function Journal() {
                       )}
                     </p>
                     {e.highlight && (
-                      <p className="mt-1.5 font-serif text-sm italic text-cream">
+                      <p className="mt-1.5 font-serif text-sm text-cream">
                         “{e.highlight}”
                       </p>
                     )}
@@ -111,7 +111,7 @@ function EntrySheet({ dateKey, entry, onClose, onSave, onDelete }) {
   return (
     <Sheet open onClose={onClose} title={formatDayLabel(dateKey)}>
       <div className="space-y-3">
-        <p className="font-serif text-sm italic text-muted">Three things I was grateful for…</p>
+        <p className="font-serif text-sm text-muted">Three things I was grateful for…</p>
         {grateful.map((g, i) => (
           <TextInput
             key={i}
@@ -123,7 +123,7 @@ function EntrySheet({ dateKey, entry, onClose, onSave, onDelete }) {
             maxLength={140}
           />
         ))}
-        <p className="font-serif text-sm italic text-muted">Highlight of the day…</p>
+        <p className="font-serif text-sm text-muted">Highlight of the day…</p>
         <TextArea value={highlight} onChange={(e) => setHighlight(e.target.value)} maxLength={280} />
         <div className="flex gap-2 pt-1">
           <button
@@ -135,7 +135,7 @@ function EntrySheet({ dateKey, entry, onClose, onSave, onDelete }) {
           </button>
           <button
             type="button"
-            onClick={() => onSave({ grateful, highlight })}
+            onClick={() => onSave({ grateful, highlight, mood: entry.mood ?? null })}
             className="flex-[2] rounded-xl bg-rose py-2.5 text-sm font-semibold text-ink active:scale-95"
           >
             Save

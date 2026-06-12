@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
-  BarChart3, Flame, Home, NotebookPen, PiggyBank, Plus, Repeat, Settings,
+  BarChart3, Flame, Home, NotebookPen, PiggyBank, Plus, Repeat, Settings, Sprout,
 } from "lucide-react";
 import { cn } from "../../lib/cn.js";
 import { useStore } from "../../store/StoreProvider.jsx";
@@ -10,6 +10,7 @@ import { habitStreaks } from "../../lib/insights.js";
 const NAV = [
   { to: "/", icon: Home, label: "Today", end: true },
   { to: "/stats", icon: BarChart3, label: "Stats" },
+  { to: "/journey", icon: Sprout, label: "Journey" },
   { to: "/savings", icon: PiggyBank, label: "Savings" },
   { to: "/journal", icon: NotebookPen, label: "Journal" },
   { to: "/habits", icon: Repeat, label: "Habits" },
@@ -25,7 +26,7 @@ export function Sidebar({ onPlus }) {
 
   return (
     <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line/60 bg-surface/30 px-5 py-8 backdrop-blur lg:flex">
-      <p className="font-serif text-xl font-semibold italic">
+      <p className="font-serif text-xl font-bold">
         <span className="text-gradient-warm">Ruang Nadya</span>
       </p>
 

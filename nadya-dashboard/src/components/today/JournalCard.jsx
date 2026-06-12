@@ -86,7 +86,7 @@ export function JournalCard() {
         )}
 
         <div>
-          <p className="mb-2 font-serif text-sm italic text-muted">How was the day?</p>
+          <p className="mb-2 font-serif text-sm text-muted">How was the day?</p>
           <div className="flex justify-between gap-1 sm:justify-start sm:gap-2">
             {MOODS.map((m) => (
               <button
@@ -109,7 +109,7 @@ export function JournalCard() {
         </div>
 
         <div>
-          <p className="mb-2 font-serif text-sm italic text-muted">
+          <p className="mb-2 font-serif text-sm text-muted">
             Three things I'm grateful for…
           </p>
           <div className="space-y-2">
@@ -125,7 +125,7 @@ export function JournalCard() {
           </div>
         </div>
         <div>
-          <p className="mb-2 font-serif text-sm italic text-muted">
+          <p className="mb-2 font-serif text-sm text-muted">
             Highlight of the day, in one sentence…
           </p>
           <TextArea

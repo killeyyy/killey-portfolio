@@ -17,11 +17,22 @@ The /loop continues from the first unchecked item.
 - [x] Desktop keyboard shortcuts: L = log, 1–5 = navigate
 - [x] Today/Stats desktop grid layouts
 
-## Pass 2 — Signature features
-- [ ] Focus timer (Toggl concept): start/stop pill in shell, persists across reloads (`nadya:timer`), stop → prefilled quick log
-- [ ] Insights engine on Stats: heuristic text cards ("Tuesday is your most productive day", "Entertainment +2h vs last week", "You journal most after 21:00")
-- [ ] Mood trend line + mood×productivity hint in Stats
-- [ ] Weekday profile chart (avg minutes by weekday)
+## Pass 2 — THE JOURNEY UPDATE (Nadya's direct feedback, 2026-06-12)
+Her asks: (1) change the font 💀, (2) "journey, not a tracker — duolingo-ish:
+levels, milestones, achievements, celebrations, progress paths, streak pet",
+(3) line charts for habits. Progress must feel fun, never like failure.
+- [x] Font swap: Baloo 2 (display/numbers — chunky, warm) + Figtree (UI); drop Lora italics
+- [x] lib/journey.js: XP derived retroactively from existing data (logs/habits/journal/savings — no new storage), level curve, rose-garden level names (Seedling → … → Eternal Bloom), overall day-streak, ~12 derivable achievements
+- [x] Streak pet "Mawar" 🌹: SVG potted rose that grows with the day-streak (seed → sprout → bud → bloom → radiant), gentle sway, never dies — wilting is NOT a mechanic (no failure-shaming)
+- [x] /journey route: pet hero + level card with XP bar + last-8-weeks star path (0–3 stars per week) + achievements grid (locked = dimmed, not red)
+- [x] Level-up + new-achievement celebrations (confetti + toast; `nadya:journeySeen` tracks what's been celebrated)
+- [x] Nav: Journey replaces Savings in the mobile tab bar (Savings gets a card on Today + stays in desktop sidebar)
+- [x] Habit line charts (her ask): weekly adherence % TrendLine per habit on /habits
+
+## Pass 2.5 — Signature features (deferred from old pass 2)
+- [ ] Focus timer (Toggl concept): start/stop pill, persists (`nadya:timer`), stop → quick log
+- [ ] Insights engine on Stats: heuristic text cards (positive framing only)
+- [ ] Mood trend line in Stats + weekday profile chart
 
 ## Pass 3 — Wrapped + onboarding
 - [ ] Weekly Wrapped (/wrapped): Spotify-Wrapped-style recap of last week — total time, top category, productive %, best day, habit champion, mood avg, gratitude count; poster-grade gradient design; link appears on Today every Monday

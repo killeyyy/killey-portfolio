@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
-import { StoreProvider } from "./store/StoreProvider.jsx";
-import { ToastProvider } from "./components/ui/Toast.jsx";
+import { StoreProvider, useStore } from "./store/StoreProvider.jsx";
+import { ToastProvider, useToast } from "./components/ui/Toast.jsx";
 import { TabBar } from "./components/ui/TabBar.jsx";
 import { Sidebar } from "./components/ui/Sidebar.jsx";
 import { QuickLogSheet } from "./components/today/QuickLogSheet.jsx";
@@ -9,8 +9,12 @@ import Today from "./routes/Today.jsx";
 import Stats from "./routes/Stats.jsx";
 import Savings from "./routes/Savings.jsx";
 import Journal from "./routes/Journal.jsx";
+import Journey from "./routes/Journey.jsx";
 import Habits from "./routes/Habits.jsx";
 import Settings from "./routes/Settings.jsx";
+import * as storage from "./lib/storage.js";
+import { computeJourney } from "./lib/journey.js";
+import { confettiBurst } from "./lib/confetti.js";
 
 export default function App() {
   return (
@@ -36,7 +40,42 @@ function Ambient() {
   );
 }
 
-const KEY_ROUTES = { 1: "/", 2: "/stats", 3: "/savings", 4: "/journal", 5: "/habits" };
+const KEY_ROUTES = { 1: "/", 2: "/stats", 3: "/journey", 4: "/journal", 5: "/savings" };
+
+/** Celebrates level-ups and newly earned achievements (once each). */
+function JourneyWatcher() {
+  const { settings, categories, months, habits, habitLog, journal, savings } = useStore();
+  const toast = useToast();
+  useEffect(() => {
+    const j = computeJourney({
+      habits, habitLog, journal, savings,
+      dailyTarget: settings.dailyTarget ?? 180,
+      categories,
+    });
+    const earnedIds = j.achievements.filter((a) => a.earned).map((a) => a.id);
+    const seen = storage.get("journeySeen");
+    if (!seen) {
+      // First run: existing history is honored silently, not re-celebrated.
+      storage.set("journeySeen", { level: j.levelIndex, ach: earnedIds });
+      return;
+    }
+    const newAch = j.achievements.filter((a) => a.earned && !seen.ach.includes(a.id));
+    if (j.levelIndex > seen.level) {
+      confettiBurst();
+      toast.show(`Level up! Level ${j.levelIndex + 1} — ${j.levelName} 🌹`);
+    } else if (newAch.length) {
+      confettiBurst();
+      toast.show(`Achievement unlocked: ${newAch[0].emoji} ${newAch[0].title}`);
+    }
+    if (j.levelIndex !== seen.level || newAch.length) {
+      storage.set("journeySeen", {
+        level: j.levelIndex,
+        ach: [...new Set([...seen.ach, ...earnedIds])],
+      });
+    }
+  }, [months, habitLog, journal, savings, habits, settings.dailyTarget, categories, toast]);
+  return null;
+}
 
 function Shell() {
   const [logOpen, setLogOpen] = useState(false);
@@ -69,11 +108,13 @@ function Shell() {
           <Route path="/stats" element={<Stats />} />
           <Route path="/savings" element={<Savings />} />
           <Route path="/journal" element={<Journal />} />
+          <Route path="/journey" element={<Journey />} />
           <Route path="/habits" element={<Habits />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Today />} />
         </Routes>
       </main>
+      <JourneyWatcher />
       <div className="lg:hidden">
         <TabBar onPlus={() => setLogOpen(true)} />
       </div>

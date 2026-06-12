@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Settings } from "lucide-react";
+import { ChevronRight, PiggyBank, Settings } from "lucide-react";
 import { Tile } from "../components/ui/Tile.jsx";
 import { CountUp } from "../components/ui/CountUp.jsx";
 import { Ring } from "../components/charts/Ring.jsx";
@@ -9,9 +9,9 @@ import { HabitTicks } from "../components/today/HabitTicks.jsx";
 import { JournalCard } from "../components/today/JournalCard.jsx";
 import { DayTimeline } from "../components/today/DayTimeline.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
-import { todayKey } from "../lib/dates.js";
-import { formatFullDate, formatMinutes } from "../lib/format.js";
-import { dailyTotals, productiveShare } from "../lib/insights.js";
+import { monthKey, todayKey } from "../lib/dates.js";
+import { formatFullDate, formatMinutes, formatMoney } from "../lib/format.js";
+import { dailyTotals, productiveShare, savingsForMonth } from "../lib/insights.js";
 
 function greeting(h = new Date().getHours()) {
   if (h >= 4 && h < 11) return "Selamat pagi";
@@ -21,7 +21,7 @@ function greeting(h = new Date().getHours()) {
 }
 
 export default function Today() {
-  const { settings, categories, months, habits, habitLog, journal } = useStore();
+  const { settings, categories, months, habits, habitLog, journal, savings } = useStore();
   const today = todayKey();
   const target = settings.dailyTarget ?? 180;
 
@@ -43,7 +43,7 @@ export default function Today() {
     <div className="space-y-4 lg:space-y-6">
       <header className="flex items-start justify-between gap-3">
         <div>
-          <h1 className="font-serif text-2xl font-semibold italic text-cream lg:text-3xl">
+          <h1 className="font-serif text-2xl font-bold text-cream lg:text-3xl">
             {greeting()}, <span className="text-gradient-warm">{settings.name}</span>
           </h1>
           <p className="mt-0.5 text-sm text-muted">{formatFullDate()}</p>
@@ -109,8 +109,30 @@ export default function Today() {
         <div className="space-y-4 lg:space-y-6">
           <HabitTicks />
           <JournalCard />
+          <SavingsPeek savings={savings} settings={settings} />
         </div>
       </div>
     </div>
+  );
+}
+
+/** Compact savings row — the full page lives at /savings. */
+function SavingsPeek({ savings, settings }) {
+  const { goal, saved } = savingsForMonth(savings, monthKey());
+  const money = (v) => formatMoney(v, settings.currency, settings.locale);
+  return (
+    <Link
+      to="/savings"
+      className="flex items-center justify-between rounded-2xl border border-line bg-surface p-4 transition-colors duration-150 hover:border-sand/40"
+    >
+      <span className="flex items-center gap-3 text-sm font-medium text-cream">
+        <PiggyBank size={18} className="text-sand" aria-hidden="true" />
+        Savings
+      </span>
+      <span className="flex items-center gap-1 text-xs tabular-nums text-muted">
+        {goal > 0 ? `${money(saved)} of ${money(goal)}` : "Set this month's goal"}
+        <ChevronRight size={14} aria-hidden="true" />
+      </span>
+    </Link>
   );
 }
