@@ -142,6 +142,8 @@ export function computeJourney({ habits, habitLog, journal, savings, dailyTarget
     { id: "wish-25", emoji: "🌌", title: "Star gardener", desc: "25 wishes granted", earned: wishCount >= 25 },
     { id: "tend-7", emoji: "💧", title: "Well watered", desc: "Meet a tracker's intention 7 days", earned: intentionDays >= 7 },
     { id: "tend-30", emoji: "🪴", title: "Caretaker", desc: "Tend your trackers 30 days", earned: tendDays >= 30 },
+    // The /welcome promise made real: founding sign-ins wear it on Journey.
+    { id: "founding", emoji: "🌷", title: "Founding", desc: "Here since the founding window", earned: storage.get("founding") === true },
   ];
 
   // ---- weekly star path (last 8 weeks, oldest → newest) ----

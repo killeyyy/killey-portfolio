@@ -5,6 +5,7 @@
 // Offline rule (roadmap): NEVER sign out because a refresh failed — local
 // data stays readable regardless of auth state; sync simply waits.
 import * as storage from "../storage.js";
+import { stampFounding } from "../license.js";
 import { SUPABASE_URL, SUPABASE_KEY } from "./config.js";
 
 const REFRESH_AHEAD_MS = 5 * 60 * 1000;
@@ -55,9 +56,12 @@ export function requestCode(email) {
 }
 
 export async function verifyCode(email, token) {
-  return saveSession(
+  const session = saveSession(
     await call("/verify", { type: "email", email: email.trim().toLowerCase(), token: token.trim() }),
   );
+  // Sign-ins during the founding window earn the (synced) founding flag.
+  stampFounding();
+  return session;
 }
 
 export function shouldRefresh(session, now = Date.now()) {
