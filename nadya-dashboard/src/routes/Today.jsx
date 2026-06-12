@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Droplets, PiggyBank, Settings } from "lucide-react";
-import { Tile } from "../components/ui/Tile.jsx";
+import { Hero3D } from "../components/fx/Hero3D.jsx";
 import { CountUp } from "../components/ui/CountUp.jsx";
 import { Ring } from "../components/charts/Ring.jsx";
 import { ActivityList } from "../components/today/ActivityList.jsx";
@@ -82,10 +82,11 @@ export default function Today() {
         </Link>
       </header>
 
-      {/* Daily rings hero */}
-      <Tile glow className="animate-fade-up lg:p-6">
-        <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
-          <div className="text-center sm:text-left">
+      {/* Daily rings hero — a real depth scene: text and rings float on
+          separate Z planes inside the pointer-tilted frame. */}
+      <Hero3D className="animate-fade-up" innerClassName="lg:p-6">
+        <div className="flex flex-col items-center gap-5 [transform-style:preserve-3d] sm:flex-row sm:justify-between">
+          <div className="text-center [transform:translateZ(26px)] sm:text-left">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Logged today</p>
             <p className="mt-1 font-serif text-5xl font-semibold tracking-tight lg:text-6xl">
               <CountUp
@@ -98,12 +99,13 @@ export default function Today() {
               {summary.share === null ? "Tap + when you finish something" : `${summary.share}% productive`}
             </p>
           </div>
-          <div className="flex items-center gap-4 lg:gap-6">
+          <div className="flex items-center gap-4 [transform:translateZ(46px)] lg:gap-6">
             <Ring
               value={target ? Math.min(100, (summary.productive / target) * 100) : 0}
               size={84}
               stroke={8}
               gradient
+              glow
               label={formatMinutes(summary.productive)}
               sub={`of ${formatMinutes(target)}`}
             />
@@ -112,6 +114,7 @@ export default function Today() {
               size={84}
               stroke={8}
               className="text-mint"
+              glow
               label={`${habitsDone}/${activeHabits.length || 0}`}
               sub="habits"
             />
@@ -120,12 +123,13 @@ export default function Today() {
               size={84}
               stroke={8}
               className="text-lavender"
+              glow
               label={journalDone ? "✓" : "—"}
               sub="journal"
             />
           </div>
         </div>
-      </Tile>
+      </Hero3D>
 
       {/* Monday/Tuesday ritual: last week's story (Wrapped concept) */}
       {[settings.weekStart, (settings.weekStart + 1) % 7].includes(new Date().getDay()) && (

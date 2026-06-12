@@ -3,6 +3,7 @@ import {
   BarChart3, Droplets, Flame, Home, NotebookPen, PiggyBank, Plus, Repeat, Settings, Sprout,
 } from "lucide-react";
 import { cn } from "../../lib/cn.js";
+import { useMagnetic } from "../../lib/useMagnetic.js";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { todayKey } from "../../lib/dates.js";
 import { habitStreaks } from "../../lib/insights.js";
@@ -21,6 +22,7 @@ const NAV = [
 /** Desktop-only navigation rail (mobile keeps the bottom TabBar). */
 export function Sidebar({ onPlus }) {
   const { habits, habitLog } = useStore();
+  const magnet = useMagnetic();
   const bestStreak = habits
     .filter((h) => !h.archivedAt)
     .reduce((best, h) => Math.max(best, habitStreaks(habitLog, h.id, todayKey()).current), 0);
@@ -63,6 +65,9 @@ export function Sidebar({ onPlus }) {
         <button
           type="button"
           onClick={onPlus}
+          ref={magnet.ref}
+          onPointerMove={magnet.onPointerMove}
+          onPointerLeave={magnet.onPointerLeave}
           className="glow-rose flex w-full items-center justify-center gap-2 rounded-xl bg-rose py-3 text-sm font-semibold text-ink transition-transform duration-150 active:scale-95"
         >
           <Plus size={16} strokeWidth={2.5} aria-hidden="true" />
