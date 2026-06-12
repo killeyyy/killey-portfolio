@@ -19,6 +19,7 @@ function Tab({ to, icon: Icon, label }) {
       className={({ isActive }) =>
         cn(
           "relative flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-medium",
+          "transition-transform duration-150 ease-out active:scale-[0.92]",
           isActive ? "text-rose-bright" : "text-muted",
         )
       }

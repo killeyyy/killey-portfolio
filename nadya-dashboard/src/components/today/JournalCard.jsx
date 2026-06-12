@@ -96,7 +96,7 @@ export function JournalCard() {
                 aria-label={m.label}
                 aria-pressed={draft.mood === m.value}
                 className={cn(
-                  "grid h-11 w-11 place-items-center rounded-xl border text-xl transition-all duration-150 active:scale-90",
+                  "grid h-11 w-11 place-items-center rounded-xl border text-xl transition duration-150 ease-out active:scale-90",
                   draft.mood === m.value
                     ? "scale-110 border-rose bg-rose/15"
                     : "border-line bg-surface2 opacity-70 grayscale-[0.4]",

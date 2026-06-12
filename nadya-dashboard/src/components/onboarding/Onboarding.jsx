@@ -56,7 +56,7 @@ export function Onboarding({ onDone }) {
             <span
               key={s}
               className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
+                "h-1.5 rounded-full transition-[width,background-color] duration-300",
                 s === step ? "w-6 bg-rose" : "w-1.5 bg-white/20",
               )}
             />
