@@ -28,6 +28,7 @@ uniform vec3 uInk;
 uniform vec3 uA; /* lead accent */
 uniform vec3 uB; /* cool counterpoint */
 uniform vec3 uC; /* secondary accent */
+uniform vec2 uPointer; /* lerped pointer 0..1; rests at center on touch */
 
 void main() {
   vec2 uv = vUv;
@@ -38,7 +39,8 @@ void main() {
     sin(uv.x * 2.1 + t) + sin(uv.y * 1.7 - t * 1.3),
     sin(uv.x * 1.3 - t * 0.8) + sin(uv.y * 2.3 + t)
   ) * 0.25 * uWarp;
-  vec2 p = uv + q;
+  // the air leans toward the hand — centered pointer means zero shift
+  vec2 p = uv + q + (uPointer - 0.5) * 0.12;
 
   float a = 0.5 + 0.5 * sin(p.x * 3.0 + t * 2.0);
   float b = 0.5 + 0.5 * sin(p.y * 2.4 - t * 1.6 + 1.7);
@@ -51,6 +53,10 @@ void main() {
   // vignette back to ink so edges stay calm
   float v = smoothstep(1.05, 0.45, distance(uv, vec2(0.5, 0.45)));
   col = mix(uInk, col, v);
+
+  // a faint warm lift where the pointer rests — light noticing the hand
+  float lift = smoothstep(0.5, 0.0, distance(uv, uPointer));
+  col = mix(col, uA, lift * 0.07);
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -100,6 +106,7 @@ export default function AmbientGL({ speed = 1, warp = 1 }) {
         uA: { value: cssVec3("--c-rose", [0.886, 0.361, 0.447]) },
         uB: { value: cssVec3("--c-lavender", [0.706, 0.612, 0.91]) },
         uC: { value: cssVec3("--c-coral", [0.949, 0.529, 0.42]) },
+        uPointer: { value: [0.5, 0.5] },
       },
     });
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -108,11 +115,23 @@ export default function AmbientGL({ speed = 1, warp = 1 }) {
     resize();
     window.addEventListener("resize", resize);
 
+    // pointer reactivity — fine pointers only; touch keeps a centered field
+    const target = [0.5, 0.5];
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const onPointer = (e) => {
+      target[0] = e.clientX / window.innerWidth;
+      target[1] = 1 - e.clientY / window.innerHeight; // GL y-up
+    };
+    if (fine) window.addEventListener("pointermove", onPointer, { passive: true });
+
     let raf = 0;
     let running = false;
     const t0 = performance.now();
     const loop = (t) => {
       program.uniforms.uTime.value = (t - t0) / 1000;
+      const ptr = program.uniforms.uPointer.value;
+      ptr[0] += (target[0] - ptr[0]) * 0.04; // glacial follow, never snappy
+      ptr[1] += (target[1] - ptr[1]) * 0.04;
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
@@ -139,6 +158,7 @@ export default function AmbientGL({ speed = 1, warp = 1 }) {
     start();
     return () => {
       stop();
+      if (fine) window.removeEventListener("pointermove", onPointer);
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
       gl.canvas.removeEventListener("webglcontextlost", onLost);

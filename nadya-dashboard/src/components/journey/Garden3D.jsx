@@ -138,6 +138,61 @@ void main() {
 }
 `;
 
+const MOTE_VERT = /* glsl */ `
+attribute vec3 position;
+attribute vec2 uv;
+attribute vec3 iPos;
+attribute float iPhase;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform float uTime;
+varying vec2 vUv;
+varying float vPhase;
+varying float vDepth;
+void main() {
+  vUv = uv;
+  vPhase = iPhase;
+  /* slow figure-eight drift, unique per mote */
+  vec3 drift = vec3(
+    sin(uTime * 0.27 + iPhase * 6.2831) * 0.45,
+    sin(uTime * 0.21 + iPhase * 9.4) * 0.16,
+    sin(uTime * 0.16 + iPhase * 4.7) * 0.3
+  );
+  vec3 right = vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
+  vec3 up = vec3(viewMatrix[0][1], viewMatrix[1][1], viewMatrix[2][1]);
+  vec3 wpos = iPos + drift + (right * position.x + up * position.y) * 0.075;
+  vec4 mv = modelViewMatrix * vec4(wpos, 1.0);
+  vDepth = -mv.z;
+  gl_Position = projectionMatrix * mv;
+}
+`;
+
+const MOTE_FRAG = /* glsl */ `
+precision mediump float;
+varying vec2 vUv;
+varying float vPhase;
+varying float vDepth;
+/* highp: must match the vertex stage or ANGLE refuses to link */
+uniform highp float uTime;
+uniform vec3 uGlow;
+uniform vec3 uFog;
+uniform float uFogNear;
+uniform float uFogFar;
+void main() {
+  float d = length(vUv - 0.5) * 2.0;
+  float a = smoothstep(1.0, 0.0, d);
+  a *= a * a; /* tight soft core */
+  /* slow individual twinkle */
+  a *= 0.22 + 0.3 * (0.5 + 0.5 * sin(uTime * 1.4 + vPhase * 6.2831));
+  float fog = smoothstep(uFogNear, uFogFar, vDepth);
+  if (a * (1.0 - fog) < 0.01) discard;
+  vec3 rgb = mix(uGlow, vec3(1.0, 0.95, 0.85), 0.35);
+  rgb = mix(rgb, uFog, fog * 0.8);
+  gl_FragColor = vec4(rgb, a * (1.0 - fog * 0.7));
+}
+`;
+
 const GROUND_VERT = /* glsl */ `
 attribute vec3 position;
 uniform mat4 modelViewMatrix;
@@ -285,6 +340,38 @@ export default function Garden3D({ plots }) {
     });
     new Mesh(gl, { geometry: quad, program: plantProg }).setParent(scene);
 
+    // fireflies — tiny glowing motes drifting through the dusk air
+    const M = 22;
+    const mPos = new Float32Array(M * 3);
+    const mPhase = new Float32Array(M);
+    for (let k = 0; k < M; k++) {
+      mPos[k * 3] = (jitter(k + 31, 11) - 0.5) * 6.5;
+      mPos[k * 3 + 1] = 0.25 + jitter(k + 31, 12) * 1.2;
+      mPos[k * 3 + 2] = -jitter(k + 31, 13) * (rows * ROW_DEPTH + 2.5);
+      mPhase[k] = jitter(k + 31, 14);
+    }
+    const moteGeo = new Geometry(gl, {
+      position: { size: 3, data: new Float32Array([-0.5, -0.5, 0, 0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0]) },
+      uv: { size: 2, data: new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]) },
+      index: { data: new Uint16Array([0, 1, 2, 1, 3, 2]) },
+      iPos: { instanced: 1, size: 3, data: mPos },
+      iPhase: { instanced: 1, size: 1, data: mPhase },
+    });
+    const moteProg = new Program(gl, {
+      vertex: MOTE_VERT,
+      fragment: MOTE_FRAG,
+      transparent: true,
+      depthWrite: false, // glow never occludes the flowers
+      uniforms: {
+        uTime: { value: 0 },
+        uGlow: { value: lead },
+        uFog: { value: fog },
+        uFogNear: { value: 3.5 },
+        uFogFar: { value: rows * ROW_DEPTH + 5 },
+      },
+    });
+    new Mesh(gl, { geometry: moteGeo, program: moteProg }).setParent(scene);
+
     // camera: gentle drift + pointer parallax (lerped)
     const lookY = 0.4;
     const lookZ = -Math.min(rows * ROW_DEPTH * 0.4, 2.5);
@@ -310,6 +397,7 @@ export default function Garden3D({ plots }) {
       const s = (t - t0) / 1000;
       px += (tx - px) * 0.05;
       plantProg.uniforms.uTime.value = s;
+      moteProg.uniforms.uTime.value = s;
       camera.position.set(px + Math.sin(s * 0.12) * 0.12, 1.35, 2.5);
       camera.lookAt([0, lookY, lookZ]);
       renderer.render({ scene, camera });

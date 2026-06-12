@@ -116,7 +116,16 @@ export default function Today() {
               {summary.share === null ? "Tap + when you finish something" : `${summary.share}% productive`}
             </p>
           </div>
-          <div className="flex items-center gap-4 [transform:translateZ(46px)] lg:gap-6">
+          <div className="relative flex items-center gap-4 [transform:translateZ(46px)] lg:gap-6">
+            {/* a slow-turning light behind the rings — the hero breathes */}
+            <span
+              aria-hidden="true"
+              className="absolute left-1/2 top-1/2 -z-10 h-56 w-56 -translate-x-1/2 -translate-y-1/2 animate-spin rounded-full opacity-50 blur-2xl [animation-duration:16s] motion-reduce:hidden"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, rgb(var(--c-rose) / 0.22), transparent 30%, rgb(var(--c-lavender) / 0.16) 52%, transparent 75%, rgb(var(--c-coral) / 0.2))",
+              }}
+            />
             <Ring
               value={target ? Math.min(100, (summary.productive / target) * 100) : 0}
               size={84}
