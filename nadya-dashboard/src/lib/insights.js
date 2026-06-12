@@ -180,11 +180,24 @@ export function weekdayProfile(trendDays, weekStart = 1) {
   }));
 }
 
-/** Savings state for one month. → { goal, saved, entries } */
+/**
+ * Money state for one month. Entries carry kind "save" | "income" | "expense";
+ * legacy entries have no kind and count as "save", so `saved` keeps meaning
+ * "put aside toward the goal" — rings, XP and goal confetti stay truthful.
+ * → { goal, saved, income, spent, entries }
+ */
 export function savingsForMonth(savings, mKey) {
   const month = savings.months[mKey];
   const goal = month?.goal ?? savings.defaultGoal ?? 0;
   const entries = month?.entries || [];
-  const saved = entries.reduce((sum, e) => sum + (e.amount || 0), 0);
-  return { goal, saved, entries };
+  let saved = 0;
+  let income = 0;
+  let spent = 0;
+  for (const e of entries) {
+    const v = e.amount || 0;
+    if (e.kind === "income") income += v;
+    else if (e.kind === "expense") spent += v;
+    else saved += v;
+  }
+  return { goal, saved, income, spent, entries };
 }

@@ -1,4 +1,6 @@
-// savings = { defaultGoal, months: { "YYYY-MM": { goal, entries: [{ id, date, amount, note }] } } }
+// savings = { defaultGoal, months: { "YYYY-MM": { goal, entries: [...] } } }
+// entry   = { id, date, amount, note, kind: "save" | "income" | "expense" }
+// (entries written before Money 2.0 have no kind — they count as "save")
 import * as storage from "../lib/storage.js";
 
 export function getSavings() {

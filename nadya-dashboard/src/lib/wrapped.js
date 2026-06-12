@@ -53,7 +53,10 @@ export function computeWrapped({ categories, habits, habitLog, journal, savings,
   const savingsEntries = Object.values(savings?.months || {})
     .flatMap((m) => m.entries || [])
     .filter((e) => e.date >= start && e.date <= end);
-  const saved = savingsEntries.reduce((s, e) => s + (e.amount || 0), 0);
+  const saved = savingsEntries.reduce(
+    (s, e) => s + (!e.kind || e.kind === "save" ? e.amount || 0 : 0),
+    0,
+  );
 
   let xp = ticks * 10 + journaledDays * 15 + savingsEntries.length * 10;
   for (const k of dayKeys) {

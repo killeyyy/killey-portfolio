@@ -194,7 +194,7 @@ function SavingsPeek({ savings, settings }) {
     >
       <span className="flex items-center gap-3 text-sm font-medium text-cream">
         <PiggyBank size={18} className="text-sand" aria-hidden="true" />
-        Savings
+        Money
       </span>
       <span className="flex items-center gap-1 text-xs tabular-nums text-muted">
         {goal > 0 ? `${money(saved)} of ${money(goal)}` : "Set this month's goal"}
