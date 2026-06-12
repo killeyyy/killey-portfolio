@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Download, Plus, Upload } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
@@ -17,6 +17,9 @@ import { cn } from "../lib/cn.js";
 
 const APP_VERSION = "1.0.0";
 const NUDGE_AFTER_DAYS = 14;
+
+// Lazy: keeps all auth/cloud code out of the main bundle until Settings shows.
+const AccountTile = lazy(() => import("../components/cloud/AccountTile.jsx"));
 
 export default function Settings() {
   const { settings, updateSettings, categories, saveCategories, meta, patchMeta } = useStore();
@@ -222,6 +225,10 @@ export default function Settings() {
           />
         </div>
       </Tile>
+
+      <Suspense fallback={null}>
+        <AccountTile />
+      </Suspense>
 
       <p className="px-1 text-center text-xs text-muted">
         Tip: open the browser menu and <span className="font-semibold">Add to Home Screen</span> —

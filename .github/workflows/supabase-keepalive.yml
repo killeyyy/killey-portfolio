@@ -1,0 +1,18 @@
+# Pings the Ruang Supabase project so the free tier never idle-pauses
+# (free projects pause after ~1 week without traffic). The key below is the
+# publishable client key — public by design, RLS is the security boundary.
+name: supabase-keepalive
+on:
+  schedule:
+    - cron: "23 3 */3 * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping REST endpoint
+        run: |
+          curl -sf -o /dev/null \
+            -H "apikey: sb_publishable_8SyYr9EgaaWneUl7ZombGw_tGKSvWdp" \
+            "https://vuyexsgqemslttivlzoy.supabase.co/rest/v1/" \
+            && echo "alive"
