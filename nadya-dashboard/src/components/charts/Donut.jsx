@@ -1,8 +1,9 @@
 /**
  * Category-share donut via stroke-dasharray arcs.
  * slices: [{ hex, value }] — legend renders outside (Stats owns it).
+ * `glow` adds a blurred copy of the colored arcs beneath — lit from within.
  */
-export function Donut({ slices = [], size = 150, thickness = 16, centerLabel, centerSub }) {
+export function Donut({ slices = [], size = 150, thickness = 16, centerLabel, centerSub, glow = false }) {
   const r = (size - thickness) / 2;
   const c = 2 * Math.PI * r;
   const total = Math.max(
@@ -10,9 +11,33 @@ export function Donut({ slices = [], size = 150, thickness = 16, centerLabel, ce
     1,
   );
   let acc = 0;
+  let glowAcc = 0;
   return (
     <div className="relative inline-flex items-center justify-center">
       <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
+        {glow && (
+          <g opacity="0.4" style={{ filter: "blur(7px)" }}>
+            {slices.map((s, i) => {
+              const frac = s.value / total;
+              const dash = Math.max(frac * c, 0.5);
+              const offset = -(glowAcc * c);
+              glowAcc += frac;
+              return (
+                <circle
+                  key={i}
+                  cx={size / 2}
+                  cy={size / 2}
+                  r={r}
+                  fill="none"
+                  stroke={s.hex}
+                  strokeWidth={thickness + 4}
+                  strokeDasharray={`${dash} ${c - dash}`}
+                  strokeDashoffset={offset}
+                />
+              );
+            })}
+          </g>
+        )}
         <circle
           cx={size / 2}
           cy={size / 2}

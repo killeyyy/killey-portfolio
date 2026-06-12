@@ -7,6 +7,7 @@ import { Field, TextInput } from "../components/ui/Field.jsx";
 import { Ring } from "../components/charts/Ring.jsx";
 import { GoalBars } from "../components/charts/GoalBars.jsx";
 import { SavingsEntrySheet } from "../components/savings/SavingsEntrySheet.jsx";
+import { Hero3D } from "../components/fx/Hero3D.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { addMonths, monthKey } from "../lib/dates.js";
 import { formatDayLabel, formatMoney, formatMonthLabel, formatMonthShort } from "../lib/format.js";
@@ -67,10 +68,12 @@ export default function Savings() {
         </button>
       </div>
 
-      <Tile glow>
-        <div className="flex items-center gap-4">
-          <Ring value={pct} size={110} className={pct >= 100 ? "text-mint" : "text-sand"} />
-          <div className="min-w-0 flex-1">
+      <Hero3D>
+        <div className="flex items-center gap-4 [transform-style:preserve-3d]">
+          <div className="[transform:translateZ(40px)]">
+            <Ring value={pct} size={110} glow className={pct >= 100 ? "text-mint" : "text-sand"} />
+          </div>
+          <div className="min-w-0 flex-1 [transform:translateZ(20px)]">
             <p className="text-xl font-semibold tabular-nums text-cream">{money(saved)}</p>
             {goal > 0 ? (
               <p className="mt-0.5 text-sm tabular-nums text-muted">
@@ -90,7 +93,7 @@ export default function Savings() {
             </button>
           </div>
         </div>
-      </Tile>
+      </Hero3D>
 
       {(income > 0 || spent > 0) && (
         <Tile title="This month's flow">
