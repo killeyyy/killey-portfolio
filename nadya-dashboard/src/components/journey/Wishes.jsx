@@ -16,17 +16,17 @@ const fmt = (q, v) => (q.unit === "minutes" ? formatMinutes(v) : String(v));
  * once per device (`nadya:wishesSeen`, excluded from backups like journeySeen).
  */
 export function Wishes() {
-  const { settings, categories, months, habits, habitLog, journal, trackers, trackerLog, wishes } =
-    useStore();
+  const { settings, categories, months, habits, habitLog, journal, trackers, trackerLog,
+    savings, wishes } = useStore();
 
   const quests = useMemo(
     () =>
       weeklyQuests({
-        habits, habitLog, journal, trackers, trackerLog, categories,
+        habits, habitLog, journal, trackers, trackerLog, categories, savings,
         weekStart: settings.weekStart ?? 1,
       }),
     // `months` is the change signal for activity-backed wishes.
-    [months, habitLog, journal, trackers, trackerLog, habits, categories, settings.weekStart],
+    [months, habitLog, journal, trackers, trackerLog, habits, categories, savings, settings.weekStart],
   );
 
   useEffect(() => {

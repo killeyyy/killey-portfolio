@@ -164,16 +164,16 @@ export default function Today() {
 
 /** This week's garden wishes at a glance — the comeback loop on Today. */
 function WishesPeek() {
-  const { settings, categories, months, habits, habitLog, journal, trackers, trackerLog, wishes } =
-    useStore();
+  const { settings, categories, months, habits, habitLog, journal, trackers, trackerLog,
+    savings, wishes } = useStore();
   const quests = useMemo(
     () =>
       weeklyQuests({
-        habits, habitLog, journal, trackers, trackerLog, categories,
+        habits, habitLog, journal, trackers, trackerLog, categories, savings,
         weekStart: settings.weekStart ?? 1,
       }),
     // `months` is the change signal for activity-backed wishes.
-    [months, habitLog, journal, trackers, trackerLog, habits, categories, settings.weekStart],
+    [months, habitLog, journal, trackers, trackerLog, habits, categories, savings, settings.weekStart],
   );
   const granted = quests.filter((q) => wishes[q.id] || q.done).length;
   return (
