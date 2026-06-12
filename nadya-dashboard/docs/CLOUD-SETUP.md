@@ -42,5 +42,8 @@ members** — fine for your own testing, unusable in production.
 ## What's live vs not
 
 - ✅ Auth (email OTP) + session refresh + sign-out; guest mode untouched.
-- ⏳ Sync itself (dirty-set queue + migration wizard inside `storage.js`) is
-  the next PR — signing in today only reserves the account.
+- ✅ Sync: signed-in users' `nadya:*` data mirrors to the kv table —
+  persisted dirty queue, newest-write-wins per key, tombstoned deletions,
+  lossless first merge (`migrated:*` local snapshots). Guests sync nothing.
+- ⏳ Pro gating + checkout — waiting on the payment-rail account
+  (Gumroad / Lemon Squeezy).
