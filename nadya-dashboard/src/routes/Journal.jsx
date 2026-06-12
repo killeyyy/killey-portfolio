@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
 import { Flourish } from "../components/ui/Flourish.jsx";
 import { Sheet } from "../components/ui/Sheet.jsx";
-import { TextInput, TextArea } from "../components/ui/Field.jsx";
+import { TextInput, TextArea, Select } from "../components/ui/Field.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { monthKey, monthKeyOf } from "../lib/dates.js";
 import { formatDayLabel, formatMonthLabel } from "../lib/format.js";
@@ -11,9 +12,24 @@ import { formatDayLabel, formatMonthLabel } from "../lib/format.js";
 export default function Journal() {
   const { journal, saveJournalEntry, deleteJournalEntry } = useStore();
   const [editing, setEditing] = useState(null); // dateKey | null
+  const [query, setQuery] = useState("");
+  const [monthFilter, setMonthFilter] = useState("all");
+
+  const allMonths = useMemo(
+    () => [...new Set(Object.keys(journal).map(monthKeyOf))].sort().reverse(),
+    [journal],
+  );
 
   const groups = useMemo(() => {
-    const keys = Object.keys(journal).sort().reverse();
+    const q = query.trim().toLowerCase();
+    const matches = (e) =>
+      !q ||
+      e.highlight?.toLowerCase().includes(q) ||
+      e.grateful?.some((g) => g.toLowerCase().includes(q));
+    const keys = Object.keys(journal)
+      .filter((k) => (monthFilter === "all" || monthKeyOf(k) === monthFilter) && matches(journal[k]))
+      .sort()
+      .reverse();
     const byMonth = new Map();
     for (const k of keys) {
       const m = monthKeyOf(k);
@@ -21,7 +37,7 @@ export default function Journal() {
       byMonth.get(m).push(k);
     }
     return [...byMonth.entries()];
-  }, [journal]);
+  }, [journal, query, monthFilter]);
 
   const thisMonthCount = groups.find(([m]) => m === monthKey())?.[1].length || 0;
 
@@ -36,7 +52,44 @@ export default function Journal() {
         }
       />
 
-      {groups.length === 0 && (
+      {allMonths.length > 0 && (
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search
+              size={15}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+              aria-hidden="true"
+            />
+            <TextInput
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search your memories…"
+              aria-label="Search journal"
+              className="pl-9"
+            />
+          </div>
+          <Select
+            value={monthFilter}
+            onChange={(e) => setMonthFilter(e.target.value)}
+            aria-label="Filter by month"
+            className="w-36"
+            options={[
+              { value: "all", label: "All months" },
+              ...allMonths.map((m) => ({ value: m, label: formatMonthLabel(m) })),
+            ]}
+          />
+        </div>
+      )}
+
+      {groups.length === 0 && (query || monthFilter !== "all") && (
+        <Tile>
+          <p className="text-center text-sm text-muted">
+            Nothing matches — but every memory is still safe here.
+          </p>
+        </Tile>
+      )}
+
+      {groups.length === 0 && !query && monthFilter === "all" && (
         <Tile>
           <div className="py-3 text-center">
             <Flourish />

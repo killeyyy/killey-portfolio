@@ -8,6 +8,7 @@ import { StackedBars } from "../components/charts/StackedBars.jsx";
 import { Donut } from "../components/charts/Donut.jsx";
 import { TrendLine } from "../components/charts/TrendLine.jsx";
 import { Ring } from "../components/charts/Ring.jsx";
+import { YearHeatmap } from "../components/charts/YearHeatmap.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { COLOR_META } from "../data/defaults.js";
 import { cn } from "../lib/cn.js";
@@ -62,10 +63,16 @@ export default function Stats() {
     );
   }, [isWeek, weekAnchor, monthAnchor]);
 
+  // Month view also shows the trailing-year heatmap.
+  const yearDayKeys = useMemo(
+    () => (isWeek ? [] : rangeKeys(weekStartKey(addDays(today, -364), settings.weekStart), today)),
+    [isWeek, today, settings.weekStart],
+  );
+
   useEffect(() => {
-    const keys = new Set([...dayKeys, ...prevDayKeys, ...trendDayKeys].map(monthKeyOf));
+    const keys = new Set([...dayKeys, ...prevDayKeys, ...trendDayKeys, ...yearDayKeys].map(monthKeyOf));
     ensureMonths([...keys]);
-  }, [dayKeys, prevDayKeys, trendDayKeys, ensureMonths]);
+  }, [dayKeys, prevDayKeys, trendDayKeys, yearDayKeys, ensureMonths]);
 
   const days = useMemo(() => dailyTotals(months, dayKeys, categories), [months, dayKeys, categories]);
   const prevDays = useMemo(
@@ -409,6 +416,17 @@ export default function Stats() {
         </div>
         <p className="mt-1 text-xs text-muted">Average time logged per weekday</p>
       </Tile>
+
+      {!isWeek && (
+        <Tile title="Your year" className="lg:col-span-2">
+          <YearHeatmap
+            values={dailyTotals(months, yearDayKeys, categories).map((d) => d.total)}
+          />
+          <p className="mt-1.5 text-xs text-muted">
+            Every day you've logged, the last 12 months — darker rose = fuller day.
+          </p>
+        </Tile>
+      )}
 
       <Tile title="Savings this month">
         <Link to="/savings" className="flex items-center gap-4">
