@@ -11,7 +11,8 @@
  */
 
 import { Link } from "react-router-dom";
-import { BookOpen, Flame, Leaf, PiggyBank, Sprout } from "lucide-react";
+import { BookOpen, Check, Flame, Leaf, PiggyBank, Sprout } from "lucide-react";
+import { PRO } from "../data/pro.js";
 
 const FEATURES = [
   {
@@ -115,6 +116,49 @@ export default function Welcome() {
           Chrome). It opens full-screen and works offline, just like a native
           app.
         </p>
+      </div>
+
+      {/* Pricing */}
+      <div
+        className="mt-6 animate-fade-up rounded-2xl bg-gradient-to-br from-rose/60 via-line/50 to-coral/45 p-px"
+        style={{ animationDelay: "280ms" }}
+      >
+        <div className="rounded-[15px] bg-surface p-5 shadow-[inset_0_1px_0_rgb(255_255_255/0.05)]">
+          <div className="flex items-baseline justify-between gap-2">
+            <h2 className="font-serif text-base font-bold text-cream">
+              Free forever. Pro when you want it.
+            </h2>
+          </div>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted">
+            Everything you saw above is free, on your device, no account needed.
+            Ruang Pro is{" "}
+            <span className="font-semibold text-cream">
+              {PRO.price} — {PRO.period}
+            </span>
+            :
+          </p>
+          <ul className="mt-3 space-y-1.5">
+            {PRO.perks.map((perk) => (
+              <li key={perk} className="flex items-start gap-2 text-sm text-cream">
+                <Check size={15} className="mt-0.5 shrink-0 text-mint" aria-hidden="true" />
+                {perk}
+              </li>
+            ))}
+          </ul>
+          {PRO.checkoutUrl ? (
+            <a
+              href={PRO.checkoutUrl}
+              className="mt-4 block w-full rounded-xl bg-gradient-to-r from-rose to-coral py-3 text-center text-sm font-bold text-ink active:scale-95"
+            >
+              Get Ruang Pro · {PRO.price}
+            </a>
+          ) : (
+            <p className="mt-4 rounded-xl bg-mint/10 px-3 py-2.5 text-center text-xs font-semibold text-mint">
+              Founding window: Pro checkout opens in days — until then, sync is free for
+              everyone who signs in. Early birds keep it.
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Open CTA */}
