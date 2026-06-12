@@ -1,6 +1,7 @@
 // Pure aggregation selectors — all chart math lives here so components stay
 // dumb. Inputs are passed explicitly (months map, categories, habitLog, ...).
-import { addDays, monthKeyOf, toDateKey, todayKey } from "./dates.js";
+import { addDays, monthKeyOf, parseKey, toDateKey, todayKey } from "./dates.js";
+import { formatMinutes } from "./format.js";
 
 /** Entries for one day from the loaded shards. */
 export function entriesForDay(months, dayKey) {
@@ -99,6 +100,84 @@ export function habitAdherence(habitLog, habit, dayKeys, today = todayKey()) {
 /** 0/1 values (oldest → newest) for a heatmap over dayKeys. */
 export function habitHeatValues(habitLog, habitId, dayKeys) {
   return dayKeys.map((k) => (habitLog[k]?.includes(habitId) ? 1 : 0));
+}
+
+const DOW = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+const hasJournal = (e) =>
+  Boolean(e && (e.highlight?.trim() || e.mood || e.grateful?.some((g) => g.trim())));
+
+/**
+ * Up to 3 short insight lines for Stats. POSITIVE FRAMING ONLY (Nadya's rule:
+ * the app never reminds her of failures) — negative deltas simply say nothing.
+ */
+export function buildInsights({ trendDays, days, totals, prevTotals, habits, habitLog, journal, today }) {
+  const out = [];
+
+  const delta = totals.productive - prevTotals.productive;
+  if (prevTotals.total > 0 && delta >= 30) {
+    out.push(`Productive time is up ${formatMinutes(delta)} on the previous period 🎉`);
+  }
+
+  // Power weekday over the wider trend window.
+  const byDow = Array.from({ length: 7 }, () => ({ sum: 0, n: 0 }));
+  for (const d of trendDays) {
+    const dow = parseKey(d.key).getDay();
+    byDow[dow].sum += d.productive;
+    byDow[dow].n += 1;
+  }
+  const best = byDow
+    .map((x, i) => ({ i, avg: x.n ? x.sum / x.n : 0 }))
+    .sort((a, b) => b.avg - a.avg)[0];
+  if (best && best.avg >= 45) out.push(`${DOW[best.i]}s are your power days ⚡`);
+
+  // Strongest habit over the displayed period.
+  const strongest = habits
+    .filter((h) => !h.archivedAt)
+    .map((h) => ({ h, a: habitAdherence(habitLog, h, days.map((d) => d.key), today) }))
+    .filter(({ a }) => a.eligible >= 5 && a.pct >= 60)
+    .sort((x, y) => y.a.pct - x.a.pct)[0];
+  if (strongest) {
+    out.push(`"${strongest.h.name}" is your strongest habit — ${strongest.a.pct}% kept 💪`);
+  }
+
+  // Journaling run ending today/yesterday.
+  let run = 0;
+  let cursor = hasJournal(journal[today]) ? today : addDays(today, -1);
+  while (hasJournal(journal[cursor])) {
+    run += 1;
+    cursor = addDays(cursor, -1);
+  }
+  if (run >= 3) out.push(`${run} days of journaling in a row 💗`);
+
+  // Mood, only when it's good news.
+  const moods = days.map((d) => journal[d.key]?.mood).filter(Boolean);
+  if (moods.length >= 3 && moods.reduce((a, b) => a + b, 0) / moods.length >= 3.8) {
+    out.push("Mostly good days this period 🙂");
+  }
+
+  return out.slice(0, 3);
+}
+
+/** Mood values (1–5) for days that have one, in day order. */
+export function moodPoints(journal, dayKeys) {
+  return dayKeys.map((k) => journal[k]?.mood).filter(Boolean);
+}
+
+/** Avg total minutes per weekday over the given daily totals, in week order. */
+export function weekdayProfile(trendDays, weekStart = 1) {
+  const byDow = Array.from({ length: 7 }, () => ({ sum: 0, n: 0 }));
+  for (const d of trendDays) {
+    const dow = parseKey(d.key).getDay();
+    byDow[dow].sum += d.total;
+    byDow[dow].n += 1;
+  }
+  const order = [];
+  for (let i = 0; i < 7; i++) order.push((weekStart + i) % 7);
+  return order.map((dow) => ({
+    label: DOW[dow].slice(0, 2),
+    avg: byDow[dow].n ? Math.round(byDow[dow].sum / byDow[dow].n) : 0,
+  }));
 }
 
 /** Savings state for one month. → { goal, saved, entries } */

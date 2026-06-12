@@ -30,9 +30,9 @@ levels, milestones, achievements, celebrations, progress paths, streak pet",
 - [x] Habit line charts (her ask): weekly adherence % TrendLine per habit on /habits
 
 ## Pass 2.5 — Signature features (deferred from old pass 2)
-- [ ] Focus timer (Toggl concept): start/stop pill, persists (`nadya:timer`), stop → quick log
-- [ ] Insights engine on Stats: heuristic text cards (positive framing only)
-- [ ] Mood trend line in Stats + weekday profile chart
+- [x] Focus timer (Toggl concept): start/stop pill, persists (`nadya:timer`), stop → quick log
+- [x] Insights engine on Stats: heuristic text cards (positive framing only)
+- [x] Mood trend line in Stats + weekday profile chart
 
 ## Pass 3 — Wrapped + onboarding
 - [ ] Weekly Wrapped (/wrapped): Spotify-Wrapped-style recap of last week — total time, top category, productive %, best day, habit champion, mood avg, gratitude count; poster-grade gradient design; link appears on Today every Monday

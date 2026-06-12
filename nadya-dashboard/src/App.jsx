@@ -5,6 +5,7 @@ import { ToastProvider, useToast } from "./components/ui/Toast.jsx";
 import { TabBar } from "./components/ui/TabBar.jsx";
 import { Sidebar } from "./components/ui/Sidebar.jsx";
 import { QuickLogSheet } from "./components/today/QuickLogSheet.jsx";
+import { TimerPill } from "./components/ui/TimerPill.jsx";
 import Today from "./routes/Today.jsx";
 import Stats from "./routes/Stats.jsx";
 import Savings from "./routes/Savings.jsx";
@@ -115,6 +116,7 @@ function Shell() {
         </Routes>
       </main>
       <JourneyWatcher />
+      <TimerPill />
       <div className="lg:hidden">
         <TabBar onPlus={() => setLogOpen(true)} />
       </div>
