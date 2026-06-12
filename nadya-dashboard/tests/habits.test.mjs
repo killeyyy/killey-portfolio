@@ -15,7 +15,7 @@ globalThis.window = {
   },
 };
 
-const { habitAdherence } = await import("../src/lib/insights.js");
+const { habitAdherence, habitsDueToday } = await import("../src/lib/insights.js");
 const { weeklyQuests } = await import("../src/lib/quests.js");
 
 const TODAY = "2026-06-14";
@@ -69,5 +69,35 @@ const questsDaily = weeklyQuests({
 const wishD = questsDaily.find((q) => q.id === "2026-06-08:habit:d2");
 if (wishD) assert.equal(wishD.target, 4);
 console.log("OK habit wish respects rhythm");
+
+// ---- habitsDueToday: the Today-ring denominator ----
+// Week of Mon 2026-06-08; today is Wed 2026-06-10.
+const dueToday = "2026-06-10";
+const dailyH = { id: "d3", createdAt: old };
+const onceH = { id: "o3", createdAt: old, timesPerWeek: 1 };
+const goneH = { id: "g3", createdAt: old, archivedAt: 1 };
+const all = [dailyH, onceH, goneH];
+
+// Nothing ticked: daily + once both due; archived never.
+assert.deepEqual(
+  habitsDueToday(all, {}, dueToday, 1).map((h) => h.id),
+  ["d3", "o3"],
+);
+// Once-a-week ticked Monday → satisfied, drops out of "due".
+assert.deepEqual(
+  habitsDueToday(all, { "2026-06-08": ["o3"] }, dueToday, 1).map((h) => h.id),
+  ["d3"],
+);
+// ...but a tick made TODAY keeps it in (the ring must credit it).
+assert.deepEqual(
+  habitsDueToday(all, { "2026-06-10": ["o3"] }, dueToday, 1).map((h) => h.id),
+  ["d3", "o3"],
+);
+// Last week's ticks don't satisfy this week.
+assert.deepEqual(
+  habitsDueToday(all, { "2026-06-05": ["o3"] }, dueToday, 1).map((h) => h.id),
+  ["d3", "o3"],
+);
+console.log("OK habitsDueToday");
 
 console.log("\nAll habit-rhythm tests passed ✓");

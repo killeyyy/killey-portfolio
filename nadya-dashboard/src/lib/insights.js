@@ -1,6 +1,6 @@
 // Pure aggregation selectors — all chart math lives here so components stay
 // dumb. Inputs are passed explicitly (months map, categories, habitLog, ...).
-import { addDays, monthKeyOf, parseKey, toDateKey, todayKey } from "./dates.js";
+import { addDays, monthKeyOf, parseKey, rangeKeys, toDateKey, todayKey, weekStartKey } from "./dates.js";
 import { formatMinutes } from "./format.js";
 
 /** Entries for one day from the loaded shards. */
@@ -89,6 +89,25 @@ export function habitStreaks(habitLog, habitId, today = todayKey()) {
  * Adherence % over dayKeys, only counting days the habit existed.
  * → { ticked, eligible, pct } (pct null when no eligible days)
  */
+/**
+ * Habits still inviting a tick today: daily habits always; weekly-rhythm
+ * habits only until they've met their timesPerWeek this week (a tick made
+ * today keeps them in the list so the ring credits it). Ticking a satisfied
+ * habit stays allowed everywhere — this only shapes the Today ring and the
+ * all-done celebration, so rhythm habits never read as missing.
+ */
+export function habitsDueToday(habits, habitLog, today = todayKey(), weekStart = 1) {
+  const weekSoFar = rangeKeys(weekStartKey(today, weekStart), today);
+  return habits.filter((h) => {
+    if (h.archivedAt) return false;
+    const perWeek = h.timesPerWeek || 7;
+    if (perWeek >= 7) return true;
+    if (habitLog[today]?.includes(h.id)) return true;
+    const weekTicks = weekSoFar.filter((k) => habitLog[k]?.includes(h.id)).length;
+    return weekTicks < perWeek;
+  });
+}
+
 export function habitAdherence(habitLog, habit, dayKeys, today = todayKey()) {
   const createdKey = toDateKey(new Date(habit.createdAt || 0));
   const eligibleKeys = dayKeys.filter((k) => k >= createdKey && k <= today);

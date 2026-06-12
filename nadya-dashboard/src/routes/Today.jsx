@@ -11,7 +11,7 @@ import { DayTimeline } from "../components/today/DayTimeline.jsx";
 import { useStore } from "../store/StoreProvider.jsx";
 import { monthKey, todayKey } from "../lib/dates.js";
 import { formatFullDate, formatMinutes, formatMoney } from "../lib/format.js";
-import { dailyTotals, productiveShare, savingsForMonth } from "../lib/insights.js";
+import { dailyTotals, habitsDueToday, productiveShare, savingsForMonth } from "../lib/insights.js";
 import { computeJourney } from "../lib/journey.js";
 import { dayFill, dayGoal, dayValue } from "../lib/tend.js";
 import { weeklyQuests } from "../lib/quests.js";
@@ -46,8 +46,11 @@ export default function Today() {
   const { label: hello, grad } = greeting();
 
   const activeHabits = habits.filter((h) => !h.archivedAt);
+  // The ring measures against habits still due today — weekly-rhythm habits
+  // that already met their week drop out instead of reading as "missed".
+  const dueHabits = habitsDueToday(habits, habitLog, today, settings.weekStart ?? 1);
   const habitsDone = (habitLog[today] || []).filter((id) =>
-    activeHabits.some((h) => h.id === id),
+    dueHabits.some((h) => h.id === id),
   ).length;
   const entry = journal[today];
   const journalDone = Boolean(
@@ -111,12 +114,22 @@ export default function Today() {
               sub={`of ${formatMinutes(target)}`}
             />
             <Ring
-              value={activeHabits.length ? (habitsDone / activeHabits.length) * 100 : 0}
+              value={
+                dueHabits.length
+                  ? (habitsDone / dueHabits.length) * 100
+                  : activeHabits.length
+                    ? 100
+                    : 0
+              }
               size={84}
               stroke={8}
               className="text-mint"
               glow
-              label={`${habitsDone}/${activeHabits.length || 0}`}
+              label={
+                dueHabits.length || !activeHabits.length
+                  ? `${habitsDone}/${dueHabits.length || 0}`
+                  : "🌿"
+              }
               sub="habits"
             />
             <Ring
