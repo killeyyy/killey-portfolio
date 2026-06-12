@@ -170,6 +170,19 @@ export default function Wrapped() {
         </div>,
       );
     }
+    if (w.wishesGranted > 0) {
+      list.push(
+        <div key="wishes">
+          <Setup>The garden asked — you answered</Setup>
+          <Payoff>
+            <Big className="text-rose-bright">
+              {w.wishesGranted} wish{w.wishesGranted === 1 ? "" : "es"} granted 🌠
+            </Big>
+          </Payoff>
+          <Sub>Quiet little quests, kept all the same.</Sub>
+        </div>,
+      );
+    }
     list.push(
       <div key="persona">
         <Setup>This week, you were…</Setup>
