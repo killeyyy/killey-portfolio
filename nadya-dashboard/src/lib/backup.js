@@ -48,7 +48,9 @@ export function parseImport(text) {
     throw new Error("That file isn't valid JSON.");
   }
   if (payload?.app !== "nadya-dashboard" || !payload?.data) {
-    throw new Error("That file doesn't look like a Ruang Nadya backup.");
+    // NB: the "nadya-dashboard" app identifier above must never change —
+    // every existing backup file carries it.
+    throw new Error("That file doesn't look like a Ruang backup.");
   }
   if ((payload.schemaVersion || 0) > CURRENT_SCHEMA) {
     throw new Error("That backup is from a newer version of the app.");

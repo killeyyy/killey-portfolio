@@ -1,7 +1,9 @@
+// New-install defaults. Existing installs keep their stored settings —
+// these only apply where a value was never set.
 export const DEFAULT_SETTINGS = {
-  name: "Nadya",
-  currency: "IDR",
-  locale: "id-ID",
+  name: "",
+  currency: "USD",
+  locale: "en-US",
   weekStart: 1, // 1 = Monday, 0 = Sunday
 };
 

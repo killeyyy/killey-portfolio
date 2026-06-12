@@ -27,7 +27,7 @@ export function Onboarding({ onDone }) {
   const [picked, setPicked] = useState(() => new Set(["📖", "📔"]));
 
   const finish = () => {
-    updateSettings({ name: name.trim() || "Nadya", weekStart, dailyTarget: target });
+    updateSettings({ name: name.trim(), weekStart, dailyTarget: target });
     const habits = STARTERS.filter((s) => picked.has(s.emoji)).map((s) => ({
       id: uid(),
       name: s.name,
@@ -67,7 +67,7 @@ export function Onboarding({ onDone }) {
           <div key={0} className="flex flex-1 animate-fade-up flex-col items-center justify-center text-center">
             <StreakPet streak={0} size={130} />
             <h1 className="mt-4 font-serif text-3xl font-bold text-cream">
-              Selamat datang <span className="text-gradient-warm">🌹</span>
+              Welcome <span className="text-gradient-warm">🌹</span>
             </h1>
             <p className="mt-2 text-sm text-muted">
               This is your space — for your days, your habits, your little wins. Everything stays on
@@ -144,7 +144,7 @@ export function Onboarding({ onDone }) {
             onClick={() => (step < 2 ? setStep(step + 1) : finish())}
             className="glow-rose w-full rounded-xl bg-gradient-to-r from-rose to-coral py-3 text-sm font-bold text-ink active:scale-95"
           >
-            {step === 0 ? "Mulai" : step === 1 ? "Next" : "Let's bloom 🌹"}
+            {step === 0 ? "Begin" : step === 1 ? "Next" : "Let's bloom 🌹"}
           </button>
           {step > 0 ? (
             <button type="button" onClick={() => setStep(step - 1)} className="w-full py-2 text-sm font-semibold text-muted">
