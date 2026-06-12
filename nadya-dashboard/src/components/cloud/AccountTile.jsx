@@ -40,7 +40,12 @@ export default function AccountTile() {
       setStage("email");
       setCode("");
       buzz();
-      toast.show("Signed in ✓");
+      toast.show("Signed in ✓ — bringing your space together…");
+      // Lossless first merge (newest-wins per key; local snapshots kept
+      // under migrated:*), then one reload so the UI shows merged data.
+      const { firstSync } = await import("../../lib/cloud/sync.js");
+      await firstSync();
+      window.location.reload();
     } catch (err) {
       toast.show(err.message || "That code didn't match — try again.");
     } finally {
@@ -58,7 +63,8 @@ export default function AccountTile() {
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-cream">{session.email}</p>
             <p className="text-xs text-muted">
-              Sync arrives in a coming update — for now everything still lives on this device.
+              Sync is on — your space follows you to any device. Newest change wins; this
+              device always keeps its own copy too.
             </p>
           </div>
           <button
@@ -80,8 +86,8 @@ export default function AccountTile() {
   return (
     <Tile title="Account" action={<span className="text-xs text-muted">optional, always</span>}>
       <p className="mb-3 text-xs text-muted">
-        Ruang works fully on this device, signed in or not. An account simply reserves your
-        space so sync can arrive in a future update.
+        Ruang works fully on this device, signed in or not. Sign in and your space quietly
+        follows you to any device — newest change wins, nothing is ever lost.
       </p>
       {stage === "email" ? (
         <div className="flex items-end gap-2">

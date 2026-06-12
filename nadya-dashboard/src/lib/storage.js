@@ -1,7 +1,13 @@
 // Namespaced localStorage wrapper — the single seam for persistence.
-// Later, cloud sync can replace this implementation without touching callers
-// (models call only get/set/remove/listKeys/clearAll).
+// Cloud sync rides this seam: every write notifies the hook below so the
+// sync engine (lib/cloud/sync.js) can mark keys dirty. Callers never change.
 const PREFIX = "nadya:";
+
+let writeHook = null;
+/** Registered once by the sync engine; receives (key, removed). */
+export function _setWriteHook(fn) {
+  writeHook = fn;
+}
 
 export function get(key, fallback = null) {
   try {
@@ -17,6 +23,7 @@ export function set(key, value) {
   try {
     if (typeof window === "undefined") return;
     window.localStorage.setItem(PREFIX + key, JSON.stringify(value));
+    writeHook?.(key, false);
   } catch {
     /* quota/private mode — fail silent */
   }
@@ -26,6 +33,7 @@ export function remove(key) {
   try {
     if (typeof window === "undefined") return;
     window.localStorage.removeItem(PREFIX + key);
+    writeHook?.(key, true);
   } catch {
     /* noop */
   }

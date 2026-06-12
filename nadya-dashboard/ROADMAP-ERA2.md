@@ -210,7 +210,15 @@ existing perf gates." Interleaved with the remaining phases, each ONE PR:
   failing cross-user read test; guest experience untouched; bundle delta
   within math above.
 
-### PR 8 · Sync queue + migration wizard
+### PR 8 · Sync queue + migration wizard — ✅ shipped
+> Live: persisted dirty-map queue + debounced flush behind a storage.js
+> write hook (callers untouched); batch PostgREST upsert with tombstones;
+> per-key LWW pull on boot/sign-in; Web Locks single flusher; backoff
+> 1s→30s; offline durability from the persisted set. First sign-in is
+> lossless via automatic `migrated:*` snapshots of any locally-overwritten
+> key — the interactive confirm step was dropped in favor of this (simpler,
+> still reversible). Node-tested incl. hostile-server key protection.
+> 1.55KB lazy chunk; guests pay ~0.
 - Inside `storage.js` ONLY (callers untouched — the seam earns its keep):
   write path = mutate localStorage → mark key in a persisted dirty set →
   debounced flush (~2s). localStorage stays the source of truth.

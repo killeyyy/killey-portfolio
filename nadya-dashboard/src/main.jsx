@@ -7,6 +7,13 @@ import "./index.css";
 // Upgrade/seed localStorage before anything reads it.
 migrate();
 
+// Cloud sync engine — lazy chunk, post-paint, a no-op for guests. It marks
+// every storage write dirty and mirrors signed-in users' data to their
+// account (newest-write-wins per key).
+setTimeout(() => {
+  import("./lib/cloud/sync.js").then((m) => m.startSync()).catch(() => {});
+}, 800);
+
 // When a new deploy's service worker takes control, swap to it in place —
 // otherwise the PWA keeps showing the previous build until a manual refresh.
 if ("serviceWorker" in navigator) {
