@@ -151,9 +151,12 @@ existing perf gates." Interleaved with the remaining phases, each ONE PR:
   achievements; ungranted wishes fade when the week turns — no red, no
   "failed". `lib/quests.js` node-tested. *(Visual half — pet evolutions +
   species, garden seasons/weather — stays with the visual lane.)*
-- **Signature 3D** — 3D garden scene (the WebGL budget's second moment),
-  3D stat heroes, deeper card dimensionality. ogl chunk is already paid for;
-  every scene lazy, DPR-capped, reduced-motion-safe.
+- [x] **Signature 3D** — shipped across #26/#28/#30: Garden3D living
+  diorama on Journey (lazy ogl chunk, SVG fallback) + the Hero3D system
+  (perspective/preserve-3d frames, pointer tilt, tracking glare, floating
+  Z planes) on Today's rings, Journey's pet & level cards, Stats' donut
+  and Money's goal ring; glowing arcs, magnetic log button, FAB light
+  sweep. All fine-pointer-only, reduced-motion-safe, transform/opacity.
 
 ### PR 6 · Themes + nameable pet
 - 3 new palettes — Ocean / Forest / Mono — as `:root[data-theme]` variable
