@@ -11,6 +11,7 @@ import Stats from "./routes/Stats.jsx";
 import Savings from "./routes/Savings.jsx";
 import Journal from "./routes/Journal.jsx";
 import Journey from "./routes/Journey.jsx";
+import Wrapped from "./routes/Wrapped.jsx";
 import Habits from "./routes/Habits.jsx";
 import Settings from "./routes/Settings.jsx";
 import * as storage from "./lib/storage.js";
@@ -115,6 +116,7 @@ function Shell() {
           <Route path="/savings" element={<Savings />} />
           <Route path="/journal" element={<Journal />} />
           <Route path="/journey" element={<Journey />} />
+          <Route path="/wrapped" element={<Wrapped />} />
           <Route path="/habits" element={<Habits />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Today />} />
