@@ -172,6 +172,61 @@
 }
 
 /* ============================================================
+   View transitions (same-document, Baseline since 2025).
+   Screens fly, not teleport: the slide direction follows the nav
+   order (html[data-nav-dir], set by the router shell). The wrapped
+   card morphs into the full-screen story via a shared name.
+   Browsers without support simply swap instantly.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 240ms;
+    animation-timing-function: var(--ease-soft);
+  }
+  html[data-nav-dir="forward"]::view-transition-old(root) {
+    animation-name: vt-out-back;
+  }
+  html[data-nav-dir="forward"]::view-transition-new(root) {
+    animation-name: vt-in-fwd;
+  }
+  html[data-nav-dir="back"]::view-transition-old(root) {
+    animation-name: vt-out-fwd;
+  }
+  html[data-nav-dir="back"]::view-transition-new(root) {
+    animation-name: vt-in-back;
+  }
+  ::view-transition-group(wrapped) {
+    animation-duration: 320ms;
+    animation-timing-function: var(--ease-soft);
+  }
+  /* transform/opacity only — these stay on the compositor */
+  @keyframes vt-out-back {
+    to { opacity: 0; transform: translateX(-28px); }
+  }
+  @keyframes vt-in-fwd {
+    from { opacity: 0; transform: translateX(28px); }
+  }
+  @keyframes vt-out-fwd {
+    to { opacity: 0; transform: translateX(28px); }
+  }
+  @keyframes vt-in-back {
+    from { opacity: 0; transform: translateX(-28px); }
+  }
+}
+
+/* Browsers do NOT auto-skip view transitions under reduced motion —
+   neutralize every pseudo so navigation is an instant swap. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
    Reduced motion: neutralize non-essential animation globally.
    Use 0.01ms (not 0) — some engines treat 0 as falsy.
    ============================================================ */

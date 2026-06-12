@@ -73,6 +73,7 @@ export default function Today() {
         <Link
           to="/settings"
           aria-label="Settings"
+          viewTransition
           className="rounded-lg p-1.5 text-muted hover:text-cream lg:hidden"
         >
           <Settings size={20} />
@@ -128,7 +129,8 @@ export default function Today() {
       {[settings.weekStart, (settings.weekStart + 1) % 7].includes(new Date().getDay()) && (
         <Link
           to="/wrapped"
-          className="block rounded-2xl bg-gradient-to-r from-rose/25 via-surface to-coral/20 p-px"
+          viewTransition
+          className="block rounded-2xl bg-gradient-to-r from-rose/25 via-surface to-coral/20 p-px [view-transition-name:wrapped]"
         >
           <span className="flex items-center justify-between rounded-[15px] bg-surface px-4 py-3">
             <span className="text-sm font-semibold text-cream">Your week, wrapped 🌹</span>
@@ -158,6 +160,7 @@ function SavingsPeek({ savings, settings }) {
   return (
     <Link
       to="/savings"
+      viewTransition
       className="flex items-center justify-between rounded-2xl border border-line bg-surface p-4 transition-colors duration-150 hover:border-sand/40"
     >
       <span className="flex items-center gap-3 text-sm font-medium text-cream">

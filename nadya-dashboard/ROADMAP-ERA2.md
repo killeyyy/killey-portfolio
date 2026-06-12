@@ -16,12 +16,12 @@ greetings, Mawar's name, and the Rosé theme forever.
 |---|---|
 | Today (Era 1) | ~90KB |
 | Motion (CSS `linear()` springs + tilt + press) | +1–3KB |
-| View Transitions (router migration) | ~0KB |
+| View Transitions (router migration) | +14KB measured (data-router runtime) |
 | WebGL ambient (ogl, tree-shaken, **lazy chunk**) | +10–14KB deferred |
 | i18n (hand-rolled t(); `id` locale lazy-loaded) | +1–2KB |
 | Theming (data-theme palettes + FOUC script) | +1KB |
 | Auth+sync (auth-js ~16KB + postgrest-js ~5KB + queue ~3KB, **route-split**) | +8–24KB |
-| **Worst case** | **~135KB** ✓ |
+| **Worst case** | **~145KB** ✓ (tight — prefer plain-fetch auth) |
 
 Re-measure with the real build at every PR; sizes above were verified against
 bundlephobia/bundlejs June 2026. If auth pushes the budget, drop to plain

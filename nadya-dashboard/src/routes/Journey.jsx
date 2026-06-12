@@ -92,7 +92,8 @@ export default function Journey() {
 
           <Link
             to="/wrapped"
-            className="flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-medium text-cream transition-colors duration-150 hover:border-rose/40"
+            viewTransition
+            className="flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3 text-sm font-medium text-cream transition-colors duration-150 hover:border-rose/40 [view-transition-name:wrapped]"
           >
             <span className="flex items-center gap-3">
               <Clapperboard size={18} className="text-rose-bright" aria-hidden="true" />

@@ -13,7 +13,7 @@ export function PageHeader({ title, sub, back = false, action }) {
         {back && (
           <button
             type="button"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(-1, { viewTransition: true })}
             aria-label="Back"
             className="-ml-2 mt-0.5 rounded-lg p-1.5 text-muted hover:text-cream"
           >
@@ -31,6 +31,7 @@ export function PageHeader({ title, sub, back = false, action }) {
         <Link
           to="/settings"
           aria-label="Settings"
+          viewTransition
           className="rounded-lg p-1.5 text-muted hover:text-cream"
         >
           <Settings size={20} />

@@ -16,6 +16,7 @@ function Tab({ to, icon: Icon, label }) {
     <NavLink
       to={to}
       end={to === "/"}
+      viewTransition
       className={({ isActive }) =>
         cn(
           "relative flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-medium",

@@ -344,7 +344,7 @@ export default function Stats() {
         {habitRows.length === 0 ? (
           <p className="text-sm text-muted">
             No habits yet —{" "}
-            <Link to="/habits" className="font-semibold text-rose-bright">
+            <Link to="/habits" viewTransition className="font-semibold text-rose-bright">
               add one
             </Link>
             .
@@ -429,7 +429,7 @@ export default function Stats() {
       )}
 
       <Tile title="Savings this month">
-        <Link to="/savings" className="flex items-center gap-4">
+        <Link to="/savings" viewTransition className="flex items-center gap-4">
           <Ring
             value={monthSavings.goal ? Math.min(100, (monthSavings.saved / monthSavings.goal) * 100) : 0}
             size={84}

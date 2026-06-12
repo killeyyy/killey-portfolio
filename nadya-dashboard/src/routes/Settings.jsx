@@ -145,7 +145,7 @@ export default function Settings() {
       </Tile>
 
       <Tile>
-        <Link to="/habits" className="flex items-center justify-between text-sm font-medium text-cream">
+        <Link to="/habits" viewTransition className="flex items-center justify-between text-sm font-medium text-cream">
           Manage habits
           <ChevronRight size={16} className="text-muted" aria-hidden="true" />
         </Link>
