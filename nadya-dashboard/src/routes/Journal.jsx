@@ -55,8 +55,13 @@ export default function Journal() {
               return (
                 <Tile key={k} className="cursor-pointer" >
                   <button type="button" onClick={() => setEditing(k)} className="w-full text-left">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted">
                       {formatDayLabel(k)}
+                      {e.mood && (
+                        <span className="text-sm" aria-label={`Mood ${e.mood} of 5`}>
+                          {["😞", "😕", "😐", "🙂", "😄"][e.mood - 1]}
+                        </span>
+                      )}
                     </p>
                     {e.highlight && (
                       <p className="mt-1.5 font-serif text-sm italic text-cream">

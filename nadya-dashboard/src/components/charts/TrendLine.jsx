@@ -29,7 +29,7 @@ export function TrendLine({ data = [], height = 48, className = "text-rose" }) {
           <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <path d={area} fill={`url(#${gradId})`} />
+      <path d={area} fill={`url(#${gradId})`} className="animate-fade-in" />
       <polyline
         points={line}
         fill="none"
@@ -38,6 +38,8 @@ export function TrendLine({ data = [], height = 48, className = "text-rose" }) {
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
+        pathLength="1"
+        className="draw-line"
       />
       <circle cx={endX} cy={endY} r="2.5" fill="currentColor" />
     </svg>

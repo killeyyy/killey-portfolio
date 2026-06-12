@@ -9,14 +9,15 @@ export function StackedBars({ days = [], height = 128, onSelect, selectedKey }) 
   return (
     <div>
       <div className="flex items-end gap-1" style={{ height }} aria-hidden="true">
-        {days.map((day) => (
+        {days.map((day, i) => (
           <button
             key={day.key}
             type="button"
             tabIndex={-1}
             onClick={() => onSelect?.(day.key)}
+            style={{ animationDelay: `${Math.min(i * 28, 400)}ms`, transformOrigin: "bottom" }}
             className={cn(
-              "flex h-full flex-1 flex-col-reverse overflow-hidden rounded-t",
+              "flex h-full flex-1 animate-rise flex-col-reverse overflow-hidden rounded-t",
               selectedKey === day.key ? "opacity-100 ring-1 ring-rose-bright/60" : "opacity-90",
             )}
           >
