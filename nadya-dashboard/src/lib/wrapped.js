@@ -1,6 +1,7 @@
 // Weekly Wrapped data — stats for the most recent COMPLETE week.
 // Pure derivation from stored data (reads shards directly, like journey.js).
 import * as activitiesModel from "../models/activities.js";
+import * as storage from "./storage.js";
 import { addDays, monthKeyOf, rangeKeys, todayKey, weekStartKey } from "./dates.js";
 import {
   dailyTotals, habitAdherence, periodTotals, productiveShare,
@@ -58,7 +59,13 @@ export function computeWrapped({ categories, habits, habitLog, journal, savings,
     0,
   );
 
-  let xp = ticks * 10 + journaledDays * 15 + savingsEntries.length * 10;
+  // Wishes granted from that week's quests — their ids embed the week-start
+  // key, so the append-only log slices cleanly per week.
+  const wishesGranted = Object.keys(storage.get("wishes", {})).filter((k) =>
+    k.startsWith(`${start}:`),
+  ).length;
+
+  let xp = ticks * 10 + journaledDays * 15 + savingsEntries.length * 10 + wishesGranted * 25;
   for (const k of dayKeys) {
     for (const e of months[monthKeyOf(k)]?.[k] || []) xp += entryXP(e);
   }
@@ -67,7 +74,7 @@ export function computeWrapped({ categories, habits, habitLog, journal, savings,
     start, end, dayKeys, days, totals, share,
     topCategory, bestDay, champion, ticks,
     moodAvg, gratitudes, journaledDays, loggedDays,
-    saved, savingsCount: savingsEntries.length, xp,
+    saved, savingsCount: savingsEntries.length, wishesGranted, xp,
     hasData: totals.total > 0 || ticks > 0 || journaledDays > 0,
   };
 }

@@ -49,7 +49,7 @@ export async function renderPoster({ name, start, end, persona, stats }) {
   ctx.fillStyle = "#A9989F";
   ctx.font = '500 40px "Figtree", sans-serif';
   ctx.textAlign = "center";
-  ctx.fillText("RUANG NADYA · WEEK WRAPPED", W / 2, 150);
+  ctx.fillText("RUANG · WEEK WRAPPED", W / 2, 150);
   ctx.fillStyle = "#F4EDEA";
   ctx.font = '700 64px "Baloo 2", sans-serif';
   ctx.fillText(`${fmt(start)} – ${fmt(end)}`, W / 2, 240);
