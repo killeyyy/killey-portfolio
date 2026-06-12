@@ -2,10 +2,12 @@
 // write-through actions (state update + persist in the same call).
 // Components never touch models/storage directly — this keeps the
 // persistence seam swappable (cloud sync later) without UI changes.
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import * as activitiesModel from "../models/activities.js";
 import * as habitsModel from "../models/habits.js";
 import * as trackersModel from "../models/trackers.js";
+import * as wishesModel from "../models/wishes.js";
+import { weeklyQuests } from "../lib/quests.js";
 import * as savingsModel from "../models/savings.js";
 import * as journalModel from "../models/journal.js";
 import * as settingsModel from "../models/settings.js";
@@ -28,6 +30,7 @@ export function StoreProvider({ children }) {
   const [savings, setSavingsState] = useState(() => savingsModel.getSavings());
   const [trackers, setTrackersState] = useState(() => trackersModel.getTrackers());
   const [trackerLog, setTrackerLogState] = useState(() => trackersModel.getLog());
+  const [wishes, setWishesState] = useState(() => wishesModel.getWishes());
   const [journal, setJournalState] = useState(() => journalModel.getJournal());
   // Activity shards, loaded lazily: { "YYYY-MM": { "YYYY-MM-DD": [entry] } }
   const [months, setMonthsState] = useState(() => {
@@ -158,6 +161,21 @@ export function StoreProvider({ children }) {
     });
   }, []);
 
+  // ---- garden wishes: auto-grant completed weekly quests (append-only) ----
+  // `months` is only the change signal; quests read shards via storage.
+  useEffect(() => {
+    const quests = weeklyQuests({
+      habits, habitLog, journal, trackers, trackerLog, categories,
+      weekStart: settings.weekStart ?? 1,
+    });
+    const newly = quests.filter((q) => q.done && !wishes[q.id]);
+    if (!newly.length) return;
+    const next = { ...wishes };
+    for (const q of newly) next[q.id] = { at: Date.now(), xp: q.xp };
+    wishesModel.setWishes(next);
+    setWishesState(next);
+  }, [months, habitLog, journal, trackers, trackerLog, habits, categories, settings.weekStart, wishes]);
+
   // ---- savings ----
 
   const setMonthGoal = useCallback((mKey, goal) => {
@@ -247,6 +265,7 @@ export function StoreProvider({ children }) {
       trackerLog,
       saveTrackers,
       setTrackerValue,
+      wishes,
       setMonthGoal,
       upsertSavingsEntry,
       deleteSavingsEntry,
@@ -257,7 +276,7 @@ export function StoreProvider({ children }) {
       timer, startTimer, stopTimer,
       ensureMonths, logActivity, deleteActivity, updateActivity, updateSettings,
       saveCategories, patchMeta, saveHabits, toggleHabitTick,
-      trackers, trackerLog, saveTrackers, setTrackerValue,
+      trackers, trackerLog, saveTrackers, setTrackerValue, wishes,
       setMonthGoal, upsertSavingsEntry, deleteSavingsEntry, saveJournalEntry,
       deleteJournalEntry],
   );

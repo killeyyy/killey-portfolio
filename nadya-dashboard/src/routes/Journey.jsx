@@ -6,6 +6,7 @@ import { Tile } from "../components/ui/Tile.jsx";
 import { CountUp } from "../components/ui/CountUp.jsx";
 import { StreakPet, petCopy, petStage } from "../components/journey/StreakPet.jsx";
 import { Garden } from "../components/journey/Garden.jsx";
+import { Wishes } from "../components/journey/Wishes.jsx";
 import { cn } from "../lib/cn.js";
 import { useStore } from "../store/StoreProvider.jsx";
 import { computeJourney, weeklyGarden } from "../lib/journey.js";
@@ -89,6 +90,9 @@ export default function Journey() {
               Everything you've ever logged counts — activities, habits, journal, savings.
             </p>
           </Tile>
+
+          {/* Garden wishes — gentle weekly quests */}
+          <Wishes />
 
           <Link
             to="/wrapped"

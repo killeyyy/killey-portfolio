@@ -21,6 +21,7 @@ export function buildExport() {
       habitLog: storage.get("habitLog", {}),
       trackers: storage.get("trackers", []),
       trackerLog: storage.get("trackerLog", {}),
+      wishes: storage.get("wishes", {}),
       savings: storage.get("savings", { defaultGoal: 0, months: {} }),
       journal: storage.get("journal", {}),
     },
@@ -70,6 +71,7 @@ export function applyImport(payload) {
   storage.set("habitLog", data.habitLog || {});
   storage.set("trackers", data.trackers || []);
   storage.set("trackerLog", data.trackerLog || {});
+  storage.set("wishes", data.wishes || {});
   storage.set("savings", data.savings || { defaultGoal: 0, months: {} });
   storage.set("journal", data.journal || {});
   // Re-shard the flat activities map by month.
