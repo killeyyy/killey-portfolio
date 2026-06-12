@@ -133,8 +133,14 @@ existing perf gates." Interleaved with the remaining phases, each ONE PR:
   routine/goal templates, pick-and-apply.
 - **Richer stats** — mood×habit correlations, monthly recap, time-of-day
   analysis, trend forecasts.
-- **Journey expansion** — quests/challenges, more achievements, pet
-  evolutions + species, garden seasons/weather.
+- [x] **Journey expansion (data half)** — shipped as **garden wishes**:
+  3 weekly quests derived deterministically from her own data (show-up
+  target = her 4-week rhythm; rotating habit/tracker/category/journal
+  wishes at ~60% of her average — beatable by design). Auto-granted into
+  an append-only `nadya:wishes` log (+25 XP each, in backups), 3 new wish
+  achievements; ungranted wishes fade when the week turns — no red, no
+  "failed". `lib/quests.js` node-tested. *(Visual half — pet evolutions +
+  species, garden seasons/weather — stays with the visual lane.)*
 - **Signature 3D** — 3D garden scene (the WebGL budget's second moment),
   3D stat heroes, deeper card dimensionality. ogl chunk is already paid for;
   every scene lazy, DPR-capped, reduced-motion-safe.
