@@ -1,5 +1,5 @@
-// Tiny WAAPI confetti — no deps, self-cleaning, reduced-motion safe.
-const COLORS = ["#E25C72", "#F2876B", "#DDBC8E", "#7ED4B2", "#B49CE8", "#85B8E3"];
+// Tiny WAAPI confetti — rose petals, no deps, self-cleaning, reduced-motion safe.
+const COLORS = ["#E25C72", "#F78DA3", "#F2876B", "#DDBC8E", "#E25C72", "#F78DA3"];
 
 export function confettiBurst() {
   if (typeof window === "undefined") return;
@@ -9,8 +9,9 @@ export function confettiBurst() {
   document.body.appendChild(host);
   for (let i = 0; i < 28; i++) {
     const piece = document.createElement("span");
-    const size = 6 + Math.random() * 6;
-    piece.style.cssText = `position:absolute;left:50%;top:38%;width:${size}px;height:${size * 0.45}px;background:${COLORS[i % COLORS.length]};border-radius:2px`;
+    const size = 7 + Math.random() * 7;
+    // Asymmetric radius = petal silhouette.
+    piece.style.cssText = `position:absolute;left:50%;top:38%;width:${size}px;height:${size * 0.7}px;background:${COLORS[i % COLORS.length]};border-radius:80% 4px 80% 4px;opacity:0.95`;
     const angle = Math.random() * 2 * Math.PI;
     const dist = 90 + Math.random() * 240;
     const x = Math.cos(angle) * dist;

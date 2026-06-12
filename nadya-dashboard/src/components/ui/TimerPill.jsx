@@ -4,6 +4,7 @@ import { useStore } from "../../store/StoreProvider.jsx";
 import { useToast } from "./Toast.jsx";
 import { todayKey } from "../../lib/dates.js";
 import { formatMinutes } from "../../lib/format.js";
+import { buzz } from "../../lib/celebrate.js";
 
 /** Floating live-timer pill — tap to stop and log the elapsed time. */
 export function TimerPill() {
@@ -29,6 +30,7 @@ export function TimerPill() {
     const minutes = Math.max(1, Math.round((Date.now() - t.startedAt) / 60000));
     const dateKey = todayKey();
     const entry = logActivity({ dateKey, categoryId: t.categoryId, minutes, note: "" });
+    buzz();
     toast.show(`Logged ${cat?.label || "activity"} · ${formatMinutes(minutes)}`, [
       { label: "Undo", onClick: () => deleteActivity(dateKey, entry.id) },
     ]);

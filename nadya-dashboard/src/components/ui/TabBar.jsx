@@ -18,13 +18,24 @@ function Tab({ to, icon: Icon, label }) {
       end={to === "/"}
       className={({ isActive }) =>
         cn(
-          "flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-medium",
+          "relative flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-medium",
           isActive ? "text-rose-bright" : "text-muted",
         )
       }
     >
-      <Icon size={20} aria-hidden="true" />
-      {label}
+      {({ isActive }) => (
+        <>
+          <Icon size={20} aria-hidden="true" className={isActive ? "animate-pop" : undefined} />
+          {label}
+          <span
+            aria-hidden="true"
+            className={cn(
+              "absolute -bottom-0.5 h-1 w-1 rounded-full bg-rose-bright transition-opacity",
+              isActive ? "animate-pop opacity-100" : "opacity-0",
+            )}
+          />
+        </>
+      )}
     </NavLink>
   );
 }
@@ -41,17 +52,24 @@ export function TabBar({ onPlus }) {
           <Tab key={t.to} {...t} />
         ))}
         <div className="flex flex-1 items-center justify-center">
-          <button
-            type="button"
-            onClick={onPlus}
-            aria-label="Log an activity"
-            className={cn(
-              "-mt-5 grid h-14 w-14 place-items-center rounded-full bg-rose text-ink",
-              "shadow-lg shadow-rose/30 transition-transform duration-150 active:scale-95",
-            )}
-          >
-            <Plus size={26} strokeWidth={2.5} aria-hidden="true" />
-          </button>
+          <span className="relative -mt-5 grid place-items-center">
+            <span
+              aria-hidden="true"
+              className="absolute h-14 w-14 animate-halo rounded-full bg-rose/60"
+            />
+            <button
+              type="button"
+              onClick={onPlus}
+              aria-label="Log an activity"
+              className={cn(
+                "relative grid h-14 w-14 place-items-center rounded-full text-ink",
+                "bg-gradient-to-br from-rose to-coral",
+                "shadow-lg shadow-rose/30 transition-transform duration-150 active:scale-90",
+              )}
+            >
+              <Plus size={26} strokeWidth={2.5} aria-hidden="true" />
+            </button>
+          </span>
         </div>
         {RIGHT.map((t) => (
           <Tab key={t.to} {...t} />

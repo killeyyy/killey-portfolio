@@ -12,12 +12,15 @@ import { useStore } from "../store/StoreProvider.jsx";
 import { monthKey, todayKey } from "../lib/dates.js";
 import { formatFullDate, formatMinutes, formatMoney } from "../lib/format.js";
 import { dailyTotals, productiveShare, savingsForMonth } from "../lib/insights.js";
+import { computeJourney } from "../lib/journey.js";
 
+// The greeting's gradient follows her clock — dawn sands, warm noons,
+// rose dusks, lavender nights.
 function greeting(h = new Date().getHours()) {
-  if (h >= 4 && h < 11) return "Selamat pagi";
-  if (h >= 11 && h < 15) return "Selamat siang";
-  if (h >= 15 && h < 18) return "Selamat sore";
-  return "Selamat malam";
+  if (h >= 4 && h < 11) return { label: "Selamat pagi", grad: ["#F78DA3", "#DDBC8E"] };
+  if (h >= 11 && h < 15) return { label: "Selamat siang", grad: ["#F2876B", "#DDBC8E"] };
+  if (h >= 15 && h < 18) return { label: "Selamat sore", grad: ["#F2876B", "#F78DA3"] };
+  return { label: "Selamat malam", grad: ["#B49CE8", "#F78DA3"] };
 }
 
 export default function Today() {
@@ -29,6 +32,16 @@ export default function Today() {
     const [day] = dailyTotals(months, [today], categories);
     return { ...day, share: productiveShare(day) };
   }, [months, today, categories]);
+
+  const streak = useMemo(
+    () =>
+      computeJourney({
+        habits, habitLog, journal, savings,
+        dailyTarget: target, categories,
+      }).streak,
+    [habits, habitLog, journal, savings, target, categories, months],
+  );
+  const { label: hello, grad } = greeting();
 
   const activeHabits = habits.filter((h) => !h.archivedAt);
   const habitsDone = (habitLog[today] || []).filter((id) =>
@@ -44,9 +57,18 @@ export default function Today() {
       <header className="flex items-start justify-between gap-3">
         <div>
           <h1 className="font-serif text-2xl font-bold text-cream lg:text-3xl">
-            {greeting()}, <span className="text-gradient-warm">{settings.name}</span>
+            {hello},{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: `linear-gradient(100deg, ${grad[0]}, ${grad[1]})` }}
+            >
+              {settings.name}
+            </span>
           </h1>
-          <p className="mt-0.5 text-sm text-muted">{formatFullDate()}</p>
+          <p className="mt-0.5 text-sm text-muted">
+            {formatFullDate()}
+            {streak >= 2 && <span className="text-coral"> · {streak} hari beruntun 🔥</span>}
+          </p>
         </div>
         <Link
           to="/settings"
@@ -58,7 +80,7 @@ export default function Today() {
       </header>
 
       {/* Daily rings hero */}
-      <Tile className="animate-fade-up lg:p-6">
+      <Tile glow className="animate-fade-up lg:p-6">
         <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-between">
           <div className="text-center sm:text-left">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">Logged today</p>
@@ -78,7 +100,7 @@ export default function Today() {
               value={target ? Math.min(100, (summary.productive / target) * 100) : 0}
               size={84}
               stroke={8}
-              className="text-rose"
+              gradient
               label={formatMinutes(summary.productive)}
               sub={`of ${formatMinutes(target)}`}
             />

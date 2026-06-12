@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Tile } from "../ui/Tile.jsx";
+import { Flourish } from "../ui/Flourish.jsx";
 import { Sheet } from "../ui/Sheet.jsx";
 import { Chip } from "../ui/Chip.jsx";
 import { Field, TextInput, NumberStepper } from "../ui/Field.jsx";
@@ -23,10 +24,13 @@ export function ActivityList() {
   return (
     <Tile title="Today's activities">
       {entries.length === 0 ? (
-        <p className="text-sm text-muted">
-          Nothing logged yet — tap the <span className="font-semibold text-rose-bright">+</span> below
-          when you finish something.
-        </p>
+        <div className="py-3 text-center">
+          <Flourish />
+          <p className="text-sm text-muted">
+            A fresh page — tap <span className="font-semibold text-rose-bright">+</span> when you
+            finish something today.
+          </p>
+        </div>
       ) : (
         <ul className="divide-y divide-line/60">
           {entries.map((e) => {

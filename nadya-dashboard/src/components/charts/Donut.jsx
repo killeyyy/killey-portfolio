@@ -23,8 +23,11 @@ export function Donut({ slices = [], size = 150, thickness = 16, centerLabel, ce
         />
         {slices.map((s, i) => {
           const frac = s.value / total;
-          const dash = frac * c;
-          const offset = -acc * c;
+          // Rounded caps with a small gap between slices (skip the gap when
+          // a slice is too thin to survive it).
+          const gap = slices.length > 1 ? Math.min(3, (frac * c) / 3) : 0;
+          const dash = Math.max(frac * c - gap, 0.5);
+          const offset = -(acc * c + gap / 2);
           acc += frac;
           return (
             <circle
@@ -35,6 +38,7 @@ export function Donut({ slices = [], size = 150, thickness = 16, centerLabel, ce
               fill="none"
               stroke={s.hex}
               strokeWidth={thickness}
+              strokeLinecap={gap > 1 ? "round" : "butt"}
               strokeDasharray={`${dash} ${c - dash}`}
               strokeDashoffset={offset}
             />

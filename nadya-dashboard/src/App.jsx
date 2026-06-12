@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { StoreProvider, useStore } from "./store/StoreProvider.jsx";
 import { ToastProvider, useToast } from "./components/ui/Toast.jsx";
 import { TabBar } from "./components/ui/TabBar.jsx";
@@ -16,6 +16,7 @@ import Settings from "./routes/Settings.jsx";
 import * as storage from "./lib/storage.js";
 import { computeJourney } from "./lib/journey.js";
 import { confettiBurst } from "./lib/confetti.js";
+import { levelUpMoment } from "./lib/celebrate.js";
 
 export default function App() {
   return (
@@ -62,8 +63,9 @@ function JourneyWatcher() {
     }
     const newAch = j.achievements.filter((a) => a.earned && !seen.ach.includes(a.id));
     if (j.levelIndex > seen.level) {
-      confettiBurst();
-      toast.show(`Level up! Level ${j.levelIndex + 1} — ${j.levelName} 🌹`);
+      if (!levelUpMoment(`Level ${j.levelIndex + 1}`, j.levelName)) {
+        toast.show(`Level up! Level ${j.levelIndex + 1} — ${j.levelName} 🌹`);
+      }
     } else if (newAch.length) {
       confettiBurst();
       toast.show(`Achievement unlocked: ${newAch[0].emoji} ${newAch[0].title}`);
@@ -81,6 +83,7 @@ function JourneyWatcher() {
 function Shell() {
   const [logOpen, setLogOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Desktop shortcuts: L = quick log, 1–5 = navigate. Never while typing.
   useEffect(() => {
@@ -104,6 +107,8 @@ function Shell() {
       <Ambient />
       <Sidebar onPlus={() => setLogOpen(true)} />
       <main className="mx-auto w-full max-w-md px-4 pb-32 pt-5 lg:max-w-5xl lg:px-10 lg:pb-16 lg:pt-10">
+        {/* keyed wrapper = every screen arrives with a soft rise */}
+        <div key={location.pathname} className="animate-route-in">
         <Routes>
           <Route path="/" element={<Today />} />
           <Route path="/stats" element={<Stats />} />
@@ -114,6 +119,7 @@ function Shell() {
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Today />} />
         </Routes>
+        </div>
       </main>
       <JourneyWatcher />
       <TimerPill />

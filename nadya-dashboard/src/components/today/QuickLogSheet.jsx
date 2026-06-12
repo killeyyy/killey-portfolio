@@ -11,6 +11,7 @@ import {
   addDays, isSmallHours, monthKey, monthKeyOf, rangeKeys, todayKey, yesterdayKey,
 } from "../../lib/dates.js";
 import { entriesForDay } from "../../lib/insights.js";
+import { buzz } from "../../lib/celebrate.js";
 
 /**
  * The fast path: tap a category, tap a duration → entry commits immediately.
@@ -62,6 +63,7 @@ export function QuickLogSheet({ open, onClose }) {
     if (!category || !minutes) return;
     const dateKey = asYesterday ? yesterdayKey() : todayKey();
     const entry = logActivity({ dateKey, categoryId, minutes, note: note.trim() });
+    buzz();
     onClose();
     toast.show(`Logged ${category.label} · ${formatMinutes(minutes)}`, [
       { label: "Undo", onClick: () => deleteActivity(dateKey, entry.id) },

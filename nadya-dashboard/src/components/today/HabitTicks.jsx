@@ -7,6 +7,7 @@ import { useStore } from "../../store/StoreProvider.jsx";
 import { todayKey } from "../../lib/dates.js";
 import { habitStreaks } from "../../lib/insights.js";
 import { confettiBurst } from "../../lib/confetti.js";
+import { buzz } from "../../lib/celebrate.js";
 
 const MILESTONES = new Set([3, 7, 14, 30, 50, 100, 365]);
 
@@ -22,6 +23,7 @@ export function HabitTicks() {
     const wasDone = tickedToday.includes(h.id);
     toggleHabitTick(today, h.id);
     if (wasDone) return;
+    buzz();
     // Celebrate with the tick applied (state lands next render).
     const nextLog = { ...habitLog, [today]: [...tickedToday, h.id] };
     const { current } = habitStreaks(nextLog, h.id, today);

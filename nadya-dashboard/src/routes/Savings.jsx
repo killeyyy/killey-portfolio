@@ -61,7 +61,7 @@ export default function Savings() {
         </button>
       </div>
 
-      <Tile>
+      <Tile glow>
         <div className="flex items-center gap-4">
           <Ring value={pct} size={110} className={pct >= 100 ? "text-mint" : "text-sand"} />
           <div className="min-w-0 flex-1">

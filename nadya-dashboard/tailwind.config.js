@@ -62,6 +62,19 @@ export default {
           from: { transform: "scaleY(0)" },
           to: { transform: "scaleY(1)" },
         },
+        "route-in": {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        halo: {
+          "0%": { transform: "scale(1)", opacity: "0.35" },
+          "100%": { transform: "scale(1.6)", opacity: "0" },
+        },
+        "spring-in": {
+          "0%": { opacity: "0", transform: "scale(0.6)" },
+          "60%": { opacity: "1", transform: "scale(1.06)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
       },
       animation: {
         "sheet-up": "sheet-up 240ms cubic-bezier(0.22,1,0.36,1) both",
@@ -71,6 +84,9 @@ export default {
         "modal-in": "modal-in 200ms cubic-bezier(0.22,1,0.36,1) both",
         "fade-up": "fade-up 480ms cubic-bezier(0.22,1,0.36,1) both",
         rise: "rise 600ms cubic-bezier(0.22,1,0.36,1) both",
+        "route-in": "route-in 240ms cubic-bezier(0.22,1,0.36,1) both",
+        halo: "halo 2.6s ease-out infinite",
+        "spring-in": "spring-in 360ms cubic-bezier(0.22,1,0.36,1) both",
       },
     },
   },
