@@ -3,10 +3,11 @@
 // sync engine (lib/cloud/sync.js) can mark keys dirty. Callers never change.
 const PREFIX = "nadya:";
 
-let writeHook = null;
-/** Registered once by the sync engine; receives (key, removed). */
+const writeHooks = new Set();
+/** Register a write observer; receives (key, removed). Multiple allowed —
+ * the sync engine marks dirty, the activities model invalidates its cache. */
 export function _setWriteHook(fn) {
-  writeHook = fn;
+  writeHooks.add(fn);
 }
 
 export function get(key, fallback = null) {
@@ -23,7 +24,7 @@ export function set(key, value) {
   try {
     if (typeof window === "undefined") return;
     window.localStorage.setItem(PREFIX + key, JSON.stringify(value));
-    writeHook?.(key, false);
+    for (const fn of writeHooks) fn(key, false);
   } catch {
     /* quota/private mode — fail silent */
   }
@@ -33,7 +34,7 @@ export function remove(key) {
   try {
     if (typeof window === "undefined") return;
     window.localStorage.removeItem(PREFIX + key);
-    writeHook?.(key, true);
+    for (const fn of writeHooks) fn(key, true);
   } catch {
     /* noop */
   }

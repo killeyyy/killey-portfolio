@@ -6,12 +6,26 @@ import { monthKeyOf } from "../lib/dates.js";
 
 const shardKey = (mKey) => `act:${mKey}`;
 
+// Parsed-shard cache: journey/quests/wrapped re-read every shard per compute,
+// so repeated JSON.parse dominates as history grows. ANY storage write to an
+// act:* key (here, sync pull, backup import) invalidates via the write hook —
+// coherent by construction. Shards are immutable-by-convention: callers
+// always build new objects (addEntry/removeEntry), never mutate in place.
+const cache = new Map();
+storage._setWriteHook((key) => {
+  if (key.startsWith("act:")) cache.delete(key.slice(4));
+});
+
 export function getMonth(mKey) {
-  return storage.get(shardKey(mKey), {});
+  if (cache.has(mKey)) return cache.get(mKey);
+  const shard = storage.get(shardKey(mKey), {});
+  cache.set(mKey, shard);
+  return shard;
 }
 
 export function setMonth(mKey, shard) {
-  storage.set(shardKey(mKey), shard);
+  storage.set(shardKey(mKey), shard); // hook clears the stale entry first
+  cache.set(mKey, shard);
 }
 
 /** Returns the updated shard for the entry's month. */

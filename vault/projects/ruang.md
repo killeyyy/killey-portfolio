@@ -1,6 +1,6 @@
 # Ruang — your quiet space
 
-**Status:** live · monetization armed, waiting on owner steps
+**Status:** fully live (Era 2 + 2.5 + sync + revenue rails, ~22 PRs on 2026-06-12) · waiting on owner steps
 **Live:** https://ruang-nadya.vercel.app (`/welcome` landing · `/privacy`)
 **Repo:** `nadya-dashboard/` in killey-portfolio · own Vercel project
 **Backend:** Supabase `ruang` (`vuyexsgqemslttivlzoy`, ap-southeast-1, free)
