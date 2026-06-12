@@ -5,6 +5,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import * as activitiesModel from "../models/activities.js";
 import * as habitsModel from "../models/habits.js";
+import * as trackersModel from "../models/trackers.js";
 import * as savingsModel from "../models/savings.js";
 import * as journalModel from "../models/journal.js";
 import * as settingsModel from "../models/settings.js";
@@ -25,6 +26,8 @@ export function StoreProvider({ children }) {
   const [habits, setHabitsState] = useState(() => habitsModel.getHabits());
   const [habitLog, setHabitLogState] = useState(() => habitsModel.getLog());
   const [savings, setSavingsState] = useState(() => savingsModel.getSavings());
+  const [trackers, setTrackersState] = useState(() => trackersModel.getTrackers());
+  const [trackerLog, setTrackerLogState] = useState(() => trackersModel.getLog());
   const [journal, setJournalState] = useState(() => journalModel.getJournal());
   // Activity shards, loaded lazily: { "YYYY-MM": { "YYYY-MM-DD": [entry] } }
   const [months, setMonthsState] = useState(() => {
@@ -45,8 +48,11 @@ export function StoreProvider({ children }) {
 
   // ---- activities ----
 
-  const logActivity = useCallback(({ dateKey, categoryId, minutes, note = "" }) => {
-    const entry = { id: uid(), categoryId, minutes, note, at: Date.now() };
+  const logActivity = useCallback(({ dateKey, categoryId, minutes, note = "", tags = [] }) => {
+    const entry = {
+      id: uid(), categoryId, minutes, note, at: Date.now(),
+      ...(tags.length ? { tags } : {}),
+    };
     const shard = activitiesModel.addEntry(dateKey, entry);
     setMonthsState((prev) => ({ ...prev, [monthKeyOf(dateKey)]: shard }));
     return entry;
@@ -126,6 +132,28 @@ export function StoreProvider({ children }) {
       if (nextDay.length) next[dateKey] = nextDay;
       else delete next[dateKey];
       habitsModel.setLog(next);
+      return next;
+    });
+  }, []);
+
+  // ---- trackers (Tend) ----
+
+  const saveTrackers = useCallback((next) => {
+    trackersModel.setTrackers(next);
+    setTrackersState(next);
+  }, []);
+
+  /** Absolute value for the day; ≤0 clears that tracker's entry. */
+  const setTrackerValue = useCallback((dateKey, trackerId, value) => {
+    setTrackerLogState((prev) => {
+      const day = { ...(prev[dateKey] || {}) };
+      const v = Math.max(0, Math.round(value));
+      if (v > 0) day[trackerId] = v;
+      else delete day[trackerId];
+      const next = { ...prev };
+      if (Object.keys(day).length) next[dateKey] = day;
+      else delete next[dateKey];
+      trackersModel.setLog(next);
       return next;
     });
   }, []);
@@ -215,6 +243,10 @@ export function StoreProvider({ children }) {
       patchMeta,
       saveHabits,
       toggleHabitTick,
+      trackers,
+      trackerLog,
+      saveTrackers,
+      setTrackerValue,
       setMonthGoal,
       upsertSavingsEntry,
       deleteSavingsEntry,
@@ -225,6 +257,7 @@ export function StoreProvider({ children }) {
       timer, startTimer, stopTimer,
       ensureMonths, logActivity, deleteActivity, updateActivity, updateSettings,
       saveCategories, patchMeta, saveHabits, toggleHabitTick,
+      trackers, trackerLog, saveTrackers, setTrackerValue,
       setMonthGoal, upsertSavingsEntry, deleteSavingsEntry, saveJournalEntry,
       deleteJournalEntry],
   );

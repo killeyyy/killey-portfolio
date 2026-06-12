@@ -4,6 +4,7 @@ import { Flourish } from "../ui/Flourish.jsx";
 import { Sheet } from "../ui/Sheet.jsx";
 import { Chip } from "../ui/Chip.jsx";
 import { Field, TextInput, NumberStepper } from "../ui/Field.jsx";
+import { TagInput } from "../ui/TagInput.jsx";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { COLOR_META } from "../../data/defaults.js";
 import { formatMinutes, formatTime } from "../../lib/format.js";
@@ -49,6 +50,18 @@ export function ActivityList() {
                   <span className="min-w-0 flex-1">
                     <span className="block text-sm font-medium text-cream">{cat?.label || "—"}</span>
                     {e.note && <span className="block truncate text-xs text-muted">{e.note}</span>}
+                    {e.tags?.length > 0 && (
+                      <span className="mt-0.5 flex flex-wrap gap-1">
+                        {e.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] text-muted"
+                          >
+                            #{t}
+                          </span>
+                        ))}
+                      </span>
+                    )}
                   </span>
                   <span className="shrink-0 text-right">
                     <span className="block text-sm font-semibold tabular-nums text-cream">
@@ -87,6 +100,7 @@ function EditSheet({ entry, dateKey, categories, onClose, onSave, onDelete }) {
   const [categoryId, setCategoryId] = useState(entry.categoryId);
   const [minutes, setMinutes] = useState(entry.minutes);
   const [note, setNote] = useState(entry.note || "");
+  const [tags, setTags] = useState(entry.tags || []);
   const [date, setDate] = useState(dateKey);
 
   return (
@@ -109,6 +123,9 @@ function EditSheet({ entry, dateKey, categories, onClose, onSave, onDelete }) {
         <Field label="Note">
           <TextInput value={note} onChange={(e) => setNote(e.target.value)} maxLength={120} />
         </Field>
+        <Field label="Tags">
+          <TagInput tags={tags} onChange={setTags} />
+        </Field>
         <Field label="Date" hint="Move it if you logged on the wrong day.">
           <TextInput type="date" value={date} max={todayKey()} onChange={(e) => setDate(e.target.value)} />
         </Field>
@@ -123,7 +140,12 @@ function EditSheet({ entry, dateKey, categories, onClose, onSave, onDelete }) {
           <button
             type="button"
             onClick={() =>
-              onSave({ categoryId, minutes, note: note.trim(), dateKey: date || dateKey })
+              // `undefined` drops the key in storage (JSON omits it) — clears old tags.
+              onSave({
+                categoryId, minutes, note: note.trim(),
+                tags: tags.length ? tags : undefined,
+                dateKey: date || dateKey,
+              })
             }
             className="flex-[2] rounded-xl bg-rose py-2.5 text-sm font-semibold text-ink active:scale-95"
           >
