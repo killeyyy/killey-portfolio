@@ -6,6 +6,7 @@ import { TabBar } from "./components/ui/TabBar.jsx";
 import { Sidebar } from "./components/ui/Sidebar.jsx";
 import { QuickLogSheet } from "./components/today/QuickLogSheet.jsx";
 import { TimerPill } from "./components/ui/TimerPill.jsx";
+import { Onboarding } from "./components/onboarding/Onboarding.jsx";
 import Today from "./routes/Today.jsx";
 import Stats from "./routes/Stats.jsx";
 import Savings from "./routes/Savings.jsx";
@@ -81,8 +82,21 @@ function JourneyWatcher() {
   return null;
 }
 
+// First run only: brand-new profile (nothing logged anywhere) → welcome flow.
+// Existing users get the flag set silently and never see it.
+function freshProfile() {
+  if (storage.get("onboarded")) return false;
+  const fresh =
+    storage.listKeys("act:").length === 0 &&
+    storage.get("habits", []).length === 0 &&
+    Object.keys(storage.get("journal", {})).length === 0;
+  if (!fresh) storage.set("onboarded", true);
+  return fresh;
+}
+
 function Shell() {
   const [logOpen, setLogOpen] = useState(false);
+  const [onboarding, setOnboarding] = useState(freshProfile);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -125,6 +139,14 @@ function Shell() {
       </main>
       <JourneyWatcher />
       <TimerPill />
+      {onboarding && (
+        <Onboarding
+          onDone={() => {
+            storage.set("onboarded", true);
+            setOnboarding(false);
+          }}
+        />
+      )}
       <div className="lg:hidden">
         <TabBar onPlus={() => setLogOpen(true)} />
       </div>
