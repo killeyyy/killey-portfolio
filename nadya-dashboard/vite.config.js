@@ -11,9 +11,9 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "icons/apple-touch-icon.png"],
       manifest: {
-        name: "Ruang Nadya",
-        short_name: "Nadya",
-        description: "Nadya's personal space — activities, habits, savings & journal.",
+        name: "Ruang — your quiet space",
+        short_name: "Ruang",
+        description: "Your quiet space — activities, habits, savings & journal.",
         display: "standalone",
         start_url: "/",
         background_color: "#0F0B0D",

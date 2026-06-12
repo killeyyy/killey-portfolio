@@ -17,10 +17,10 @@ import { computeJourney } from "../lib/journey.js";
 // The greeting's gradient follows her clock — dawn sands, warm noons,
 // rose dusks, lavender nights.
 function greeting(h = new Date().getHours()) {
-  if (h >= 4 && h < 11) return { label: "Selamat pagi", grad: ["#F78DA3", "#DDBC8E"] };
-  if (h >= 11 && h < 15) return { label: "Selamat siang", grad: ["#F2876B", "#DDBC8E"] };
-  if (h >= 15 && h < 18) return { label: "Selamat sore", grad: ["#F2876B", "#F78DA3"] };
-  return { label: "Selamat malam", grad: ["#B49CE8", "#F78DA3"] };
+  if (h >= 4 && h < 11) return { label: "Good morning", grad: ["#F78DA3", "#DDBC8E"] };
+  if (h >= 11 && h < 15) return { label: "Good afternoon", grad: ["#F2876B", "#DDBC8E"] };
+  if (h >= 15 && h < 18) return { label: "Good evening", grad: ["#F2876B", "#F78DA3"] };
+  return { label: "Good night", grad: ["#B49CE8", "#F78DA3"] };
 }
 
 export default function Today() {
@@ -57,7 +57,8 @@ export default function Today() {
       <header className="flex items-start justify-between gap-3">
         <div>
           <h1 className="font-serif text-2xl font-bold text-cream lg:text-3xl">
-            {hello},{" "}
+            {hello}
+            {settings.name ? ", " : ""}
             <span
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: `linear-gradient(100deg, ${grad[0]}, ${grad[1]})` }}
@@ -67,7 +68,7 @@ export default function Today() {
           </h1>
           <p className="mt-0.5 text-sm text-muted">
             {formatFullDate()}
-            {streak >= 2 && <span className="text-coral"> · {streak} hari beruntun 🔥</span>}
+            {streak >= 2 && <span className="text-coral"> · {streak}-day streak 🔥</span>}
           </p>
         </div>
         <Link

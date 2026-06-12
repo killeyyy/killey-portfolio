@@ -108,19 +108,31 @@ garden — pick after prototyping both, ship one.
 
 ## Phase 2 — Identity: Ruang for everyone, legacy for Nadya
 
-### PR 5 · i18n layer + generic rebrand + `legacyLove`
-- Hand-rolled t(): ~1KB context + `{var}` interpolation; en inline, id via
-  `import('./locales/id.json')` (Vite auto-splits). No i18next (~21KB for two
-  locales is indefensible; Indonesian has no plural inflection — CLDR "other"
-  only — so ICU machinery buys nothing). Revisit Lingui only if locale #3
-  with plurals lands.
-- ALL copy through the layer. Brand: "Ruang — your quiet space". en default;
-  id selectable in Settings (`navigator.language` seeds the default).
-- `legacyLove` migration flag: existing installs with data and no locale pref
-  → `legacyLove: true` → Indonesian strings, "Mawar", Rosé theme, identical
-  copy. Snapshot-test her exact greeting strings so regressions fail CI.
-- **Accept:** build green; node tests for t()/locale fallback/legacy
-  migration; Nadya's install byte-identical in copy; bundle delta ≤2KB.
+### PR 5 · English-only copy pass + Ruang rebrand
+> Direction change (owner, 2026-06-12): English for EVERYONE, including
+> Nadya's install — the i18n layer and `legacyLove` are dropped entirely.
+- Every Indonesian string → English (greetings, onboarding, wrapped CTA,
+  streak copy). Brand: "Ruang — your quiet space" (title, manifest, wordmark,
+  about, backup error).
+- New-user default name becomes empty (greeting gracefully omits it);
+  onboarding no longer falls back to "Nadya".
+- **Accept:** build green; zero Indonesian strings in src/; PWA manifest
+  reads "Ruang".
+
+### Era 2.5 — continuous feature & visual expansion (owner, 2026-06-12)
+"More features, visuals, depth, tracking — signature 3D moments within the
+existing perf gates." Interleaved with the remaining phases, each ONE PR:
+- **Deeper tracking** — custom trackers (sleep/water/anything), per-entry
+  tags/notes, per-category goals, week targets.
+- **Templates & packs** — starter habit packs, journal prompt templates,
+  routine/goal templates, pick-and-apply.
+- **Richer stats** — mood×habit correlations, monthly recap, time-of-day
+  analysis, trend forecasts.
+- **Journey expansion** — quests/challenges, more achievements, pet
+  evolutions + species, garden seasons/weather.
+- **Signature 3D** — 3D garden scene (the WebGL budget's second moment),
+  3D stat heroes, deeper card dimensionality. ogl chunk is already paid for;
+  every scene lazy, DPR-capped, reduced-motion-safe.
 
 ### PR 6 · Themes + nameable pet
 - 3 new palettes — Ocean / Forest / Mono — as `:root[data-theme]` variable
@@ -229,7 +241,8 @@ garden — pick after prototyping both, ship one.
 2. Every screen has one "how is this a web app?" moment.
 3. Works fully offline; syncs invisibly when signed in; guest mode never nags.
 4. A stranger can install it, name their pet, pick theme + language.
-5. Nadya's install untouched: same garden, same Mawar, same Indonesian mornings.
+5. Nadya's data and rituals untouched: same garden, same Mawar, same streaks
+   (language is now English for everyone — owner's call, 2026-06-12).
 
 ---
 

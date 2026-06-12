@@ -189,7 +189,7 @@ export default function Settings() {
         Tip: open the browser menu and <span className="font-semibold">Add to Home Screen</span> —
         it feels like a real app and keeps your data safer.
         <br />
-        Ruang Nadya v{APP_VERSION}
+        Ruang v{APP_VERSION}
       </p>
 
       {catSheet && (

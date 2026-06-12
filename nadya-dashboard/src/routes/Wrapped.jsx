@@ -236,7 +236,7 @@ export default function Wrapped() {
             }}
             className="mx-auto rounded-xl px-6 py-2 text-sm font-semibold text-muted"
           >
-            Mulai minggu baru →
+            Start the new week →
           </button>
         </Payoff>
       </div>,
