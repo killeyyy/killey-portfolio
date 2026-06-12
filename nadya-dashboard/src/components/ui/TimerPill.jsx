@@ -41,7 +41,7 @@ export function TimerPill() {
       type="button"
       onClick={stop}
       aria-label={`Stop timer for ${cat?.label || "activity"}`}
-      className="glow-rose fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border border-rose/50 bg-surface2 px-4 py-2 text-sm font-semibold text-cream shadow-lg lg:bottom-auto lg:left-auto lg:right-8 lg:top-6 lg:translate-x-0"
+      className="glow-rose glass fixed bottom-[calc(8.75rem+env(safe-area-inset-bottom))] left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border border-rose/50 bg-surface2/85 px-4 py-2 text-sm font-semibold text-cream shadow-lg lg:bottom-auto lg:left-auto lg:right-8 lg:top-6 lg:translate-x-0"
     >
       <span className="h-2 w-2 animate-pulse rounded-full bg-rose" aria-hidden="true" />
       {cat?.label} · <span className="tabular-nums">{mm}:{String(ss).padStart(2, "0")}</span>
