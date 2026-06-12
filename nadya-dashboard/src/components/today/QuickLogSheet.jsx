@@ -3,6 +3,7 @@ import { History, Play } from "lucide-react";
 import { Sheet } from "../ui/Sheet.jsx";
 import { Chip } from "../ui/Chip.jsx";
 import { TextInput, NumberStepper } from "../ui/Field.jsx";
+import { TagInput } from "../ui/TagInput.jsx";
 import { useToast } from "../ui/Toast.jsx";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { COLOR_META, DURATION_PRESETS } from "../../data/defaults.js";
@@ -11,6 +12,7 @@ import {
   addDays, isSmallHours, monthKey, monthKeyOf, rangeKeys, todayKey, yesterdayKey,
 } from "../../lib/dates.js";
 import { entriesForDay } from "../../lib/insights.js";
+import { recentTags } from "../../lib/tend.js";
 import { buzz } from "../../lib/celebrate.js";
 
 /**
@@ -24,6 +26,7 @@ export function QuickLogSheet({ open, onClose }) {
   const [selectedCat, setSelectedCat] = useState(null);
   const [customMinutes, setCustomMinutes] = useState(30);
   const [note, setNote] = useState("");
+  const [tags, setTags] = useState([]);
   const [asYesterday, setAsYesterday] = useState(false);
 
   // Frequency ordering + repeat-last need the last 14 days of entries.
@@ -33,6 +36,7 @@ export function QuickLogSheet({ open, onClose }) {
   }, [open, ensureMonths, last14]);
 
   const active = useMemo(() => categories.filter((c) => !c.archived), [categories]);
+  const tagSuggestions = useMemo(() => recentTags(months, last14), [months, last14]);
 
   // Categories ordered by 14-day usage; unused ones keep their default order.
   const ordered = useMemo(() => {
@@ -53,6 +57,7 @@ export function QuickLogSheet({ open, onClose }) {
     if (!open) return;
     setSelectedCat(ordered.last?.categoryId || ordered.sorted[0]?.id || null);
     setNote("");
+    setTags([]);
     setAsYesterday(false);
     setCustomMinutes(30);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,7 +67,7 @@ export function QuickLogSheet({ open, onClose }) {
     const category = active.find((c) => c.id === categoryId);
     if (!category || !minutes) return;
     const dateKey = asYesterday ? yesterdayKey() : todayKey();
-    const entry = logActivity({ dateKey, categoryId, minutes, note: note.trim() });
+    const entry = logActivity({ dateKey, categoryId, minutes, note: note.trim(), tags });
     buzz();
     onClose();
     toast.show(`Logged ${category.label} · ${formatMinutes(minutes)}`, [
@@ -146,6 +151,8 @@ export function QuickLogSheet({ open, onClose }) {
           placeholder="Note (optional)"
           maxLength={120}
         />
+
+        <TagInput tags={tags} onChange={setTags} suggestions={tagSuggestions} />
 
         {isSmallHours() && (
           <Chip selected={asYesterday} onClick={() => setAsYesterday((v) => !v)} className="w-full justify-center">

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
-  BarChart3, Flame, Home, NotebookPen, PiggyBank, Plus, Repeat, Settings, Sprout,
+  BarChart3, Droplets, Flame, Home, NotebookPen, PiggyBank, Plus, Repeat, Settings, Sprout,
 } from "lucide-react";
 import { cn } from "../../lib/cn.js";
 import { useStore } from "../../store/StoreProvider.jsx";
@@ -14,6 +14,7 @@ const NAV = [
   { to: "/savings", icon: PiggyBank, label: "Savings" },
   { to: "/journal", icon: NotebookPen, label: "Journal" },
   { to: "/habits", icon: Repeat, label: "Habits" },
+  { to: "/tend", icon: Droplets, label: "Tend" },
   { to: "/settings", icon: Settings, label: "Settings" },
 ];
 

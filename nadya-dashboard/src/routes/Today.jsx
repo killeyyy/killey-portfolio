@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, PiggyBank, Settings } from "lucide-react";
+import { ChevronRight, Droplets, PiggyBank, Settings } from "lucide-react";
 import { Tile } from "../components/ui/Tile.jsx";
 import { CountUp } from "../components/ui/CountUp.jsx";
 import { Ring } from "../components/charts/Ring.jsx";
@@ -13,6 +13,7 @@ import { monthKey, todayKey } from "../lib/dates.js";
 import { formatFullDate, formatMinutes, formatMoney } from "../lib/format.js";
 import { dailyTotals, productiveShare, savingsForMonth } from "../lib/insights.js";
 import { computeJourney } from "../lib/journey.js";
+import { dayFill, dayGoal, dayValue } from "../lib/tend.js";
 
 // The greeting's gradient follows her clock — dawn sands, warm noons,
 // rose dusks, lavender nights.
@@ -148,9 +149,36 @@ export default function Today() {
           <HabitTicks />
           <JournalCard />
           <SavingsPeek savings={savings} settings={settings} />
+          <TendPeek />
         </div>
       </div>
     </div>
+  );
+}
+
+/** Compact trackers row — the full page lives at /tend. */
+function TendPeek() {
+  const { trackers, trackerLog } = useStore();
+  const today = todayKey();
+  const active = trackers.filter((t) => !t.archivedAt);
+  const tended = active.filter((t) => dayFill(t, dayValue(trackerLog, today, t.id)) >= 1).length;
+  return (
+    <Link
+      to="/tend"
+      viewTransition
+      className="flex items-center justify-between rounded-2xl border border-line bg-surface p-4 transition-colors duration-150 hover:border-sky/40"
+    >
+      <span className="flex items-center gap-3 text-sm font-medium text-cream">
+        <Droplets size={18} className="text-sky" aria-hidden="true" />
+        Tend
+      </span>
+      <span className="flex items-center gap-1 text-xs tabular-nums text-muted">
+        {active.length === 0
+          ? "Water, sleep, prayer & more"
+          : `${tended} of ${active.length} tended today`}
+        <ChevronRight size={14} aria-hidden="true" />
+      </span>
+    </Link>
   );
 }
 

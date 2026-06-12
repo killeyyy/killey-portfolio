@@ -122,8 +122,13 @@ garden — pick after prototyping both, ship one.
 ### Era 2.5 — continuous feature & visual expansion (owner, 2026-06-12)
 "More features, visuals, depth, tracking — signature 3D moments within the
 existing perf gates." Interleaved with the remaining phases, each ONE PR:
-- **Deeper tracking** — custom trackers (sleep/water/anything), per-entry
-  tags/notes, per-category goals, week targets.
+- [x] **Deeper tracking** — shipped as **Tend** (`/tend`): custom trackers
+  (count / time / done-or-not) with daily intentions + the week as seven
+  filling leaves, one-tap starter seeds (water/sleep/prayer/…), per-entry
+  tags on activities (quick-log chips + edit), weekly per-category
+  intentions with bloom bars. Derived via `lib/tend.js` (node-tested:
+  `npm run test:data`); new keys `nadya:trackers` / `nadya:trackerLog`,
+  additive only, included in backup export/import.
 - **Templates & packs** — starter habit packs, journal prompt templates,
   routine/goal templates, pick-and-apply.
 - **Richer stats** — mood×habit correlations, monthly recap, time-of-day
