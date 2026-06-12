@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { Plus, RotateCcw } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Plus, RotateCcw, Sprout } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
 import { Flourish } from "../components/ui/Flourish.jsx";
@@ -42,13 +43,22 @@ export default function Habits() {
         title="Habits"
         back
         action={
-          <button
-            type="button"
-            onClick={() => setForm({ habit: null })}
-            className="inline-flex items-center gap-1 rounded-xl bg-rose px-3 py-1.5 text-xs font-semibold text-ink active:scale-95"
-          >
-            <Plus size={14} aria-hidden="true" /> New
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/seeds"
+              viewTransition
+              className="inline-flex items-center gap-1 rounded-xl border border-line px-3 py-1.5 text-xs font-semibold text-cream active:scale-95"
+            >
+              <Sprout size={14} aria-hidden="true" /> Packets
+            </Link>
+            <button
+              type="button"
+              onClick={() => setForm({ habit: null })}
+              className="inline-flex items-center gap-1 rounded-xl bg-rose px-3 py-1.5 text-xs font-semibold text-ink active:scale-95"
+            >
+              <Plus size={14} aria-hidden="true" /> New
+            </button>
+          </div>
         }
       />
 
