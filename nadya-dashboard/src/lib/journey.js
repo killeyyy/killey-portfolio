@@ -17,6 +17,21 @@ export function xpFloor(i) {
   return 50 * i * (i + 1);
 }
 
+/**
+ * Fair habit-star target for a week: how many tick-DAYS this set of habits
+ * can reasonably produce. All-daily users keep the classic 4; a single
+ * once-a-week habit makes the star reachable at 1 instead of impossible.
+ */
+export function weeklyTickTarget(habits = []) {
+  const live = habits.filter((h) => !h.archivedAt);
+  if (!live.length) return 4; // unchanged: no habits → star stays unearned
+  const expectedDays = Math.min(
+    7,
+    live.reduce((s, h) => s + Math.min(h.timesPerWeek || 7, 7), 0),
+  );
+  return Math.max(1, Math.min(4, expectedDays));
+}
+
 export function journalHasContent(e) {
   return Boolean(e && (e.highlight?.trim() || e.mood || e.grateful?.some((g) => g.trim())));
 }
@@ -148,6 +163,7 @@ export function computeJourney({ habits, habitLog, journal, savings, dailyTarget
 
   // ---- weekly star path (last 8 weeks, oldest → newest) ----
   const thisWeekStart = weekStartKey(today, 1);
+  const tickTarget = weeklyTickTarget(habits); // rhythm-fair habit star
   const weeks = [];
   for (let w = -7; w <= 0; w++) {
     const start = addDays(thisWeekStart, w * 7);
@@ -155,7 +171,7 @@ export function computeJourney({ habits, habitLog, journal, savings, dailyTarget
     const loggedDays = days.filter((k) => (actDays[k]?.length || 0) > 0).length;
     const journaled = days.filter((k) => journalHasContent(journal[k])).length;
     const tickDays = days.filter((k) => (habitLog[k]?.length || 0) > 0).length;
-    const stars = (loggedDays >= 4 ? 1 : 0) + (tickDays >= 4 ? 1 : 0) + (journaled >= 3 ? 1 : 0);
+    const stars = (loggedDays >= 4 ? 1 : 0) + (tickDays >= tickTarget ? 1 : 0) + (journaled >= 3 ? 1 : 0);
     weeks.push({ start, stars, isCurrent: w === 0, loggedDays, tickDays, journaled });
   }
 
@@ -201,6 +217,7 @@ export function weeklyGarden({ habits, habitLog, journal, categories = [], weekS
   if (!activeKeys.length) return [];
 
   const thisWeekStart = weekStartKey(today, weekStart);
+  const tickTarget = weeklyTickTarget(habits); // rhythm-fair habit star
   const plots = [];
   let start = weekStartKey(activeKeys[0], weekStart);
   while (start <= thisWeekStart) {
@@ -209,7 +226,7 @@ export function weeklyGarden({ habits, habitLog, journal, categories = [], weekS
     const tickDays = days.filter((k) => (habitLog[k]?.length || 0) > 0).length;
     const journaled = days.filter((k) => journalHasContent(journal[k])).length;
     const stars =
-      (loggedDays >= 4 ? 1 : 0) + (tickDays >= 4 ? 1 : 0) + (journaled >= 3 ? 1 : 0);
+      (loggedDays >= 4 ? 1 : 0) + (tickDays >= tickTarget ? 1 : 0) + (journaled >= 3 ? 1 : 0);
 
     const minutesByCat = {};
     for (const k of days) {

@@ -90,6 +90,25 @@ export function habitStreaks(habitLog, habitId, today = todayKey()) {
  * → { ticked, eligible, pct } (pct null when no eligible days)
  */
 /**
+ * Consecutive weeks a rhythm habit met its timesPerWeek, newest first.
+ * The current week counts once met but never breaks the streak while
+ * still in progress (the weekly twin of the day-streak's yesterday grace).
+ */
+export function habitWeekStreak(habitLog, habit, today = todayKey(), weekStart = 1) {
+  const perWeek = Math.min(habit.timesPerWeek || 7, 7);
+  const ticksIn = (s) =>
+    rangeKeys(s, addDays(s, 6)).filter((k) => habitLog[k]?.includes(habit.id)).length;
+  let start = weekStartKey(today, weekStart);
+  let streak = ticksIn(start) >= perWeek ? 1 : 0;
+  start = addDays(start, -7);
+  while (ticksIn(start) >= perWeek) {
+    streak += 1;
+    start = addDays(start, -7);
+  }
+  return streak;
+}
+
+/**
  * Habits still inviting a tick today: daily habits always; weekly-rhythm
  * habits only until they've met their timesPerWeek this week (a tick made
  * today keeps them in the list so the ring credits it). Ticking a satisfied

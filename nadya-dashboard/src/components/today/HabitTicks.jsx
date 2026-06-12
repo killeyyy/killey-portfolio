@@ -5,7 +5,7 @@ import { useToast } from "../ui/Toast.jsx";
 import { cn } from "../../lib/cn.js";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { todayKey } from "../../lib/dates.js";
-import { habitStreaks, habitsDueToday } from "../../lib/insights.js";
+import { habitStreaks, habitWeekStreak, habitsDueToday } from "../../lib/insights.js";
 import { confettiBurst } from "../../lib/confetti.js";
 import { buzz } from "../../lib/celebrate.js";
 
@@ -66,7 +66,11 @@ export function HabitTicks() {
           {active.map((h) => {
             const done = tickedToday.includes(h.id);
             const weekDone = !done && !dueIds.has(h.id);
-            const { current } = habitStreaks(habitLog, h.id, today);
+            // Rhythm habits count weeks kept; daily habits keep the day flame.
+            const rhythm = Boolean(h.timesPerWeek && h.timesPerWeek < 7);
+            const current = rhythm
+              ? habitWeekStreak(habitLog, h, today, settings.weekStart ?? 1)
+              : habitStreaks(habitLog, h.id, today).current;
             return (
               <li key={h.id}>
                 <button
@@ -100,6 +104,7 @@ export function HabitTicks() {
                     <span className="flex shrink-0 items-center gap-1 text-xs font-semibold tabular-nums text-coral">
                       <Flame size={13} aria-hidden="true" />
                       {current}
+                      {rhythm && <span className="font-medium text-muted">wk</span>}
                     </span>
                   )}
                 </button>
