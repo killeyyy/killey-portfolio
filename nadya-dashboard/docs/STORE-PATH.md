@@ -1,12 +1,12 @@
-# Ruang → app stores (the documented-later plan, Era 2 PR 10 item)
+# Petalfall → app stores (the documented-later plan, Era 2 PR 10 item)
 
-Ruang ships as a PWA first — installable, offline, zero store tax. App
+Petalfall ships as a PWA first — installable, offline, zero store tax. App
 stores come later, when the PWA has users asking for them. This is the
 runbook for that day; nothing here blocks anything now.
 
 ## Recommended wrapper: Capacitor
 
-- `npm i @capacitor/core @capacitor/cli && npx cap init ruang life.ruang.app`
+- `npm i @capacitor/core @capacitor/cli && npx cap init petalfall app.petalfall.app`
   inside `nadya-dashboard/` (webDir: `dist`). The app is already
   local-first + responsive + reduced-motion-safe — no code changes needed
   to boot inside a WebView.

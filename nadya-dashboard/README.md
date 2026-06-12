@@ -1,4 +1,4 @@
-# Ruang — your quiet space
+# Petalfall — a quiet space to grow
 
 A local-first life tracker: activities, habits, custom trackers, money,
 journal — and a journey layer where your real days grow a living 3D garden

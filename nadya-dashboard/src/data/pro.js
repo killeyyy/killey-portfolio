@@ -1,4 +1,4 @@
-// Ruang Pro launch config. When the owner's payment account exists, paste
+// Petalfall Pro launch config. When the owner's payment account exists, paste
 // the checkout link into CHECKOUT_URL — the pricing section on /welcome
 // switches from "founding window" copy to a live buy button automatically.
 // Until then nothing is gated: sync is free for founding users, truthfully.

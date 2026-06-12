@@ -30,7 +30,7 @@ export function Sidebar({ onPlus }) {
   return (
     <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line/60 bg-surface/30 px-5 py-8 backdrop-blur lg:flex">
       <p className="font-serif text-xl font-bold">
-        <span className="text-gradient-warm">Ruang</span>
+        <span className="text-gradient-warm">Petalfall</span>
       </p>
 
       <nav className="mt-8 space-y-1" aria-label="Main">
