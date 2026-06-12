@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Clapperboard, Flame, Lock, Star } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
@@ -11,6 +11,10 @@ import { cn } from "../lib/cn.js";
 import { useStore } from "../store/StoreProvider.jsx";
 import { computeJourney, weeklyGarden } from "../lib/journey.js";
 import { addDays, parseKey } from "../lib/dates.js";
+
+// The 3D meadow rides the same lazy ogl chunk as the ambient; the SVG
+// meadow renders while it loads and stays for reduced-motion / no-WebGL.
+const Garden3D = lazy(() => import("../components/journey/Garden3D.jsx"));
 
 function weekLabel(start) {
   const fmt = (k) => parseKey(k).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
@@ -139,7 +143,9 @@ export default function Journey() {
               full weeks bloom. {bloomed} of {garden.length} week
               {garden.length === 1 ? "" : "s"} in flower so far.
             </p>
-            <Garden plots={garden} />
+            <Suspense fallback={<Garden plots={garden} />}>
+              <Garden3D plots={garden} />
+            </Suspense>
           </Tile>
         )}
 
