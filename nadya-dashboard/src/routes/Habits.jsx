@@ -83,6 +83,11 @@ export default function Habits() {
               <>
                 {h.emoji && <span className="mr-1.5">{h.emoji}</span>}
                 {h.name}
+                {h.timesPerWeek && (
+                  <span className="ml-2 rounded-full bg-white/5 px-2 py-0.5 align-middle text-[10px] font-medium text-muted">
+                    {h.timesPerWeek}× a week
+                  </span>
+                )}
               </>
             }
             action={

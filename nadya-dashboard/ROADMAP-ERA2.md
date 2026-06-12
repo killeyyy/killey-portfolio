@@ -254,7 +254,10 @@ existing perf gates." Interleaved with the remaining phases, each ONE PR:
 
 ## Phase 4 — Mass readiness
 
-### PR 9 · Landing + privacy + error boundaries
+### PR 9 · Landing + privacy + error boundaries — ✅ shipped (#29, #32)
+> /welcome (code-split, + pricing & founding-window section), /privacy
+> (fact-checked plain language), per-route ErrorBoundary with reload +
+> export-backup escape hatch. Lighthouse run still owed (browser needed).
 - Public landing at `/welcome` (code-split; the app stays the PWA start
   page): what Ruang is, install CTA, theme/pet preview, en/id.
 - `/privacy`: plain-language — data lives on-device (guest) or in your

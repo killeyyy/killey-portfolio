@@ -5,11 +5,19 @@ import { Field, TextInput } from "../ui/Field.jsx";
 import { COLOR_META, COLOR_NAMES } from "../../data/defaults.js";
 import { uid } from "../../lib/uid.js";
 
+const FREQUENCIES = [
+  { value: 7, label: "Every day" },
+  { value: 5, label: "5× a week" },
+  { value: 3, label: "3× a week" },
+  { value: 1, label: "Once a week" },
+];
+
 /** Add/edit a habit; editing also offers archive (history is kept). */
 export function HabitForm({ habit, onClose, onSave, onArchive }) {
   const [name, setName] = useState(habit?.name || "");
   const [emoji, setEmoji] = useState(habit?.emoji || "");
   const [color, setColor] = useState(habit?.color || "rose");
+  const [perWeek, setPerWeek] = useState(habit?.timesPerWeek || 7);
 
   const submit = () => {
     if (!name.trim()) return;
@@ -18,6 +26,8 @@ export function HabitForm({ habit, onClose, onSave, onArchive }) {
       name: name.trim(),
       emoji: emoji.trim(),
       color,
+      // Additive: daily habits keep their original shape (no field).
+      ...(perWeek < 7 ? { timesPerWeek: perWeek } : {}),
       createdAt: habit?.createdAt || Date.now(),
       archivedAt: habit?.archivedAt || null,
     });
@@ -43,6 +53,15 @@ export function HabitForm({ habit, onClose, onSave, onArchive }) {
             maxLength={4}
             className="w-24"
           />
+        </Field>
+        <Field label="How often?" hint="A gentle rhythm — consistency is measured against this, not against every day.">
+          <div className="flex flex-wrap gap-2">
+            {FREQUENCIES.map((f) => (
+              <Chip key={f.value} selected={perWeek === f.value} onClick={() => setPerWeek(f.value)}>
+                {f.label}
+              </Chip>
+            ))}
+          </div>
         </Field>
         <Field label="Color">
           <div className="flex flex-wrap gap-2">
