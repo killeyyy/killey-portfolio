@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Pencil, Plus } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
@@ -21,6 +22,7 @@ import { cn } from "../lib/cn.js";
  */
 export default function Tend() {
   const { settings, categories, months, ensureMonths, trackers, saveTrackers } = useStore();
+  const navigate = useNavigate();
   const today = todayKey();
   const weekStart = settings.weekStart ?? 1;
   const [form, setForm] = useState(null); // { tracker } | null
@@ -78,6 +80,9 @@ export default function Tend() {
               <Chip onClick={() => setForm({ tracker: null })} className="border-dashed">
                 Something else…
               </Chip>
+              <Chip onClick={() => navigate("/seeds", { viewTransition: true })}>
+                🌱 Seed packets
+              </Chip>
             </div>
           </div>
         </Tile>
@@ -101,6 +106,12 @@ export default function Tend() {
               {p.emoji} {p.name}
             </Chip>
           ))}
+          <Chip
+            onClick={() => navigate("/seeds", { viewTransition: true })}
+            className="px-2.5 py-1.5 text-xs"
+          >
+            🌱 Seed packets
+          </Chip>
         </div>
       )}
 

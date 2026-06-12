@@ -129,8 +129,13 @@ existing perf gates." Interleaved with the remaining phases, each ONE PR:
   intentions with bloom bars. Derived via `lib/tend.js` (node-tested:
   `npm run test:data`); new keys `nadya:trackers` / `nadya:trackerLog`,
   additive only, included in backup export/import.
-- **Templates & packs** — starter habit packs, journal prompt templates,
-  routine/goal templates, pick-and-apply.
+- [x] **Templates & packs** — shipped as **Seed packets** (`/seeds`):
+  6 curated bundles mixing habits + trackers + weekly intentions, planted
+  in two taps (dedupe by name, existing intentions never overwritten,
+  archived things don't block replanting) + 4 nightly-prompt packs that
+  surface one question per day in the journal (`settings.promptPack`).
+  Pure planting logic in `lib/seeds.js`, content in `data/packs.js`, both
+  node-tested; zero new storage keys.
 - **Richer stats** — mood×habit correlations, monthly recap, time-of-day
   analysis, trend forecasts.
 - [x] **Journey expansion (data half)** — shipped as **garden wishes**:

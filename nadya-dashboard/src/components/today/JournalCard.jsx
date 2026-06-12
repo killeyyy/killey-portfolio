@@ -5,6 +5,8 @@ import { TextInput, TextArea } from "../ui/Field.jsx";
 import { cn } from "../../lib/cn.js";
 import { useStore } from "../../store/StoreProvider.jsx";
 import { isSmallHours, todayKey, yesterdayKey } from "../../lib/dates.js";
+import { PROMPT_PACKS } from "../../data/packs.js";
+import { promptForDay } from "../../lib/seeds.js";
 
 const EMPTY = { grateful: ["", "", ""], highlight: "", mood: null };
 
@@ -18,7 +20,7 @@ export const MOODS = [
 
 /** Daily journal: mood + 3 gratitudes + one-line highlight. Autosaves. */
 export function JournalCard() {
-  const { journal, saveJournalEntry } = useStore();
+  const { journal, saveJournalEntry, settings } = useStore();
   const [asYesterday, setAsYesterday] = useState(false);
   const dateKey = asYesterday ? yesterdayKey() : todayKey();
   const [draft, setDraft] = useState(() => ({ ...EMPTY, ...journal[dateKey] }));
@@ -128,6 +130,14 @@ export function JournalCard() {
           <p className="mb-2 font-serif text-sm text-muted">
             Highlight of the day, in one sentence…
           </p>
+          {(() => {
+            // Tonight's prompt (seed packets): same day, same question.
+            const pack = PROMPT_PACKS.find((p) => p.id === settings.promptPack);
+            const prompt = promptForDay(pack, dateKey);
+            return prompt ? (
+              <p className="mb-2 text-xs italic text-muted/90">🕯️ {prompt}</p>
+            ) : null;
+          })()}
           <TextArea
             value={draft.highlight}
             onChange={(e) => setDraft((d) => ({ ...d, highlight: e.target.value }))}

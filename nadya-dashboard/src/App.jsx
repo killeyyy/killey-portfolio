@@ -17,6 +17,7 @@ import Journey from "./routes/Journey.jsx";
 import Wrapped from "./routes/Wrapped.jsx";
 import Habits from "./routes/Habits.jsx";
 import Tend from "./routes/Tend.jsx";
+import Seeds from "./routes/Seeds.jsx";
 import Settings from "./routes/Settings.jsx";
 import * as storage from "./lib/storage.js";
 import { computeJourney } from "./lib/journey.js";
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: "/wrapped", element: <Wrapped /> },
       { path: "/habits", element: <Habits /> },
       { path: "/tend", element: <Tend /> },
+      { path: "/seeds", element: <Seeds /> },
       { path: "/settings", element: <Settings /> },
       { path: "*", element: <Today /> },
     ],
