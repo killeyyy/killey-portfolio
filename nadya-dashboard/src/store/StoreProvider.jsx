@@ -8,6 +8,7 @@ import * as habitsModel from "../models/habits.js";
 import * as savingsModel from "../models/savings.js";
 import * as journalModel from "../models/journal.js";
 import * as settingsModel from "../models/settings.js";
+import * as storage from "../lib/storage.js";
 import { monthKey, monthKeyOf } from "../lib/dates.js";
 import { uid } from "../lib/uid.js";
 
@@ -71,6 +72,23 @@ export function StoreProvider({ children }) {
       [monthKeyOf(oldDateKey)]: monthKeyOf(oldDateKey) === monthKeyOf(nextDateKey) ? added : removed,
       [monthKeyOf(nextDateKey)]: added,
     }));
+  }, []);
+
+  // ---- focus timer: { categoryId, startedAt } | null, survives reloads ----
+
+  const [timer, setTimerState] = useState(() => storage.get("timer"));
+
+  const startTimer = useCallback((categoryId) => {
+    const t = { categoryId, startedAt: Date.now() };
+    storage.set("timer", t);
+    setTimerState(t);
+  }, []);
+
+  const stopTimer = useCallback(() => {
+    const t = storage.get("timer");
+    storage.remove("timer");
+    setTimerState(null);
+    return t;
   }, []);
 
   // ---- categories / settings / meta ----
@@ -185,6 +203,9 @@ export function StoreProvider({ children }) {
       savings,
       journal,
       months,
+      timer,
+      startTimer,
+      stopTimer,
       ensureMonths,
       logActivity,
       deleteActivity,
@@ -201,6 +222,7 @@ export function StoreProvider({ children }) {
       deleteJournalEntry,
     }),
     [settings, categories, meta, habits, habitLog, savings, journal, months,
+      timer, startTimer, stopTimer,
       ensureMonths, logActivity, deleteActivity, updateActivity, updateSettings,
       saveCategories, patchMeta, saveHabits, toggleHabitTick,
       setMonthGoal, upsertSavingsEntry, deleteSavingsEntry, saveJournalEntry,

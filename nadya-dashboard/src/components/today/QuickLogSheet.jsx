@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { History } from "lucide-react";
+import { History, Play } from "lucide-react";
 import { Sheet } from "../ui/Sheet.jsx";
 import { Chip } from "../ui/Chip.jsx";
 import { TextInput, NumberStepper } from "../ui/Field.jsx";
@@ -17,7 +17,8 @@ import { entriesForDay } from "../../lib/insights.js";
  * Happy path is 3 taps including the "+"; "Repeat last" is 2.
  */
 export function QuickLogSheet({ open, onClose }) {
-  const { categories, months, ensureMonths, logActivity, deleteActivity } = useStore();
+  const { categories, months, ensureMonths, logActivity, deleteActivity, timer, startTimer } =
+    useStore();
   const toast = useToast();
   const [selectedCat, setSelectedCat] = useState(null);
   const [customMinutes, setCustomMinutes] = useState(30);
@@ -120,6 +121,22 @@ export function QuickLogSheet({ open, onClose }) {
             </button>
           </div>
         </div>
+
+        {!timer && (
+          <button
+            type="button"
+            disabled={!selectedCat}
+            onClick={() => {
+              startTimer(selectedCat);
+              onClose();
+              toast.show("Timer running — tap the pill to stop & log");
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-rose/40 py-2.5 text-sm font-semibold text-rose-bright active:scale-95 disabled:opacity-40"
+          >
+            <Play size={14} aria-hidden="true" />
+            Or start a live timer
+          </button>
+        )}
 
         <TextInput
           value={note}

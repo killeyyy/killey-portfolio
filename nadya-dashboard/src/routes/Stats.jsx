@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Sparkles } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader.jsx";
 import { Segmented } from "../components/ui/Segmented.jsx";
 import { Tile } from "../components/ui/Tile.jsx";
@@ -17,9 +17,10 @@ import {
 } from "../lib/dates.js";
 import { formatDayLabel, formatMinutes, formatMonthLabel } from "../lib/format.js";
 import {
-  categoryShare, dailyTotals, habitAdherence, habitStreaks, periodTotals,
-  productiveShare, savingsForMonth,
+  buildInsights, categoryShare, dailyTotals, habitAdherence, habitStreaks,
+  moodPoints, periodTotals, productiveShare, savingsForMonth, weekdayProfile,
 } from "../lib/insights.js";
+import { MOODS } from "../components/today/JournalCard.jsx";
 
 function weekLabel(startKey) {
   const fmt = (k) => parseKey(k).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
@@ -33,7 +34,8 @@ function deltaLabel(delta) {
 }
 
 export default function Stats() {
-  const { settings, categories, months, ensureMonths, habits, habitLog, savings } = useStore();
+  const { settings, categories, months, ensureMonths, habits, habitLog, savings, journal } =
+    useStore();
   const today = todayKey();
   const [mode, setMode] = useState("week");
   const [weekAnchor, setWeekAnchor] = useState(() => weekStartKey(todayKey(), settings.weekStart));
@@ -108,6 +110,20 @@ export default function Stats() {
     }
     return { points, caption: "Productive share per month, last 6 months" };
   }, [isWeek, weekAnchor, monthAnchor, months, categories]);
+
+  const trendDays = useMemo(
+    () => dailyTotals(months, trendDayKeys, categories),
+    [months, trendDayKeys, categories],
+  );
+  const insights = useMemo(
+    () => buildInsights({ trendDays, days, totals, prevTotals, habits, habitLog, journal, today }),
+    [trendDays, days, totals, prevTotals, habits, habitLog, journal, today],
+  );
+  const moods = useMemo(() => moodPoints(journal, dayKeys), [journal, dayKeys]);
+  const weekdays = useMemo(
+    () => weekdayProfile(trendDays, settings.weekStart),
+    [trendDays, settings.weekStart],
+  );
 
   const atCurrent = isWeek
     ? weekAnchor >= weekStartKey(today, settings.weekStart)
@@ -214,6 +230,19 @@ export default function Stats() {
           )}
         </Tile>
       </div>
+
+      {insights.length > 0 && (
+        <Tile className="border-rose/25">
+          <ul className="space-y-2">
+            {insights.map((line) => (
+              <li key={line} className="flex items-start gap-2 text-sm text-cream">
+                <Sparkles size={14} className="mt-0.5 shrink-0 text-sand" aria-hidden="true" />
+                {line}
+              </li>
+            ))}
+          </ul>
+        </Tile>
+      )}
 
       <div className="grid gap-4 lg:grid-cols-2">
       <Tile title="Time per day">
@@ -331,6 +360,54 @@ export default function Stats() {
             </ul>
           </div>
         )}
+      </Tile>
+
+      <Tile title="Mood">
+        {moods.length < 3 ? (
+          <p className="text-sm text-muted">
+            Tap a mood on the Today screen for a few days and your trend appears here.
+          </p>
+        ) : (
+          <>
+            <div className="mb-2 flex items-center gap-2">
+              <span className="text-2xl" aria-hidden="true">
+                {MOODS[Math.round(moods.reduce((a, b) => a + b, 0) / moods.length) - 1].emoji}
+              </span>
+              <span className="text-xs text-muted">
+                average across {moods.length} day{moods.length === 1 ? "" : "s"}
+              </span>
+            </div>
+            <TrendLine data={moods} height={44} className="text-lavender" />
+          </>
+        )}
+      </Tile>
+
+      <Tile title="Your rhythm">
+        <div className="flex items-end gap-2" style={{ height: 96 }} aria-hidden="true">
+          {weekdays.map((d, i) => {
+            const max = Math.max(...weekdays.map((x) => x.avg), 1);
+            return (
+              <div key={d.label} className="flex h-full flex-1 flex-col justify-end">
+                <div
+                  className="animate-rise rounded-t bg-rose/70"
+                  style={{
+                    height: `${(d.avg / max) * 100}%`,
+                    animationDelay: `${i * 40}ms`,
+                    transformOrigin: "bottom",
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-1 flex gap-2">
+          {weekdays.map((d) => (
+            <span key={d.label} className="flex-1 text-center text-[10px] text-muted">
+              {d.label}
+            </span>
+          ))}
+        </div>
+        <p className="mt-1 text-xs text-muted">Average time logged per weekday</p>
       </Tile>
 
       <Tile title="Savings this month">
