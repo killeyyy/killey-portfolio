@@ -13,6 +13,8 @@ import { TimeOfDay } from "../components/stats/TimeOfDay.jsx";
 import { MoodLinks } from "../components/stats/MoodLinks.jsx";
 import { MonthRecap } from "../components/stats/MonthRecap.jsx";
 import { Hero3D } from "../components/fx/Hero3D.jsx";
+import { TagTimes } from "../components/stats/TagTimes.jsx";
+import { tagMinutes } from "../lib/tend.js";
 import { useStore } from "../store/StoreProvider.jsx";
 import { COLOR_META } from "../data/defaults.js";
 import { cn } from "../lib/cn.js";
@@ -151,6 +153,7 @@ export default function Stats() {
     () => monthRecap({ days, categories, habitLog, journal, today }),
     [days, categories, habitLog, journal, today],
   );
+  const tagRows = useMemo(() => tagMinutes(months, dayKeys), [months, dayKeys]);
 
   const atCurrent = isWeek
     ? weekAnchor >= weekStartKey(today, settings.weekStart)
@@ -444,6 +447,8 @@ export default function Stats() {
       </Tile>
 
       <TimeOfDay profile={dayProfile} />
+
+      <TagTimes rows={tagRows} />
 
       {!isWeek && <MonthRecap recap={recap} />}
 

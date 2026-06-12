@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Droplets, PiggyBank, Settings } from "lucide-react";
+import { ChevronRight, Droplets, PiggyBank, Settings, Sparkles } from "lucide-react";
 import { Hero3D } from "../components/fx/Hero3D.jsx";
 import { CountUp } from "../components/ui/CountUp.jsx";
 import { Ring } from "../components/charts/Ring.jsx";
@@ -14,6 +14,7 @@ import { formatFullDate, formatMinutes, formatMoney } from "../lib/format.js";
 import { dailyTotals, productiveShare, savingsForMonth } from "../lib/insights.js";
 import { computeJourney } from "../lib/journey.js";
 import { dayFill, dayGoal, dayValue } from "../lib/tend.js";
+import { weeklyQuests } from "../lib/quests.js";
 
 // The greeting's gradient follows her clock — dawn sands, warm noons,
 // rose dusks, lavender nights.
@@ -154,9 +155,44 @@ export default function Today() {
           <JournalCard />
           <SavingsPeek savings={savings} settings={settings} />
           <TendPeek />
+          <WishesPeek />
         </div>
       </div>
     </div>
+  );
+}
+
+/** This week's garden wishes at a glance — the comeback loop on Today. */
+function WishesPeek() {
+  const { settings, categories, months, habits, habitLog, journal, trackers, trackerLog, wishes } =
+    useStore();
+  const quests = useMemo(
+    () =>
+      weeklyQuests({
+        habits, habitLog, journal, trackers, trackerLog, categories,
+        weekStart: settings.weekStart ?? 1,
+      }),
+    // `months` is the change signal for activity-backed wishes.
+    [months, habitLog, journal, trackers, trackerLog, habits, categories, settings.weekStart],
+  );
+  const granted = quests.filter((q) => wishes[q.id] || q.done).length;
+  return (
+    <Link
+      to="/journey"
+      viewTransition
+      className="flex items-center justify-between rounded-2xl border border-line bg-surface p-4 transition-colors duration-150 hover:border-rose/40"
+    >
+      <span className="flex items-center gap-3 text-sm font-medium text-cream">
+        <Sparkles size={18} className="text-rose-bright" aria-hidden="true" />
+        Wishes
+      </span>
+      <span className="flex items-center gap-1 text-xs tabular-nums text-muted">
+        {granted === quests.length && quests.length > 0
+          ? "all granted this week 🌠"
+          : `${granted} of ${quests.length} granted this week`}
+        <ChevronRight size={14} aria-hidden="true" />
+      </span>
+    </Link>
   );
 }
 

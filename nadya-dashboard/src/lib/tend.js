@@ -58,6 +58,20 @@ export function categoryWeekMinutes(months, dateKey, weekStart = 1) {
   return out;
 }
 
+/** Minutes per tag across the given day keys, largest first. */
+export function tagMinutes(months, dayKeys, limit = 6) {
+  const sums = {};
+  for (const k of dayKeys) {
+    for (const e of entriesForDay(months, k)) {
+      for (const tag of e.tags || []) sums[tag] = (sums[tag] || 0) + e.minutes;
+    }
+  }
+  return Object.entries(sums)
+    .map(([tag, minutes]) => ({ tag, minutes }))
+    .sort((a, b) => b.minutes - a.minutes)
+    .slice(0, limit);
+}
+
 /** Most-used activity tags across the given day keys, frequency-sorted. */
 export function recentTags(months, dayKeys, limit = 6) {
   const freq = {};
