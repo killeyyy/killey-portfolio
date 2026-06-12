@@ -8,6 +8,7 @@ import Preloader from "./components/Preloader.jsx";
 import CommandPalette from "./components/CommandPalette.jsx";
 import EasterEgg from "./components/EasterEgg.jsx";
 import ErrorBoundary from "./lib/ErrorBoundary.jsx";
+import BmlaGate from "./components/bmla/BmlaGate.jsx";
 
 // Code-split the secondary routes out of the landing bundle. Home stays eager
 // (it's the LCP route); the cockpit + case studies load on navigation.
@@ -17,6 +18,7 @@ const NotFound = lazy(() => import("./routes/NotFound.jsx"));
 const Bmla = lazy(() => import("./routes/bmla/Bmla.jsx"));
 const BmlaLearn = lazy(() => import("./routes/bmla/BmlaLearn.jsx"));
 const BmlaLesson = lazy(() => import("./routes/bmla/BmlaLesson.jsx"));
+const BmlaResources = lazy(() => import("./routes/bmla/BmlaResources.jsx"));
 
 // Framer Motion's feature pack loads in its own async chunk after first paint.
 const loadFeatures = () => import("./lib/features.js").then((mod) => mod.default);
@@ -52,9 +54,10 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/work/:slug" element={<CaseStudy />} />
-                <Route path="/bmla" element={<Bmla />} />
-                <Route path="/bmla/learn" element={<BmlaLearn />} />
-                <Route path="/bmla/lesson/:slug" element={<BmlaLesson />} />
+                <Route path="/bmla" element={<BmlaGate><Bmla /></BmlaGate>} />
+                <Route path="/bmla/learn" element={<BmlaGate><BmlaLearn /></BmlaGate>} />
+                <Route path="/bmla/lesson/:slug" element={<BmlaGate><BmlaLesson /></BmlaGate>} />
+                <Route path="/bmla/resources" element={<BmlaGate><BmlaResources /></BmlaGate>} />
                 <Route path="/owner" element={<Owner />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -47,7 +47,7 @@ export const curriculum = [
     summary: "Row-reduce anything, read pivots & rank, and multiply matrices without slips.",
     icon: "Grid3x3", accent: "text-crimson-bright", level: "intro",
     topics: ["Systems of linear equations", "Gaussian elimination · REF/RREF", "Augmented matrices", "Pivots, rank & consistency", "Unique / none / infinite solutions", "Matrix multiplication"],
-    lessonSlugs: ["matrix-basics", "gaussian-elimination"],
+    lessonSlugs: ["lay-1-1", "lay-1-2", "lay-2-1"],
   },
   {
     slug: "vectors",
@@ -56,7 +56,7 @@ export const curriculum = [
     summary: "Linear combinations, span, independence, and the equation Ax = b.",
     icon: "Move3d", accent: "text-violet-bright", level: "intro",
     topics: ["Vector operations", "Linear combinations & span", "Ax = b and existence", "Over/under-determined systems"],
-    lessonSlugs: ["vector-basics"],
+    lessonSlugs: ["lay-1-3"],
   },
   {
     slug: "determinants",
@@ -65,7 +65,7 @@ export const curriculum = [
     summary: "Cofactor expansion, determinant rules, invertibility, and solving by inverse.",
     icon: "SquareDivide", accent: "text-gold", level: "core",
     topics: ["Cofactor expansion", "Determinant properties (det of AB, Aᵀ, A⁻¹, kA, Aⁿ)", "Invertibility & singularity", "Solve systems by inversion", "Cramer's rule"],
-    lessonSlugs: ["determinants-cofactor", "cramers-rule"],
+    lessonSlugs: ["lay-2-2", "lay-2-3", "determinants-cofactor", "cramers-rule"],
   },
   {
     slug: "transformations",

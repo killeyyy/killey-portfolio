@@ -1,11 +1,14 @@
 export { curriculum, product, availableModules } from "./curriculum.js";
 
 /** Light lesson metadata for lists/dashboard (full content stays code-split).
- *  Order here = the recommended learning path (prev/next navigation). */
+ *  Order here = the recommended learning path. Lay §1.1–§2.3 lead the syllabus. */
 export const lessonIndex = [
-  { slug: "matrix-basics", moduleSlug: "matrices", title: "Matrices, Notation & Multiplication", minutes: 14 },
-  { slug: "gaussian-elimination", moduleSlug: "matrices", title: "Gaussian Elimination & RREF", minutes: 18 },
-  { slug: "vector-basics", moduleSlug: "vectors", title: "Vectors, Combinations & Span", minutes: 15 },
+  { slug: "lay-1-1", moduleSlug: "matrices", title: "§1.1 — Systems of Linear Equations", minutes: 22 },
+  { slug: "lay-1-2", moduleSlug: "matrices", title: "§1.2 — Row Reduction & Echelon Forms", minutes: 24 },
+  { slug: "lay-2-1", moduleSlug: "matrices", title: "§2.1 — Matrix Operations", minutes: 22 },
+  { slug: "lay-1-3", moduleSlug: "vectors", title: "§1.3 — Vector Equations", minutes: 22 },
+  { slug: "lay-2-2", moduleSlug: "determinants", title: "§2.2 — The Inverse of a Matrix", minutes: 22 },
+  { slug: "lay-2-3", moduleSlug: "determinants", title: "§2.3 — Characterizations of Invertible Matrices", minutes: 20 },
   { slug: "determinants-cofactor", moduleSlug: "determinants", title: "Determinants & Cofactor Expansion", minutes: 16 },
   { slug: "cramers-rule", moduleSlug: "determinants", title: "Inverses & Cramer's Rule", minutes: 15 },
   { slug: "linear-transformations", moduleSlug: "transformations", title: "Linear Transformations: One-to-One & Onto", minutes: 16 },
@@ -21,9 +24,12 @@ export const lessonIndex = [
 ];
 
 const loaders = {
-  "matrix-basics": () => import("./lessons/matrix-basics.js"),
-  "gaussian-elimination": () => import("./lessons/gaussian-elimination.js"),
-  "vector-basics": () => import("./lessons/vector-basics.js"),
+  "lay-1-1": () => import("./lessons/lay-1-1.js"),
+  "lay-1-2": () => import("./lessons/lay-1-2.js"),
+  "lay-1-3": () => import("./lessons/lay-1-3.js"),
+  "lay-2-1": () => import("./lessons/lay-2-1.js"),
+  "lay-2-2": () => import("./lessons/lay-2-2.js"),
+  "lay-2-3": () => import("./lessons/lay-2-3.js"),
   "determinants-cofactor": () => import("./lessons/determinants-cofactor.js"),
   "cramers-rule": () => import("./lessons/cramers-rule.js"),
   "linear-transformations": () => import("./lessons/linear-transformations.js"),

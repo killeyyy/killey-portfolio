@@ -24,7 +24,9 @@ export default function BmlaLearn() {
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
             <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
           </div>
-          <StatusBadge state="live" />
+          <Link to="/bmla/resources" className="inline-flex items-center gap-2 rounded-full border border-line/70 px-4 py-2 text-sm text-silver transition-colors hover:border-gold/50 hover:text-gold">
+            My materials locker
+          </Link>
         </div>
 
         {/* bento overview */}

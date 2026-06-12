@@ -10,7 +10,6 @@ import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
 import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
-import EmailCapture from "../../components/bmla/EmailCapture.jsx";
 
 const LEVEL_CLS = {
   intro: "text-jade-bright border-jade/40 bg-jade/10",
@@ -45,7 +44,7 @@ export default function Bmla() {
           <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/60 to-ink" aria-hidden="true" />
           <div className="relative mx-auto max-w-content px-6 pb-20 pt-24 md:pb-28 md:pt-32">
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-jade/40 bg-jade/10 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.2em] text-jade-bright">
-              <Sparkles size={13} aria-hidden="true" /> Free during beta
+              <Sparkles size={13} aria-hidden="true" /> Your private study vault
             </p>
             <h1 className="max-w-3xl font-serif text-fluid-2xl font-semibold leading-[1.02] text-silver">
               <span className="text-gradient">{product.name}</span> — {product.tagline}
@@ -54,7 +53,7 @@ export default function Bmla() {
             <div className="mt-9 flex flex-wrap gap-4">
               <Magnetic>
                 <Link to="/bmla/learn" className="glow-card inline-flex items-center gap-2 rounded-full bg-crimson px-7 py-3.5 text-sm font-medium text-silver transition-transform hover:scale-[1.03]">
-                  Start learning — free <ArrowRight size={16} aria-hidden="true" />
+                  Open my lessons <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </Magnetic>
               <a href="#curriculum" className="inline-flex items-center rounded-full border border-line px-7 py-3.5 text-sm font-medium text-silver transition-colors hover:border-gold/60 hover:text-gold">
@@ -172,23 +171,26 @@ export default function Bmla() {
           </div>
         </section>
 
-        {/* pricing (honest beta framing) */}
+        {/* study-home closing CTA */}
         <section className="relative overflow-hidden border-t border-line/50">
           <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-crimson/15 blur-3xl" />
           <div className="relative mx-auto max-w-content px-6 py-20 text-center md:py-24">
             <h2 className="font-serif text-fluid-xl font-semibold text-silver">
-              Free while in beta. <span className="text-gradient-warm">Founding members keep the best deal.</span>
+              Lock in. <span className="text-gradient-warm">Pass this exam.</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted">
-              Full access costs nothing right now — you're helping shape it. When paid plans launch
-              (monthly & full-semester), early beta users get founding-member pricing first.
+              Lessons, interactive solvers, practice and your own materials — all in one private place.
             </p>
-            <Magnetic className="mt-8 inline-block">
-              <Link to="/bmla/learn" className="glow-card inline-flex items-center gap-2 rounded-full bg-crimson px-8 py-4 text-sm font-medium text-silver transition-transform hover:scale-[1.03]">
-                Claim free beta access <ArrowRight size={16} aria-hidden="true" />
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Magnetic className="inline-block">
+                <Link to="/bmla/learn" className="glow-card inline-flex items-center gap-2 rounded-full bg-crimson px-8 py-4 text-sm font-medium text-silver transition-transform hover:scale-[1.03]">
+                  Open my dashboard <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </Magnetic>
+              <Link to="/bmla/resources" className="inline-flex items-center gap-2 rounded-full border border-line px-8 py-4 text-sm font-medium text-silver transition-colors hover:border-gold/60 hover:text-gold">
+                My materials locker
               </Link>
-            </Magnetic>
-            <EmailCapture />
+            </div>
           </div>
         </section>
       </main>

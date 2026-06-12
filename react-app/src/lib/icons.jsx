@@ -18,6 +18,8 @@ import {
   FlipHorizontal2,
   Spline,
   Network,
+  BookOpen,
+  FileText,
 } from "lucide-react";
 
 const MAP = {
@@ -39,6 +41,8 @@ const MAP = {
   FlipHorizontal2,
   Spline,
   Network,
+  BookOpen,
+  FileText,
 };
 
 /** Render a lucide icon by name; renders nothing if the name is unknown. */
