@@ -26,7 +26,7 @@ export default function Settings() {
   const toast = useToast();
   const fileRef = useRef(null);
   const [name, setName] = useState(settings.name);
-  const [petName, setPetName] = useState(settings.petName ?? "Mawar");
+  const [petName, setPetName] = useState(settings.petName ?? "");
   const [catSheet, setCatSheet] = useState(null); // { category } | { category: null }
 
   const backupAgeDays = useMemo(() => {
@@ -111,8 +111,9 @@ export default function Settings() {
           <Field label="Your plant's name" hint="The little companion growing on Journey.">
             <TextInput
               value={petName}
+              placeholder="Name your plant"
               onChange={(e) => setPetName(e.target.value)}
-              onBlur={() => updateSettings({ petName: petName.trim() || "Mawar" })}
+              onBlur={() => updateSettings({ petName: petName.trim() })}
               maxLength={20}
             />
           </Field>

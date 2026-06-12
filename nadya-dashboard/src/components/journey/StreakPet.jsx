@@ -16,7 +16,7 @@ export function petStage(streak) {
 }
 
 /** Stage copy, personalised with the pet's (nameable) name. */
-export function petCopy(stage, name = "Mawar") {
+export function petCopy(stage, name = "your plant") {
   return {
     seed: `${name} is a tiny seed — log anything today and she'll wake up.`,
     sprout: `${name} just sprouted! Come back tomorrow and she'll keep growing.`,
@@ -78,7 +78,7 @@ export function StreakPet({ streak = 0, size = 150 }) {
       viewBox="0 0 120 140"
       width={size * 0.86}
       height={size}
-      aria-label={`Mawar the rose, ${stage} stage`}
+      aria-label={`Your streak plant, ${stage} stage`}
       role="img"
     >
       <defs>

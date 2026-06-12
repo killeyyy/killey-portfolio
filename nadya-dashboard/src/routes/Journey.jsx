@@ -57,7 +57,7 @@ export default function Journey() {
             <div className="flex items-center gap-4">
               <StreakPet streak={journey.streak} size={150} />
               <div className="min-w-0 flex-1">
-                <p className="font-serif text-xl font-bold text-cream">{settings.petName || "Mawar"}</p>
+                <p className="font-serif text-xl font-bold text-cream">{settings.petName || "Your plant"}</p>
                 {journey.streak > 0 && (
                   <p className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-coral">
                     <Flame size={15} aria-hidden="true" />
@@ -65,7 +65,7 @@ export default function Journey() {
                     {journey.streak === 1 ? "" : "s"} showing up
                   </p>
                 )}
-                <p className="mt-2 text-sm text-muted">{petCopy(petStage(journey.streak), settings.petName || "Mawar")}</p>
+                <p className="mt-2 text-sm text-muted">{petCopy(petStage(journey.streak), settings.petName || "your plant")}</p>
               </div>
             </div>
           </Tile>
@@ -137,7 +137,7 @@ export default function Journey() {
         <div className="space-y-4 lg:space-y-6">
         {/* Mawar's Garden — every recorded week, planted */}
         {garden.length > 0 && (
-          <Tile title={`${settings.petName || "Mawar"}'s garden`}>
+          <Tile title={settings.petName ? `${settings.petName}'s garden` : "Your garden"}>
             <p className="-mt-1 mb-3 text-xs text-muted">
               Every week you finish plants something — quiet weeks grow a sprout,
               full weeks bloom. {bloomed} of {garden.length} week

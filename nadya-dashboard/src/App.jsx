@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 import {
   Outlet, RouterProvider, createBrowserRouter, useLocation, useNavigate,
 } from "react-router-dom";
@@ -25,9 +26,31 @@ import { confettiBurst } from "./lib/confetti.js";
 import { levelUpMoment } from "./lib/celebrate.js";
 import { applyTheme, themeById } from "./data/themes.js";
 
+// Public routes — code-split so their code never lands in the main bundle
+// and is not fetched until the user navigates there.
+const Welcome = lazy(() => import("./routes/Welcome.jsx"));
+const Privacy = lazy(() => import("./routes/Privacy.jsx"));
+
 // Data router (vs <BrowserRouter>): required for react-router's
 // `viewTransition` support on Link/NavLink/navigate (≥6.30).
 const router = createBrowserRouter([
+  // Public routes — rendered without the Shell (no sidebar/tab bar/store).
+  {
+    path: "/welcome",
+    element: (
+      <Suspense fallback={null}>
+        <Welcome />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/privacy",
+    element: (
+      <Suspense fallback={null}>
+        <Privacy />
+      </Suspense>
+    ),
+  },
   {
     element: <Root />,
     children: [
@@ -209,8 +232,12 @@ function Shell() {
       <Sidebar onPlus={() => setLogOpen(true)} />
       <main className="mx-auto w-full max-w-md px-4 pb-32 pt-5 lg:max-w-5xl lg:px-10 lg:pb-16 lg:pt-10">
         {/* Screen transitions are view-transition driven (see index.css);
-            browsers without support get an instant swap. */}
-        <Outlet />
+            browsers without support get an instant swap.
+            ErrorBoundary catches render errors inside any route without
+            white-screening the whole shell. */}
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
       <JourneyWatcher />
       <TimerPill />
