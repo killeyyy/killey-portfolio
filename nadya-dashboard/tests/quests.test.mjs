@@ -108,6 +108,44 @@ assert.ok(fresh.some((q) => q.id.endsWith(":showup")));
 assert.equal(fresh.find((q) => q.id.endsWith(":showup")).target, 3); // floor, never punishing
 console.log("OK empty profile");
 
+// ---- money wish: only exists once a goal does; one drop grants it ----
+const savings = {
+  defaultGoal: 0,
+  months: {
+    "2026-06": {
+      goal: 500,
+      entries: [
+        { id: "1", date: "2026-06-09", amount: 100, kind: "save" }, // this week
+        { id: "2", date: "2026-06-09", amount: 900, kind: "income" }, // not a drop
+      ],
+    },
+  },
+};
+// Shrink the pool so both rotating slots are forced: journal + save.
+const moneyBase = {
+  habits: [], habitLog: {}, journal: {}, trackers: [], trackerLog: {},
+  categories: [], weekStart: 1, today: TODAY,
+};
+const withMoney = weeklyQuests({ ...moneyBase, savings });
+const saveWish = withMoney.find((q) => q.id === "2026-06-08:save");
+assert.ok(saveWish, "save wish joins the pool when a goal exists");
+assert.equal(saveWish.target, 1);
+assert.equal(saveWish.progress, 1); // the save-kind drop counts, income doesn't
+assert.equal(saveWish.done, true);
+// No goal → the wish never appears (it must not introduce unchosen features).
+const noGoal = weeklyQuests({ ...moneyBase, savings: { defaultGoal: 0, months: {} } });
+assert.equal(noGoal.some((q) => q.id.endsWith(":save")), false);
+// And income alone doesn't grant it.
+const incomeOnly = weeklyQuests({
+  ...moneyBase,
+  savings: {
+    defaultGoal: 500,
+    months: { "2026-06": { goal: 500, entries: [{ id: "2", date: "2026-06-09", amount: 900, kind: "income" }] } },
+  },
+});
+assert.equal(incomeOnly.find((q) => q.id === "2026-06-08:save").progress, 0);
+console.log("OK money wish");
+
 // ---- granted log: append-only round trip ----
 wishesModel.setWishes({ "2026-06-08:showup": { at: 1, xp: 25 } });
 const w = wishesModel.getWishes();

@@ -5,7 +5,7 @@
 // below her usual rhythm, and an ungranted wish simply fades when the week
 // turns. Nothing is lost, nothing goes red.
 import * as activitiesModel from "../models/activities.js";
-import { addDays, rangeKeys, todayKey, weekStartKey } from "./dates.js";
+import { addDays, monthKeyOf, rangeKeys, todayKey, weekStartKey } from "./dates.js";
 import { journalHasContent } from "./journey.js";
 import { dayFill } from "./tend.js";
 import { formatMinutes } from "./format.js";
@@ -42,6 +42,7 @@ export function weeklyQuests({
   trackers = [],
   trackerLog = {},
   categories = [],
+  savings = null,
   weekStart = 1,
   today = todayKey(),
 }) {
@@ -126,6 +127,30 @@ export function weeklyQuests({
       target,
       progress: minsFor(c.id, sofar),
       unit: "minutes",
+    });
+  }
+
+  // Rotating: one gentle money move — only when a savings goal exists this
+  // month (the wish never introduces a feature she hasn't chosen).
+  const month = savings?.months?.[monthKeyOf(today)];
+  const savingsGoal = month?.goal ?? savings?.defaultGoal ?? 0;
+  if (savingsGoal > 0) {
+    const end = addDays(start, 6);
+    const weekMonths = [...new Set([monthKeyOf(start), monthKeyOf(end)])];
+    const dropped = weekMonths
+      .flatMap((mk) => savings?.months?.[mk]?.entries || [])
+      .some(
+        (e) =>
+          (!e.kind || e.kind === "save") && e.date >= start && e.date <= end && e.date <= today,
+      );
+    pool.push({
+      id: `${start}:save`,
+      emoji: "🐷",
+      title: "Tuck one thing away",
+      desc: "A single drop into savings counts.",
+      target: 1,
+      progress: dropped ? 1 : 0,
+      unit: "days",
     });
   }
 
