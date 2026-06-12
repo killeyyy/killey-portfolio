@@ -34,6 +34,47 @@
   color-scheme: dark;
 }
 
+/* ============================================================
+   Themes = moods. Each re-points the surface + lead-accent tokens;
+   category colours stay constant so charts read the same everywhere.
+   The ambient shader reads these vars too — the background follows.
+   (Default :root above IS Rosé; the FOUC guard in index.html sets
+   data-theme before first paint.)
+   ============================================================ */
+:root[data-theme="ocean"] {
+  --c-ink: 9 13 18; /* #090D12 deep water */
+  --c-surface: 17 23 32;
+  --c-surface-2: 24 33 46;
+  --c-line: 38 51 70;
+  --c-cream: 234 240 244;
+  --c-muted: 147 164 181;
+  --c-rose: 91 168 232; /* lead: azure */
+  --c-rose-bright: 140 198 245;
+  --c-coral: 86 200 216; /* secondary: shallow cyan */
+}
+:root[data-theme="forest"] {
+  --c-ink: 11 15 11; /* #0B0F0B night moss */
+  --c-surface: 19 26 20;
+  --c-surface-2: 27 36 28;
+  --c-line: 42 56 44;
+  --c-cream: 239 243 236;
+  --c-muted: 156 172 156;
+  --c-rose: 95 191 138; /* lead: jade */
+  --c-rose-bright: 142 221 178;
+  --c-coral: 217 169 95; /* secondary: amber */
+}
+:root[data-theme="mono"] {
+  --c-ink: 12 12 14; /* #0C0C0E ink */
+  --c-surface: 21 21 24;
+  --c-surface-2: 30 30 34;
+  --c-line: 46 46 52;
+  --c-cream: 242 240 236;
+  --c-muted: 162 160 160;
+  --c-rose: 200 198 192; /* lead: silver */
+  --c-rose-bright: 232 230 225;
+  --c-coral: 154 152 146; /* secondary: warm grey */
+}
+
 /* Real damped-spring curve where linear() is supported (Baseline since 2023;
    Chrome 113 / Firefox 112 / Safari 17.2). Older engines keep the back-out. */
 @supports (animation-timing-function: linear(0, 1)) {
@@ -130,9 +171,9 @@
     background-clip: text;
     color: transparent;
   }
-  /* Soft rose glow for hero cards / the FAB */
+  /* Accent glow for hero cards / the FAB (follows the theme's lead colour) */
   .glow-rose {
-    box-shadow: 0 0 48px -12px rgb(var(--c-rose) / 0.35);
+    box-shadow: 0 0 56px -10px rgb(var(--c-rose) / 0.45);
   }
   /* Wrapped story progress fill (duration set inline per card) */
   @keyframes bar-fill {

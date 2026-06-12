@@ -15,14 +15,17 @@ export function petStage(streak) {
   return STAGES.find((s) => streak >= s.min).key;
 }
 
-export const PET_COPY = {
-  seed: "Mawar is a tiny seed — log anything today and she'll wake up.",
-  sprout: "Mawar just sprouted! Come back tomorrow and she'll keep growing.",
-  bud: "Mawar has her first bud — she loves your consistency.",
-  bloom: "Mawar is blooming! A full week of showing up.",
-  double: "Mawar is flourishing — two weeks strong.",
-  radiant: "Mawar is radiant. A month of showing up for yourself. 🌟",
-};
+/** Stage copy, personalised with the pet's (nameable) name. */
+export function petCopy(stage, name = "Mawar") {
+  return {
+    seed: `${name} is a tiny seed — log anything today and she'll wake up.`,
+    sprout: `${name} just sprouted! Come back tomorrow and she'll keep growing.`,
+    bud: `${name} has her first bud — she loves your consistency.`,
+    bloom: `${name} is blooming! A full week of showing up.`,
+    double: `${name} is flourishing — two weeks strong.`,
+    radiant: `${name} is radiant. A month of showing up for yourself. 🌟`,
+  }[stage];
+}
 
 const Flower = ({ cx, cy, r, petalFill }) => (
   <g>

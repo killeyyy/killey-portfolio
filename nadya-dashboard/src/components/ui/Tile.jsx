@@ -60,7 +60,7 @@ export function Tile({ title, action, children, className, glow = false }) {
       onPointerMove={tilt.onPointerMove}
       onPointerLeave={tilt.onPointerLeave}
       className={cn(
-        "rounded-2xl bg-gradient-to-br from-rose/40 via-line/60 to-coral/30 p-px",
+        "rounded-2xl bg-gradient-to-br from-rose/60 via-line/50 to-coral/45 p-px",
         "shadow-[0_16px_40px_-20px_rgb(0_0_0/0.6)]",
         "transition-transform duration-200 ease-out will-change-transform",
       )}

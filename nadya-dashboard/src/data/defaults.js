@@ -5,6 +5,8 @@ export const DEFAULT_SETTINGS = {
   currency: "USD",
   locale: "en-US",
   weekStart: 1, // 1 = Monday, 0 = Sunday
+  theme: "rose", // see data/themes.js — themes are moods
+  petName: "Mawar", // the streak pet keeps her name unless renamed
 };
 
 // Editable in Settings; `productive` drives the productivity stats.
