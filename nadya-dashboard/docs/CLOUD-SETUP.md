@@ -16,7 +16,8 @@ clamped). Verified: cross-user reads return 0 rows; stale updates are no-ops.
    in-app browsers and across devices.)
 2. **Site URL**
    Dashboard → Authentication → URL Configuration →
-   Site URL: `https://ruang-nadya.vercel.app`
+   Site URL: `https://petalfall.vercel.app` (project renamed 2026-06-12;
+   swap to `https://petalfall.app` once the domain is attached)
 
 ## Before sharing sign-in with anyone else (custom SMTP — mandatory)
 
