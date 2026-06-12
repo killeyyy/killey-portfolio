@@ -1,9 +1,19 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "../../lib/cn.js";
 
 const fine = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Gyro tilt is for devices WITHOUT a fine pointer (phones). Android exposes
+// deviceorientation freely; iOS requires a permission gesture, so it's
+// detected by the presence of requestPermission and politely skipped.
+const gyroCapable = () =>
+  typeof window !== "undefined" &&
+  typeof DeviceOrientationEvent !== "undefined" &&
+  typeof DeviceOrientationEvent.requestPermission !== "function" &&
+  !window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
@@ -16,6 +26,25 @@ const fine = () =>
 export function Hero3D({ className, innerClassName, children, max = 6 }) {
   const frameRef = useRef(null);
   const glareRef = useRef(null);
+
+  // Phones: the card leans with the device itself. Neutral pose is captured
+  // from the first reading so "how she's already holding it" reads as flat.
+  useEffect(() => {
+    if (!gyroCapable()) return undefined;
+    let base = null;
+    const onTilt = (e) => {
+      if (e.beta == null || e.gamma == null) return;
+      if (base === null) base = { beta: e.beta, gamma: e.gamma };
+      const el = frameRef.current;
+      if (!el) return;
+      const dx = Math.max(-18, Math.min(18, e.beta - base.beta)) / 18;
+      const dy = Math.max(-18, Math.min(18, e.gamma - base.gamma)) / 18;
+      // the 200ms transform transition smooths the 60Hz stream
+      el.style.transform = `rotateX(${(-dx * max * 0.7).toFixed(2)}deg) rotateY(${(dy * max * 0.7).toFixed(2)}deg)`;
+    };
+    window.addEventListener("deviceorientation", onTilt, { passive: true });
+    return () => window.removeEventListener("deviceorientation", onTilt);
+  }, [max]);
 
   const onMove = (e) => {
     if (!fine()) return;

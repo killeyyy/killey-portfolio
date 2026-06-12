@@ -384,6 +384,21 @@ export default function Garden3D({ plots }) {
     const onLeave = () => { tx = 0; };
     host.addEventListener("pointerleave", onLeave);
 
+    // Phones: the garden parallax follows the device's physical tilt
+    // (Android only — iOS gates deviceorientation behind a permission
+    // gesture; the gesture-free pointer path above still works there).
+    let gyroBase = null;
+    const gyroOk =
+      typeof DeviceOrientationEvent !== "undefined" &&
+      typeof DeviceOrientationEvent.requestPermission !== "function" &&
+      !window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const onTilt = (e) => {
+      if (e.gamma == null) return;
+      if (gyroBase === null) gyroBase = e.gamma;
+      tx = (Math.max(-20, Math.min(20, e.gamma - gyroBase)) / 20) * 0.45;
+    };
+    if (gyroOk) window.addEventListener("deviceorientation", onTilt, { passive: true });
+
     const resize = () => {
       renderer.setSize(host.clientWidth, HEIGHT);
       camera.perspective({ aspect: host.clientWidth / HEIGHT });
@@ -424,6 +439,7 @@ export default function Garden3D({ plots }) {
       document.removeEventListener("visibilitychange", onVis);
       host.removeEventListener("pointermove", onPointer);
       host.removeEventListener("pointerleave", onLeave);
+      if (gyroOk) window.removeEventListener("deviceorientation", onTilt);
       gl.canvas.removeEventListener("webglcontextlost", onLost);
       gl.canvas.remove();
       gl.getExtension("WEBGL_lose_context")?.loseContext();
