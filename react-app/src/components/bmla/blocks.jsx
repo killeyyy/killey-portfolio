@@ -98,7 +98,7 @@ export function ExampleBlock({ block }) {
       {steps.length > 0 && (
         <ol className="mt-3 space-y-2 border-l border-crimson/30 pl-4">
           {steps.slice(0, shown).map((s, i) => (
-            <li key={i} className="text-sm text-muted">
+            <li key={i} className="fade-step text-sm text-muted">
               {s.text && <Rich text={s.text} />}
               {s.tex && <Math tex={s.tex} />}
             </li>

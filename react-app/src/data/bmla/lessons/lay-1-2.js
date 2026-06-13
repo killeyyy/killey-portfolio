@@ -37,6 +37,7 @@ export default {
       q: "Which condition is required for *reduced* echelon form but NOT for plain echelon form?",
       options: ["Nonzero rows sit above zero rows", "Leading entries step to the right", "Each leading entry is 1 and the only nonzero in its column", "Zeros below each leading entry"],
       correctIndex: 2,
+      hint: "Plain echelon form doesn't require the leading entries to be 1.",
       explanation: "Conditions (4) and (5) — leading 1's with zeros above and below — are what make it *reduced*.",
     },
 
@@ -81,6 +82,16 @@ export default {
         ],
         answerTex: "\\left[\\begin{array}{ccccc|c}1&0&-2&3&0&-24\\\\0&1&-2&2&0&-7\\\\0&0&0&0&1&4\\end{array}\\right]",
       },
+    },
+
+    {
+      type: "checkpoint",
+      variant: "tryit",
+      q: "A 3×5 augmented matrix is in echelon form with pivots in columns 1, 2 and 4. How many free variables does the system have?",
+      options: ["0", "1", "2", "3"],
+      correctIndex: 1,
+      hint: "There are 4 variable columns (the 5th is the constant); count the ones with no pivot.",
+      explanation: "Variables sit in columns 1–4; pivots fill 3 of them, leaving column 3 free → 1 free variable.",
     },
 
     { type: "heading", eyebrow: "Section 1.2 · Part 3", title: "Reading the solution" },

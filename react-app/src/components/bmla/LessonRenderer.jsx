@@ -3,6 +3,7 @@ import MathTex from "./Math.jsx";
 import { Rich, CalloutBlock, ExampleBlock, HeadingBlock, DefinitionBlock, TheoremBlock } from "./blocks.jsx";
 import Checkpoint from "./Checkpoint.jsx";
 import Figure from "./Figure.jsx";
+import { LessonProgressProvider, CheckpointTally } from "./LessonProgress.jsx";
 import { TOOLS } from "./tools/index.js";
 
 const ToolFallback = () => (
@@ -11,7 +12,7 @@ const ToolFallback = () => (
   </div>
 );
 
-function Block({ block, moduleSlug }) {
+function Block({ block, idx, moduleSlug }) {
   switch (block.type) {
     case "prose":
       return <p className="max-w-2xl text-fluid-base leading-relaxed text-muted"><Rich text={block.text} /></p>;
@@ -26,7 +27,7 @@ function Block({ block, moduleSlug }) {
     case "figure":
       return <Figure block={block} />;
     case "checkpoint":
-      return <Checkpoint block={block} />;
+      return <Checkpoint block={block} cpId={idx} />;
     case "example":
       return <ExampleBlock block={block} />;
     case "callout":
@@ -51,21 +52,24 @@ function Block({ block, moduleSlug }) {
 /** Renders a lesson's blocks, then its interactive tools. */
 export default function LessonRenderer({ lesson }) {
   return (
-    <div className="space-y-6">
-      {lesson.blocks.map((b, i) => (
-        <Block key={i} block={b} moduleSlug={lesson.moduleSlug} />
-      ))}
-      {(lesson.tools || [])
-        .filter((id) => id !== "quiz" || !lesson.blocks.some((b) => b.type === "practice"))
-        .map((id) => {
-          const Tool = TOOLS[id];
-          if (!Tool) return null;
-          return (
-            <Suspense key={id} fallback={<ToolFallback />}>
-              <Tool moduleSlug={lesson.moduleSlug} />
-            </Suspense>
-          );
-        })}
-    </div>
+    <LessonProgressProvider>
+      <div className="space-y-6">
+        {lesson.blocks.map((b, i) => (
+          <Block key={i} block={b} idx={i} moduleSlug={lesson.moduleSlug} />
+        ))}
+        <CheckpointTally />
+        {(lesson.tools || [])
+          .filter((id) => id !== "quiz" || !lesson.blocks.some((b) => b.type === "practice"))
+          .map((id) => {
+            const Tool = TOOLS[id];
+            if (!Tool) return null;
+            return (
+              <Suspense key={id} fallback={<ToolFallback />}>
+                <Tool moduleSlug={lesson.moduleSlug} />
+              </Suspense>
+            );
+          })}
+      </div>
+    </LessonProgressProvider>
   );
 }

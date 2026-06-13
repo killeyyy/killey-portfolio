@@ -36,6 +36,7 @@ export default {
       q: "Which of these is a linear equation?",
       options: ["x₁x₂ = 4", "2x₁ − x₂ = 7", "√x₁ + x₂ = 1", "x₁² = 9"],
       correctIndex: 1,
+      hint: "Scan each one for a product of variables, a root, or a power.",
       explanation: "Variables appear only to the first power — no products, roots or powers. (An irrational *constant* would still be fine.)",
     },
 
@@ -144,6 +145,16 @@ export default {
         ],
         answerTex: "x_1=29,\\quad x_2=16,\\quad x_3=3",
       },
+    },
+
+    {
+      type: "checkpoint",
+      variant: "tryit",
+      q: "Solve the system x₁ + x₂ = 5 and x₁ − x₂ = 1. What is x₁?",
+      options: ["x₁ = 3", "x₁ = 2", "x₁ = 1", "x₁ = 5"],
+      correctIndex: 0,
+      hint: "Add the two equations to eliminate x₂.",
+      explanation: "Adding gives 2x₁ = 6, so x₁ = 3 (and x₂ = 2).",
     },
 
     { type: "heading", eyebrow: "Section 1.1 · Part 5", title: "Existence & uniqueness" },

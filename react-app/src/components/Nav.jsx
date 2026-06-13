@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Lock, Command } from "lucide-react";
 import { site } from "../data/site.js";
 import { cn } from "../lib/cn.js";
+import ThemeToggle from "./ThemeToggle.jsx";
 
 const NAV = [
   { label: "Work", href: "/#work" },
@@ -91,6 +92,7 @@ export default function Nav() {
           >
             <Command size={11} aria-hidden="true" /> K
           </button>
+          <ThemeToggle />
           <a
             href={`mailto:${site.email}`}
             className="rounded-full bg-crimson px-4 py-2 text-sm font-medium text-silver transition-colors hover:bg-crimson/90"
@@ -140,6 +142,10 @@ export default function Nav() {
           <Link to="/owner" className="rounded-md px-2 py-2 text-sm text-muted hover:bg-white/5 hover:text-silver" onClick={() => setOpen(false)}>
             Owner
           </Link>
+          <div className="flex items-center justify-between rounded-md px-2 py-2">
+            <span className="text-sm text-muted">Theme</span>
+            <ThemeToggle />
+          </div>
           <a href={`mailto:${site.email}`} className="mt-1 rounded-full bg-crimson px-4 py-2 text-center text-sm font-medium text-silver">
             Let's talk
           </a>

@@ -39,6 +39,32 @@
   color-scheme: dark;
 }
 
+/* ============================================================
+   Light theme — flips the neutral tokens and darkens the
+   "as-text" accent variants for AA contrast on a pale ground.
+   Activated by data-theme="light" on <html> (set pre-paint in
+   index.html, toggled by ThemeToggle). Everything else inherits.
+   ============================================================ */
+:root[data-theme="light"] {
+  --c-ink: 245 243 238; /* warm paper page background */
+  --c-surface: 255 255 255; /* cards */
+  --c-surface-2: 238 234 227; /* raised */
+  --c-line: 206 198 185; /* warm hairline border */
+  --c-silver: 28 27 24; /* primary text (near-black warm) */
+  --c-muted: 92 87 79; /* secondary text/labels (AA on paper) */
+
+  /* darker "as-text" accents so they read on white */
+  --c-crimson-bright: 178 36 50; /* crimson text */
+  --c-jade-bright: 19 107 87; /* jade text */
+  --c-gold: 150 114 48; /* bronze — used as text + tint */
+  --c-cyan: 14 116 144; /* cyan text */
+  --c-violet: 109 76 217; /* violet text/tint */
+  --c-violet-bright: 109 76 217;
+
+  color-scheme: light;
+}
+
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -263,6 +289,14 @@ html.lenis body { height: auto; }
     animation: none !important;
   }
 }
+
+/* Progressive worked-example steps fade in as they're revealed.
+   (The global reduced-motion rule above already neutralizes this.) */
+@keyframes fadeStep {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-step { animation: fadeStep 0.28s var(--ease-cinematic); }
 
 /* Print: the BMLA formula sheet should come out clean on white paper.
    Hide chrome/controls, force dark ink, keep each card whole on a page. */

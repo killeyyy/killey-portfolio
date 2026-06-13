@@ -28,6 +28,7 @@ export default {
       tex: "\\begin{bmatrix}1\\\\-2\\end{bmatrix}+\\begin{bmatrix}2\\\\5\\end{bmatrix}",
       options: ["[3; 3]", "[3; 7]", "[−1; 3]", "[2; −10]"],
       correctIndex: 0,
+      hint: "Add the vectors entry by entry.",
       explanation: "Add corresponding entries: (1+2, −2+5) = (3, 3).",
     },
 
@@ -75,6 +76,16 @@ export default {
       options: ["b = 0", "the system [a₁ … aₙ | b] is consistent", "the aᵢ are independent", "n ≥ 3"],
       correctIndex: 1,
       explanation: "A solution to that system gives the weights; consistency ⇔ b lies in the span.",
+    },
+
+    {
+      type: "checkpoint",
+      variant: "tryit",
+      q: "Let v₁ = (1, 2) and v₂ = (2, 4). Is Span{v₁, v₂} a line or a plane?",
+      options: ["a line", "a plane", "all of ℝ²", "a single point"],
+      correctIndex: 0,
+      hint: "Is one vector a scalar multiple of the other?",
+      explanation: "v₂ = 2·v₁, so they are dependent — the span collapses to a line through the origin.",
     },
 
     { type: "heading", eyebrow: "Section 1.3 · Part 3", title: "Span" },
