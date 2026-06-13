@@ -19,7 +19,7 @@ export default function BmlaResources() {
           <p className="mt-3 text-sm leading-relaxed text-muted">
             Your own copies of the book, lecture notes, assignments and past papers — linked from your
             access-controlled Drive so they stay private to you, right next to the lessons. To add one,
-            paste your Drive "share" link into <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[0.85em] text-gold">react-app/src/data/bmla/resources.js</code>.
+            paste your Drive "share" link into <code className="rounded bg-silver/10 px-1.5 py-0.5 font-mono text-[0.85em] text-gold">react-app/src/data/bmla/resources.js</code>.
           </p>
         </header>
 

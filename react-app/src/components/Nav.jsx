@@ -124,7 +124,7 @@ export default function Nav() {
                 to={n.href}
                 onClick={() => setOpen(false)}
                 aria-current={isActive(n.href) ? "page" : undefined}
-                className={`rounded-md px-2 py-2 text-sm hover:bg-white/5 ${isActive(n.href) ? "text-gold" : "text-muted hover:text-silver"}`}
+                className={`rounded-md px-2 py-2 text-sm hover:bg-silver/10 ${isActive(n.href) ? "text-gold" : "text-muted hover:text-silver"}`}
               >
                 {n.label}
               </Link>
@@ -132,14 +132,14 @@ export default function Nav() {
               <a
                 key={n.href}
                 href={n.href}
-                className="rounded-md px-2 py-2 text-sm text-muted hover:bg-white/5 hover:text-silver"
+                className="rounded-md px-2 py-2 text-sm text-muted hover:bg-silver/10 hover:text-silver"
                 onClick={() => setOpen(false)}
               >
                 {n.label}
               </a>
             ),
           )}
-          <Link to="/owner" className="rounded-md px-2 py-2 text-sm text-muted hover:bg-white/5 hover:text-silver" onClick={() => setOpen(false)}>
+          <Link to="/owner" className="rounded-md px-2 py-2 text-sm text-muted hover:bg-silver/10 hover:text-silver" onClick={() => setOpen(false)}>
             Owner
           </Link>
           <div className="flex items-center justify-between rounded-md px-2 py-2">

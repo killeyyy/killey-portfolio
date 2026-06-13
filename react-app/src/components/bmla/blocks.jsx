@@ -13,7 +13,7 @@ export function Rich({ text, className = "" }) {
         if (p.startsWith("*") && p.endsWith("*") && p.length > 2)
           return <em key={i} className="text-silver/95">{p.slice(1, -1)}</em>;
         if (p.startsWith("`") && p.endsWith("`"))
-          return <code key={i} className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[0.9em] text-gold">{p.slice(1, -1)}</code>;
+          return <code key={i} className="rounded bg-silver/10 px-1.5 py-0.5 font-mono text-[0.9em] text-gold">{p.slice(1, -1)}</code>;
         return p;
       })}
     </span>

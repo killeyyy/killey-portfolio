@@ -187,13 +187,13 @@ export default function Owner() {
               key={n.id} onClick={() => setSection(n.id)}
               className={cn(
                 "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
-                section === n.id ? "bg-crimson/15 text-crimson" : "text-muted hover:bg-white/5 hover:text-silver",
+                section === n.id ? "bg-crimson/15 text-crimson" : "text-muted hover:bg-silver/10 hover:text-silver",
               )}
             >
               <n.icon size={16} aria-hidden="true" /> {n.label}
             </button>
           ))}
-          <button onClick={signOut} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted hover:bg-white/5 hover:text-silver md:mt-auto">
+          <button onClick={signOut} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted hover:bg-silver/10 hover:text-silver md:mt-auto">
             <LogOut size={16} aria-hidden="true" /> Sign out
           </button>
         </nav>

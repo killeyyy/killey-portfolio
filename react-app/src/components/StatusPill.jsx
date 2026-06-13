@@ -3,8 +3,8 @@ import { cn } from "../lib/cn.js";
 const STYLES = {
   Live: "text-jade border-jade/40 bg-jade/10",
   "In progress": "text-gold border-gold/40 bg-gold/10",
-  Prototype: "text-muted border-line bg-white/5",
-  Paused: "text-muted border-line bg-white/5",
+  Prototype: "text-muted border-line bg-silver/10",
+  Paused: "text-muted border-line bg-silver/10",
 };
 
 /** Small status badge. Color is not the only signal (text label too). */

@@ -63,6 +63,8 @@
 
   color-scheme: light;
 }
+/* The film-grain noise is tuned for a dark ground; lighten it on paper. */
+:root[data-theme="light"] .grain::after { opacity: 0.03; }
 
 
 @layer base {
