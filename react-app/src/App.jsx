@@ -19,6 +19,7 @@ const Bmla = lazy(() => import("./routes/bmla/Bmla.jsx"));
 const BmlaLearn = lazy(() => import("./routes/bmla/BmlaLearn.jsx"));
 const BmlaLesson = lazy(() => import("./routes/bmla/BmlaLesson.jsx"));
 const BmlaResources = lazy(() => import("./routes/bmla/BmlaResources.jsx"));
+const BmlaReference = lazy(() => import("./routes/bmla/BmlaReference.jsx"));
 
 // Framer Motion's feature pack loads in its own async chunk after first paint.
 const loadFeatures = () => import("./lib/features.js").then((mod) => mod.default);
@@ -58,6 +59,7 @@ export default function App() {
                 <Route path="/bmla/learn" element={<BmlaGate><BmlaLearn /></BmlaGate>} />
                 <Route path="/bmla/lesson/:slug" element={<BmlaGate><BmlaLesson /></BmlaGate>} />
                 <Route path="/bmla/resources" element={<BmlaGate><BmlaResources /></BmlaGate>} />
+                <Route path="/bmla/reference" element={<BmlaGate><BmlaReference /></BmlaGate>} />
                 <Route path="/owner" element={<Owner />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

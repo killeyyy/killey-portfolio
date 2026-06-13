@@ -3,10 +3,10 @@ export { curriculum, product, availableModules } from "./curriculum.js";
 /** Light lesson metadata for lists/dashboard (full content stays code-split).
  *  Order here = the recommended learning path. Lay §1.1–§2.3 lead the syllabus. */
 export const lessonIndex = [
-  { slug: "lay-1-1", moduleSlug: "matrices", title: "§1.1 — Systems of Linear Equations", minutes: 22 },
-  { slug: "lay-1-2", moduleSlug: "matrices", title: "§1.2 — Row Reduction & Echelon Forms", minutes: 24 },
+  { slug: "lay-1-1", moduleSlug: "matrices", title: "§1.1 — Systems of Linear Equations", minutes: 24, lecture: { n: 1, date: "09 Jun" } },
+  { slug: "lay-1-2", moduleSlug: "matrices", title: "§1.2 — Row Reduction & Echelon Forms", minutes: 26, lecture: { n: 2, date: "11 Jun" } },
   { slug: "lay-2-1", moduleSlug: "matrices", title: "§2.1 — Matrix Operations", minutes: 22 },
-  { slug: "lay-1-3", moduleSlug: "vectors", title: "§1.3 — Vector Equations", minutes: 22 },
+  { slug: "lay-1-3", moduleSlug: "vectors", title: "§1.3 — Vector Equations", minutes: 24, lecture: { n: 3, date: "13 Jun" } },
   { slug: "lay-2-2", moduleSlug: "determinants", title: "§2.2 — The Inverse of a Matrix", minutes: 22 },
   { slug: "lay-2-3", moduleSlug: "determinants", title: "§2.3 — Characterizations of Invertible Matrices", minutes: 20 },
   { slug: "determinants-cofactor", moduleSlug: "determinants", title: "Determinants & Cofactor Expansion", minutes: 16 },

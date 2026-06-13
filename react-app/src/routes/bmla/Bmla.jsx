@@ -190,6 +190,9 @@ export default function Bmla() {
               <Link to="/bmla/resources" className="inline-flex items-center gap-2 rounded-full border border-line px-8 py-4 text-sm font-medium text-silver transition-colors hover:border-gold/60 hover:text-gold">
                 My materials locker
               </Link>
+              <Link to="/bmla/reference" className="inline-flex items-center gap-2 rounded-full border border-line px-8 py-4 text-sm font-medium text-silver transition-colors hover:border-gold/60 hover:text-gold">
+                Formula sheet
+              </Link>
             </div>
           </div>
         </section>

@@ -30,6 +30,7 @@ export default function BmlaLesson() {
   if (lesson === null) return <NotFound />;
 
   const idx = lessonIndex.findIndex((l) => l.slug === slug);
+  const meta = idx >= 0 ? lessonIndex[idx] : null;
   const prev = idx > 0 ? lessonIndex[idx - 1] : null;
   const next = idx >= 0 && idx < lessonIndex.length - 1 ? lessonIndex[idx + 1] : null;
 
@@ -48,9 +49,14 @@ export default function BmlaLesson() {
         ) : (
           <>
             <header className="mt-6 max-w-3xl">
-              <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-gold">
+              <p className="inline-flex flex-wrap items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-gold">
                 BMLA Mastery <span aria-hidden="true">·</span>
                 <span className="inline-flex items-center gap-1 text-muted"><Clock size={12} aria-hidden="true" /> {lesson.minutes} min</span>
+                {meta?.lecture && (
+                  <span className="rounded-full border border-violet/40 bg-violet/10 px-2 py-0.5 text-[10px] tracking-normal text-violet-bright">
+                    Lecture {meta.lecture.n} · {meta.lecture.date}
+                  </span>
+                )}
               </p>
               <h1 className="mt-2 font-serif text-fluid-2xl font-semibold leading-tight text-silver">{lesson.title}</h1>
               <p className="mt-3 text-sm leading-relaxed text-jade-bright">{lesson.objective}</p>

@@ -263,3 +263,18 @@ html.lenis body { height: auto; }
     animation: none !important;
   }
 }
+
+/* Print: the BMLA formula sheet should come out clean on white paper.
+   Hide chrome/controls, force dark ink, keep each card whole on a page. */
+@media print {
+  .no-print { display: none !important; }
+  html, body { background: #fff !important; }
+  .printable, .printable * { color: #111 !important; }
+  .printable .ref-card {
+    background: #fff !important;
+    border: 1px solid #cbcbcb !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  .printable .katex, .printable .katex * { color: #111 !important; }
+}

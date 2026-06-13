@@ -3,6 +3,7 @@ import { CheckCircle2, XCircle, RotateCcw } from "lucide-react";
 import { questMcqs } from "../../../data/bmla/quest-import.js";
 import { get, set } from "../../../lib/bmla/storage.js";
 import { bumpStudyActivity } from "../../../lib/bmla/progress.js";
+import { recordQuiz } from "../../../lib/bmla/stats.js";
 import { cn } from "../../../lib/cn.js";
 
 function shuffled(arr) {
@@ -50,6 +51,7 @@ export default function Quiz({ moduleSlug, count = 5, topic }) {
         best: Math.max(prev.best, Math.round(((score) / questions.length) * 100)),
         attempts: prev.attempts + 1,
       });
+      recordQuiz(moduleSlug, topic, score, questions.length);
       setDone(true);
     } else {
       setI(i + 1);
