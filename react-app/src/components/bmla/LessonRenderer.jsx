@@ -23,7 +23,11 @@ function Block({ block, moduleSlug }) {
       const Quiz = TOOLS.quiz;
       return (
         <Suspense fallback={<ToolFallback />}>
-          <Quiz moduleSlug={moduleSlug} count={block.practice?.count ?? 5} />
+          <Quiz
+            moduleSlug={moduleSlug}
+            count={block.practice?.count ?? 5}
+            topic={block.practice?.topic}
+          />
         </Suspense>
       );
     }
