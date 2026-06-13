@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Sparkles, ExternalLink } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
@@ -11,6 +12,10 @@ import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
 import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
+
+// A real lesson tool, mounted live on the landing page so visitors can touch the
+// product before signing up. Lazy so it never weighs down the hero paint.
+const BreakEvenDemo = lazy(() => import("../../components/bmla/tools/BreakEven.jsx"));
 
 const LEVEL_CLS = {
   intro: "text-jade-bright border-jade/40 bg-jade/10",
@@ -140,6 +145,33 @@ export default function Bmla() {
                 </Item>
               ))}
             </Stagger>
+
+            {/* live, no-signup demo of a real lesson tool */}
+            <div id="try-it" className="mt-12 grid items-center gap-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
+              <div>
+                <p className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-jade-bright">
+                  <Sparkles size={13} aria-hidden="true" /> Live demo · no signup
+                </p>
+                <h3 className="mt-3 font-serif text-fluid-lg font-semibold text-silver">
+                  Don't take my word for it — drag the sliders.
+                </h3>
+                <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
+                  This is the exact break-even explorer baked into the lessons. Move fixed cost,
+                  price and unit cost and watch the crossover — where profit starts — move in real time.
+                </p>
+              </div>
+              <div className="glow-card">
+                <Suspense
+                  fallback={
+                    <div className="rounded-xl2 border border-line/70 bg-surface/50 p-5 text-sm text-muted">
+                      Loading the explorer…
+                    </div>
+                  }
+                >
+                  <BreakEvenDemo />
+                </Suspense>
+              </div>
+            </div>
           </div>
         </section>
 
