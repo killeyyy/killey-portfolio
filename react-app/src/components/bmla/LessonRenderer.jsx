@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import MathTex from "./Math.jsx";
-import { Rich, CalloutBlock, ExampleBlock } from "./blocks.jsx";
+import { Rich, CalloutBlock, ExampleBlock, HeadingBlock, DefinitionBlock, TheoremBlock } from "./blocks.jsx";
+import Checkpoint from "./Checkpoint.jsx";
+import Figure from "./Figure.jsx";
 import { TOOLS } from "./tools/index.js";
 
 const ToolFallback = () => (
@@ -15,6 +17,16 @@ function Block({ block, moduleSlug }) {
       return <p className="max-w-2xl text-fluid-base leading-relaxed text-muted"><Rich text={block.text} /></p>;
     case "math":
       return <MathTex tex={block.tex} className="text-silver" />;
+    case "heading":
+      return <HeadingBlock block={block} />;
+    case "definition":
+      return <DefinitionBlock block={block} />;
+    case "theorem":
+      return <TheoremBlock block={block} />;
+    case "figure":
+      return <Figure block={block} />;
+    case "checkpoint":
+      return <Checkpoint block={block} />;
     case "example":
       return <ExampleBlock block={block} />;
     case "callout":
