@@ -5,6 +5,7 @@ import Nav from "../../components/Nav.jsx";
 import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
 import Seo from "../../components/Seo.jsx";
+import HeroVisual from "../../components/bmla/HeroVisual.jsx";
 import SectionHeading from "../../components/SectionHeading.jsx";
 import Magnetic from "../../lib/Magnetic.jsx";
 import Icon from "../../lib/icons.jsx";
@@ -17,6 +18,11 @@ import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.j
 // A real lesson tool, mounted live on the landing page so visitors can touch the
 // product before signing up. Lazy so it never weighs down the hero paint.
 const BreakEvenDemo = lazy(() => import("../../components/bmla/tools/BreakEven.jsx"));
+
+// Hero cover art for /bmla. Set this to a Higgsfield-generated image URL (or an
+// imported asset) and the hero slot renders it; null shows the on-brand
+// linear-algebra motif placeholder. See components/bmla/HeroVisual.jsx.
+const HERO_ART = null;
 
 const LEVEL_CLS = {
   intro: "text-jade-bright border-jade/40 bg-jade/10",
@@ -56,6 +62,8 @@ export default function Bmla() {
           <div aria-hidden="true" className="grain absolute inset-0" />
           <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/60 to-ink" aria-hidden="true" />
           <div className="relative mx-auto max-w-content px-6 pb-20 pt-24 md:pb-28 md:pt-32">
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,400px)]">
+              <div>
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-jade/40 bg-jade/10 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.2em] text-jade-bright">
               <Sparkles size={13} aria-hidden="true" /> Your private study vault
             </p>
@@ -84,6 +92,11 @@ export default function Bmla() {
                 </div>
               ))}
             </dl>
+              </div>
+              <div className="hidden lg:block">
+                <HeroVisual src={HERO_ART} alt="BMLA Mastery — cinematic study cover" />
+              </div>
+            </div>
           </div>
         </section>
 
