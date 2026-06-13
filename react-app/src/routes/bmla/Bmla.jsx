@@ -4,6 +4,7 @@ import { ArrowRight, ShieldCheck, Sparkles, ExternalLink } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
 import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
+import Seo from "../../components/Seo.jsx";
 import SectionHeading from "../../components/SectionHeading.jsx";
 import Magnetic from "../../lib/Magnetic.jsx";
 import Icon from "../../lib/icons.jsx";
@@ -41,6 +42,11 @@ const TOOLS_SHOWCASE = [
 export default function Bmla() {
   return (
     <>
+      <Seo
+        title={`${product.name} — Business Maths & Linear Algebra | KILLEYYY`}
+        description={product.promise}
+        canonical="/bmla"
+      />
       <Nav />
       <BmlaSubnav />
       <main id="main">
