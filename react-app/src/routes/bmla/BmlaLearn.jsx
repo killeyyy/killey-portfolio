@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CircleCheck, Circle, ArrowRight, Clock, CalendarClock, Target, BookText, FolderLock } from "lucide-react";
+import { CircleCheck, Circle, ArrowRight, Clock, CalendarClock, Target } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
+import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
 import Icon from "../../lib/icons.jsx";
 import { cn } from "../../lib/cn.js";
@@ -21,6 +22,7 @@ export default function BmlaLearn() {
   const doneCount = lessonIndex.filter((l) => progress.done[l.slug]).length;
   const pct = lessonIndex.length ? Math.round((doneCount / lessonIndex.length) * 100) : 0;
   const next = lessonIndex.find((l) => !progress.done[l.slug]);
+  const lectures = lessonIndex.filter((l) => l.lecture).sort((a, b) => a.lecture.n - b.lecture.n);
 
   const [examDate, setExamDate] = useState(() => get("examDate", ""));
   const saveExam = (v) => {
@@ -36,21 +38,39 @@ export default function BmlaLearn() {
   return (
     <>
       <Nav />
+      <BmlaSubnav />
       <main id="main" className="mx-auto max-w-content px-6 py-12 md:py-16">
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
-            <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Link to="/bmla/reference" className="inline-flex items-center gap-2 rounded-full border border-line/70 px-4 py-2 text-sm text-silver transition-colors hover:border-gold/50 hover:text-gold">
-              <BookText size={15} aria-hidden="true" /> Formula sheet
-            </Link>
-            <Link to="/bmla/resources" className="inline-flex items-center gap-2 rounded-full border border-line/70 px-4 py-2 text-sm text-silver transition-colors hover:border-gold/50 hover:text-gold">
-              <FolderLock size={15} aria-hidden="true" /> Materials locker
-            </Link>
-          </div>
+        <div className="mb-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
+          <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
         </div>
+
+        {/* lectures so far — quick access to the class-aligned lessons */}
+        {lectures.length > 0 && (
+          <section className="mb-8">
+            <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Your lectures so far</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {lectures.map((l) => {
+                const isDone = !!progress.done[l.slug];
+                return (
+                  <Link
+                    key={l.slug}
+                    to={`/bmla/lesson/${l.slug}`}
+                    className="glow-card rounded-[14px] border border-line/70 bg-surface/50 p-4 transition-colors hover:border-gold/50"
+                  >
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-violet-bright">
+                      Lecture {l.lecture.n} · {l.lecture.date}
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-silver">{l.title}</p>
+                    <p className={`mt-2 text-xs ${isDone ? "text-jade-bright" : "text-muted"}`}>
+                      {isDone ? "Reviewed ✓" : "Open lesson →"}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* bento overview */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

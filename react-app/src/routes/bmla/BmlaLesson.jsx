@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, CircleCheck, Clock, Loader2 } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
+import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
 import LessonRenderer from "../../components/bmla/LessonRenderer.jsx";
 import ExamStyle from "../../components/bmla/ExamStyle.jsx";
 import NotFound from "../NotFound.jsx";
-import { loadLesson, lessonIndex } from "../../data/bmla/index.js";
+import { loadLesson, lessonIndex, curriculum } from "../../data/bmla/index.js";
 import { getProgress, markLessonDone } from "../../lib/bmla/progress.js";
 
 export default function BmlaLesson() {
@@ -31,16 +32,22 @@ export default function BmlaLesson() {
 
   const idx = lessonIndex.findIndex((l) => l.slug === slug);
   const meta = idx >= 0 ? lessonIndex[idx] : null;
+  const moduleTitle = meta ? curriculum.find((m) => m.slug === meta.moduleSlug)?.title : null;
   const prev = idx > 0 ? lessonIndex[idx - 1] : null;
   const next = idx >= 0 && idx < lessonIndex.length - 1 ? lessonIndex[idx + 1] : null;
 
   return (
     <>
       <Nav />
+      <BmlaSubnav />
       <main id="main" className="mx-auto max-w-content px-6 py-12 md:py-16">
-        <Link to="/bmla/learn" className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-silver">
-          <ArrowLeft size={15} aria-hidden="true" /> Dashboard
-        </Link>
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
+          <Link to="/bmla/learn" className="inline-flex items-center gap-1 transition-colors hover:text-silver">
+            <ArrowLeft size={15} aria-hidden="true" /> Dashboard
+          </Link>
+          {moduleTitle && (<><span aria-hidden="true" className="text-line">/</span><span>{moduleTitle}</span></>)}
+          {meta?.title && (<><span aria-hidden="true" className="text-line">/</span><span className="text-silver">{meta.title}</span></>)}
+        </nav>
 
         {lesson === undefined ? (
           <div className="flex min-h-[40vh] items-center justify-center text-muted">

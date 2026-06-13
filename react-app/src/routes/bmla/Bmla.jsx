@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Sparkles, ExternalLink } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
+import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
 import SectionHeading from "../../components/SectionHeading.jsx";
 import Magnetic from "../../lib/Magnetic.jsx";
@@ -36,6 +37,7 @@ export default function Bmla() {
   return (
     <>
       <Nav />
+      <BmlaSubnav />
       <main id="main">
         {/* hero */}
         <section className="relative isolate overflow-hidden">

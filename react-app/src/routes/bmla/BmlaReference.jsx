@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, Printer } from "lucide-react";
+import { Printer } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
+import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
 import MathTex from "../../components/bmla/Math.jsx";
 import { Rich } from "../../components/bmla/blocks.jsx";
@@ -12,12 +12,10 @@ export default function BmlaReference() {
     <>
       <div className="no-print">
         <Nav />
+        <BmlaSubnav />
       </div>
       <main id="main" className="printable mx-auto max-w-content px-6 py-12 md:py-16">
-        <div className="no-print mb-6 flex flex-wrap items-center justify-between gap-4">
-          <Link to="/bmla/learn" className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-silver">
-            <ArrowLeft size={15} aria-hidden="true" /> Dashboard
-          </Link>
+        <div className="no-print mb-6 flex justify-end">
           <button
             type="button"
             onClick={() => window.print()}

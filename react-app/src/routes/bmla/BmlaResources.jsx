@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, ExternalLink, Plus, Lock } from "lucide-react";
+import { ExternalLink, Plus, Lock } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
+import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
 import Icon from "../../lib/icons.jsx";
 import { resourceGroups } from "../../data/bmla/resources.js";
@@ -9,12 +9,9 @@ export default function BmlaResources() {
   return (
     <>
       <Nav />
+      <BmlaSubnav />
       <main id="main" className="mx-auto max-w-content px-6 py-12 md:py-16">
-        <Link to="/bmla/learn" className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-silver">
-          <ArrowLeft size={15} aria-hidden="true" /> Dashboard
-        </Link>
-
-        <header className="mt-6 max-w-3xl">
+        <header className="max-w-3xl">
           <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-gold">
             <Lock size={13} aria-hidden="true" /> Private locker
           </p>
