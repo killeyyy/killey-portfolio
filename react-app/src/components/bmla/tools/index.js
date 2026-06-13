@@ -7,4 +7,8 @@ export const TOOLS = {
   quiz: lazy(() => import("./Quiz.jsx")),
   flashcards: lazy(() => import("./Flashcards.jsx")),
   "break-even": lazy(() => import("./BreakEven.jsx")),
+  determinant: lazy(() => import("./DetSolver.jsx")),
+  inverse: lazy(() => import("./InverseSolver.jsx")),
+  eigen: lazy(() => import("./EigenSolver.jsx")),
+  span: lazy(() => import("./SpanChecker.jsx")),
 };

@@ -6,7 +6,7 @@ export default {
   objective:
     "Define the inverse, use the 2×2 formula, solve Ax = b by inversion, apply the inverse rules, and compute A⁻¹ with the [A | I] algorithm.",
   minutes: 22,
-  tools: ["rref"],
+  tools: ["inverse", "rref"],
   blocks: [
     {
       type: "prose",

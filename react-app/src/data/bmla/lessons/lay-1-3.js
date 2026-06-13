@@ -11,7 +11,7 @@ export default {
   objective:
     "Work with vectors in ℝⁿ (equality, sums, scalar multiples), write linear combinations, turn a vector equation into an augmented system, decide whether b is a linear combination of given vectors, and describe Span{v₁,…,vₚ} geometrically.",
   minutes: 24,
-  tools: ["rref", "flashcards"],
+  tools: ["span", "rref", "flashcards"],
   blocks: [
     {
       type: "prose",
