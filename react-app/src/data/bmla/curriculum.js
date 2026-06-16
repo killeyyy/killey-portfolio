@@ -56,7 +56,7 @@ export const curriculum = [
     summary: "Linear combinations, span, independence, and the equation Ax = b.",
     icon: "Move3d", accent: "text-violet-bright", level: "intro",
     topics: ["Vector operations", "Linear combinations & span", "Ax = b and existence", "Over/under-determined systems"],
-    lessonSlugs: ["lay-1-3"],
+    lessonSlugs: ["lay-1-3", "lay-1-4"],
   },
   {
     slug: "determinants",
