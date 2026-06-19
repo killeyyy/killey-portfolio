@@ -11,10 +11,10 @@ import { recordQuiz, TOPIC_AREAS } from "../../lib/bmla/stats.js";
 import { get, set } from "../../lib/bmla/storage.js";
 
 const SCOPES = [
-  { id: "mixed", label: "Mixed paper", sub: "§1.1–§1.3", topics: ["lec1", "lec2", "lec3"], per: 4 },
-  { id: "lec1", label: "§1.1 only", sub: "Systems", topics: ["lec1"], per: 8 },
-  { id: "lec2", label: "§1.2 only", sub: "Row reduction", topics: ["lec2"], per: 8 },
-  { id: "lec3", label: "§1.3 only", sub: "Vectors", topics: ["lec3"], per: 8 },
+  { id: "mixed", label: "Mixed paper", sub: "everything so far (§1.1–§1.9)", topics: ["lec1", "lec2", "lec3", "ax-b", "solset", "lindep", "lt-intro", "lt-matrix"], per: 2 },
+  { id: "systems", label: "Systems", sub: "§1.1–§1.2", topics: ["lec1", "lec2"], per: 6 },
+  { id: "vectors", label: "Vectors & Ax = b", sub: "§1.3–§1.7", topics: ["lec3", "ax-b", "solset", "lindep"], per: 3 },
+  { id: "transforms", label: "Transformations", sub: "§1.8–§1.9", topics: ["lt-intro", "lt-matrix"], per: 6 },
 ];
 
 function shuffled(arr) {

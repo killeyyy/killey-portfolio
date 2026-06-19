@@ -10,6 +10,11 @@ export const TOPIC_AREAS = {
   lec1: { label: "§1.1 Systems of Linear Equations", lessonSlug: "lay-1-1" },
   lec2: { label: "§1.2 Row Reduction & Echelon Forms", lessonSlug: "lay-1-2" },
   lec3: { label: "§1.3 Vector Equations", lessonSlug: "lay-1-3" },
+  "ax-b": { label: "§1.4 The Matrix Equation Ax = b", lessonSlug: "lay-1-4" },
+  solset: { label: "§1.5 Solution Sets", lessonSlug: "lay-1-5" },
+  lindep: { label: "§1.7 Linear Independence", lessonSlug: "lay-1-7" },
+  "lt-intro": { label: "§1.8 Linear Transformations", lessonSlug: "lay-1-8" },
+  "lt-matrix": { label: "§1.9 Matrix of a Transformation", lessonSlug: "lay-1-9" },
 };
 
 const areaKey = (moduleSlug, topic) => (topic ? `topic:${topic}` : `mod:${moduleSlug}`);
