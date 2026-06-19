@@ -74,7 +74,7 @@ export const curriculum = [
     summary: "Standard matrices, one-to-one & onto, and the geometric maps of the plane.",
     icon: "FlipHorizontal2", accent: "text-cyan", level: "core",
     topics: ["Linear operators", "One-to-one (injective) & range (onto)", "Standard matrix & change of basis", "Inverse operators", "Reflection / rotation / projection / shear / scaling"],
-    lessonSlugs: ["linear-transformations", "geometric-transformations"],
+    lessonSlugs: ["lay-1-8", "lay-1-9", "linear-transformations", "geometric-transformations"],
   },
   {
     slug: "eigen",
