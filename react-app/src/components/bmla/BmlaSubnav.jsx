@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { GraduationCap, LayoutDashboard, FileCheck2, BookText, FolderLock } from "lucide-react";
+import { GraduationCap, LayoutDashboard, FileCheck2, BookText, FolderLock, Sigma } from "lucide-react";
 
 // Persistent wayfinding for the BMLA study area, with active-route highlighting.
 const ITEMS = [
@@ -8,6 +8,7 @@ const ITEMS = [
   { to: "/bmla/exam", label: "Mock exam", Icon: FileCheck2, match: (p) => p.startsWith("/bmla/exam") },
   { to: "/bmla/reference", label: "Formula sheet", Icon: BookText, match: (p) => p.startsWith("/bmla/reference") },
   { to: "/bmla/resources", label: "Locker", Icon: FolderLock, match: (p) => p.startsWith("/bmla/resources") },
+  { to: "/calc", label: "Calculus", Icon: Sigma, match: (p) => p === "/calc" || p.startsWith("/calc/") },
 ];
 
 export default function BmlaSubnav() {

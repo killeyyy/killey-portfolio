@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, Sparkles, ExternalLink } from "lucide-react";
+import { ArrowRight, ShieldCheck, Sparkles, ExternalLink, Sigma } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
 import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -14,6 +14,7 @@ import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
 import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
+import { calcExercises } from "../../data/calc/index.js";
 
 // A real lesson tool, mounted live on the landing page so visitors can touch the
 // product before signing up. Lazy so it never weighs down the hero paint.
@@ -96,6 +97,43 @@ export default function Bmla() {
               <div className="hidden lg:block">
                 <HeroVisual src={HERO_ART} alt="BMLA Mastery — cinematic study cover" />
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* calculus cross-link — the other half of the study vault */}
+        <section className="mx-auto max-w-content px-6 pt-6">
+          <div className="glow-card relative overflow-hidden rounded-[18px] border border-line/70 bg-surface/50 p-6 md:p-8">
+            <div aria-hidden="true" className="aurora absolute inset-0 opacity-20" />
+            <div className="relative flex flex-wrap items-center justify-between gap-6">
+              <div className="max-w-xl">
+                <p className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-gold">
+                  <Sigma size={13} aria-hidden="true" /> Also in your vault
+                </p>
+                <h2 className="mt-2 font-serif text-fluid-lg font-semibold text-silver">Calculus — Solved</h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                  Worked solutions to your Calculus exercises — full questions, step by step, boxed answers. Same passcode, no extra login.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {calcExercises.map((e) => (
+                    <Link
+                      key={e.slug}
+                      to={`/calc/exercise/${e.slug}`}
+                      className="rounded-full border border-line/60 px-2.5 py-0.5 text-[11px] text-muted transition-colors hover:border-gold/50 hover:text-gold"
+                    >
+                      Ex {e.section}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <Magnetic>
+                <Link
+                  to="/calc"
+                  className="inline-flex items-center gap-2 rounded-full bg-crimson px-6 py-3 text-sm font-medium text-silver transition-transform hover:scale-[1.03]"
+                >
+                  Open Calculus <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </Magnetic>
             </div>
           </div>
         </section>
