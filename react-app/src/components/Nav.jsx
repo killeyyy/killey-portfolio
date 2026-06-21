@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Lock, Command } from "lucide-react";
 import { site } from "../data/site.js";
 import { cn } from "../lib/cn.js";
+import ThemeToggle from "./ThemeToggle.jsx";
 
 const NAV = [
   { label: "Work", href: "/#work" },
   { label: "BMLA", href: "/bmla" },
+  { label: "Calc", href: "/calc" },
   { label: "About", href: "/#about" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -51,6 +53,9 @@ function ProgressBar() {
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const isRoute = (href) => href.startsWith("/") && !href.startsWith("/#");
+  const isActive = (href) => isRoute(href) && (pathname === href || pathname.startsWith(`${href}/`));
   return (
     <header className="sticky top-0 z-40 border-b border-line/60 bg-ink/75 backdrop-blur-md">
       <ProgressBar />
@@ -64,11 +69,22 @@ export default function Nav() {
         </Link>
 
         <div className="hidden items-center gap-7 md:flex">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="text-sm text-muted transition-colors hover:text-silver">
-              {n.label}
-            </a>
-          ))}
+          {NAV.map((n) =>
+            isRoute(n.href) ? (
+              <Link
+                key={n.href}
+                to={n.href}
+                aria-current={isActive(n.href) ? "page" : undefined}
+                className={`text-sm transition-colors ${isActive(n.href) ? "text-gold" : "text-muted hover:text-silver"}`}
+              >
+                {n.label}
+              </Link>
+            ) : (
+              <a key={n.href} href={n.href} className="text-sm text-muted transition-colors hover:text-silver">
+                {n.label}
+              </a>
+            ),
+          )}
           <button
             type="button"
             onClick={() => window.dispatchEvent(new CustomEvent("killey:cmdk"))}
@@ -77,6 +93,7 @@ export default function Nav() {
           >
             <Command size={11} aria-hidden="true" /> K
           </button>
+          <ThemeToggle />
           <a
             href={`mailto:${site.email}`}
             className="rounded-full bg-crimson px-4 py-2 text-sm font-medium text-silver transition-colors hover:bg-crimson/90"
@@ -101,19 +118,35 @@ export default function Nav() {
 
       <div className={cn("border-t border-line/60 md:hidden", open ? "block" : "hidden")}>
         <div className="mx-auto flex max-w-content flex-col gap-1 px-6 py-3">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="rounded-md px-2 py-2 text-sm text-muted hover:bg-white/5 hover:text-silver"
-              onClick={() => setOpen(false)}
-            >
-              {n.label}
-            </a>
-          ))}
-          <Link to="/owner" className="rounded-md px-2 py-2 text-sm text-muted hover:bg-white/5 hover:text-silver" onClick={() => setOpen(false)}>
+          {NAV.map((n) =>
+            isRoute(n.href) ? (
+              <Link
+                key={n.href}
+                to={n.href}
+                onClick={() => setOpen(false)}
+                aria-current={isActive(n.href) ? "page" : undefined}
+                className={`rounded-md px-2 py-2 text-sm hover:bg-silver/10 ${isActive(n.href) ? "text-gold" : "text-muted hover:text-silver"}`}
+              >
+                {n.label}
+              </Link>
+            ) : (
+              <a
+                key={n.href}
+                href={n.href}
+                className="rounded-md px-2 py-2 text-sm text-muted hover:bg-silver/10 hover:text-silver"
+                onClick={() => setOpen(false)}
+              >
+                {n.label}
+              </a>
+            ),
+          )}
+          <Link to="/owner" className="rounded-md px-2 py-2 text-sm text-muted hover:bg-silver/10 hover:text-silver" onClick={() => setOpen(false)}>
             Owner
           </Link>
+          <div className="flex items-center justify-between rounded-md px-2 py-2">
+            <span className="text-sm text-muted">Theme</span>
+            <ThemeToggle />
+          </div>
           <a href={`mailto:${site.email}`} className="mt-1 rounded-full bg-crimson px-4 py-2 text-center text-sm font-medium text-silver">
             Let's talk
           </a>

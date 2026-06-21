@@ -9,6 +9,14 @@
       content="KILLEYYY — I build cinematic games, websites and content with AI. Play Empire, BMLA Quest, BMLA Prep Command Center and more, right in the browser."
     />
     <meta name="theme-color" content="#0E0E10" />
+    <script>
+      // Apply the saved (or system) theme before paint to avoid a flash.
+      try {
+        var t = localStorage.getItem("killey:theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        if (t === "light") document.documentElement.setAttribute("data-theme", "light");
+      } catch (e) {}
+    </script>
     <link rel="canonical" href="https://killey-portfolio.vercel.app/" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%230E0E10'/%3E%3Ctext%20x='50'%20y='71'%20font-family='Georgia,serif'%20font-size='62'%20fill='%23C8323C'%20text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

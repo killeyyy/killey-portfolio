@@ -5,7 +5,7 @@ export default {
   title: "Determinants & Cofactor Expansion",
   objective: "By the end you can evaluate any determinant by cofactor expansion and use the properties to shortcut the exam.",
   minutes: 16,
-  tools: ["flashcards"],
+  tools: ["determinant", "flashcards"],
   blocks: [
     {
       type: "prose",

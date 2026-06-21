@@ -5,7 +5,7 @@ export default {
   title: "Eigenvalues & Eigenvectors",
   objective: "By the end you can find eigenvalues from the characteristic equation and the eigenvectors that go with them.",
   minutes: 17,
-  tools: ["flashcards"],
+  tools: ["eigen", "flashcards"],
   blocks: [
     {
       type: "prose",

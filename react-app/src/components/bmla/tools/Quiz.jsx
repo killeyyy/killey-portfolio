@@ -3,6 +3,7 @@ import { CheckCircle2, XCircle, RotateCcw } from "lucide-react";
 import { questMcqs } from "../../../data/bmla/quest-import.js";
 import { get, set } from "../../../lib/bmla/storage.js";
 import { bumpStudyActivity } from "../../../lib/bmla/progress.js";
+import { recordQuiz } from "../../../lib/bmla/stats.js";
 import { cn } from "../../../lib/cn.js";
 
 function shuffled(arr) {
@@ -14,14 +15,17 @@ function shuffled(arr) {
   return a;
 }
 
-/** MCQ practice drawn from KILLEYYY's own question bank, shuffled per attempt. */
-export default function Quiz({ moduleSlug, count = 5 }) {
+/** MCQ practice drawn from KILLEYYY's own question bank, shuffled per attempt.
+ *  Pass `topic` to narrow to a single lecture/section bank (e.g. "lec1"). */
+export default function Quiz({ moduleSlug, count = 5, topic }) {
   const [nonce, setNonce] = useState(0);
   const questions = useMemo(() => {
-    const bank = questMcqs.filter((q) => q.moduleSlug === moduleSlug);
+    const bank = questMcqs.filter(
+      (q) => q.moduleSlug === moduleSlug && (!topic || q.topic === topic),
+    );
     return shuffled(bank).slice(0, Math.min(count, bank.length));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moduleSlug, count, nonce]);
+  }, [moduleSlug, count, topic, nonce]);
 
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState(null);
@@ -41,12 +45,13 @@ export default function Quiz({ moduleSlug, count = 5 }) {
 
   function next() {
     if (i + 1 >= questions.length) {
-      const key = `quiz:${moduleSlug}`;
+      const key = `quiz:${moduleSlug}${topic ? `:${topic}` : ""}`;
       const prev = get(key, { best: 0, attempts: 0 });
       set(key, {
         best: Math.max(prev.best, Math.round(((score) / questions.length) * 100)),
         attempts: prev.attempts + 1,
       });
+      recordQuiz(moduleSlug, topic, score, questions.length);
       setDone(true);
     } else {
       setI(i + 1);

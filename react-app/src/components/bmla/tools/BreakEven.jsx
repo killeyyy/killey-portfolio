@@ -32,23 +32,23 @@ export default function BreakEven() {
 
       <div className="grid gap-6 sm:grid-cols-[1fr_auto]">
         <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={q ? `Break-even at ${Math.ceil(q)} units` : "No break-even — price below unit cost"} className="w-full max-w-md">
-          <line x1={PAD} y1={H - PAD} x2={W - 4} y2={H - PAD} stroke="rgb(255 255 255 / 0.15)" />
-          <line x1={PAD} y1={H - PAD} x2={PAD} y2={6} stroke="rgb(255 255 255 / 0.15)" />
+          <line x1={PAD} y1={H - PAD} x2={W - 4} y2={H - PAD} stroke="rgb(var(--c-line))" />
+          <line x1={PAD} y1={H - PAD} x2={PAD} y2={6} stroke="rgb(var(--c-line))" />
           {/* cost line */}
-          <line x1={x(0)} y1={y(fixed)} x2={x(qMax)} y2={y(fixed + unitCost * qMax)} stroke="#22D3EE" strokeWidth="2" />
+          <line x1={x(0)} y1={y(fixed)} x2={x(qMax)} y2={y(fixed + unitCost * qMax)} stroke="rgb(var(--c-cyan))" strokeWidth="2" />
           {/* revenue line */}
-          <line x1={x(0)} y1={y(0)} x2={x(qMax)} y2={y(price * qMax)} stroke="#F0566A" strokeWidth="2" />
+          <line x1={x(0)} y1={y(0)} x2={x(qMax)} y2={y(price * qMax)} stroke="rgb(var(--c-crimson-bright))" strokeWidth="2" />
           {q !== null && (
             <>
-              <line x1={x(q)} y1={H - PAD} x2={x(q)} y2={y(price * q)} stroke="#C9A86A" strokeDasharray="4 3" />
-              <circle cx={x(q)} cy={y(price * q)} r="4.5" fill="#C9A86A" />
-              <text x={Math.min(x(q) + 6, W - 70)} y={y(price * q) - 8} fill="#E8E6E1" fontSize="10" fontFamily="monospace">
+              <line x1={x(q)} y1={H - PAD} x2={x(q)} y2={y(price * q)} stroke="rgb(var(--c-gold))" strokeDasharray="4 3" />
+              <circle cx={x(q)} cy={y(price * q)} r="4.5" fill="rgb(var(--c-gold))" />
+              <text x={Math.min(x(q) + 6, W - 70)} y={y(price * q) - 8} fill="rgb(var(--c-silver))" fontSize="10" fontFamily="monospace">
                 q* = {fmt(Math.ceil(q))}
               </text>
             </>
           )}
-          <text x={W - 64} y={y(price * qMax) + 12} fill="#F0566A" fontSize="9" fontFamily="monospace">revenue</text>
-          <text x={W - 44} y={y(fixed + unitCost * qMax) - 6} fill="#22D3EE" fontSize="9" fontFamily="monospace">cost</text>
+          <text x={W - 64} y={y(price * qMax) + 12} fill="rgb(var(--c-crimson-bright))" fontSize="9" fontFamily="monospace">revenue</text>
+          <text x={W - 44} y={y(fixed + unitCost * qMax) - 6} fill="rgb(var(--c-cyan))" fontSize="9" fontFamily="monospace">cost</text>
         </svg>
 
         <div className="min-w-[14rem] space-y-4">

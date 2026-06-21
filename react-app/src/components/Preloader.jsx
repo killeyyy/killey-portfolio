@@ -57,7 +57,7 @@ export default function Preloader() {
         {pct}
         <span className="text-crimson">%</span>
       </p>
-      <div className="mt-6 h-px w-56 overflow-hidden bg-white/10">
+      <div className="mt-6 h-px w-56 overflow-hidden bg-silver/15">
         <div
           className="h-full bg-gradient-to-r from-crimson to-gold transition-[width] duration-150"
           style={{ width: `${pct}%` }}

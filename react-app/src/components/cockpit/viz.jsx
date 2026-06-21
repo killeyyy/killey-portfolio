@@ -59,7 +59,7 @@ export function ProgressRing({ value = 0, size = 84, stroke = 8, className = "te
   return (
     <div className="relative inline-flex items-center justify-center">
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgb(255 255 255 / 0.08)" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgb(var(--c-silver) / 0.12)" strokeWidth={stroke} />
         <circle
           cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} strokeLinecap="round"
           className={className} stroke="currentColor" strokeDasharray={c} strokeDashoffset={off}
@@ -86,7 +86,7 @@ export function Heatmap({ weeks = 18, days = 7, seed = 7, data = null }) {
     const rand = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
     for (let i = 0; i < weeks * days; i++) cells.push(Math.floor(rand() * 5));
   }
-  const ramp = ["bg-white/5", "bg-crimson/20", "bg-crimson/40", "bg-crimson/70", "bg-crimson"];
+  const ramp = ["bg-silver/10", "bg-crimson/20", "bg-crimson/40", "bg-crimson/70", "bg-crimson"];
   return (
     <div className="grid grid-flow-col gap-1" style={{ gridTemplateRows: `repeat(${days}, 1fr)` }} aria-hidden="true">
       {cells.map((lvl, i) => (

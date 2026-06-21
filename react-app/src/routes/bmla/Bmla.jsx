@@ -1,7 +1,11 @@
+import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, Sparkles, ExternalLink } from "lucide-react";
+import { ArrowRight, ShieldCheck, Sparkles, ExternalLink, Sigma } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
+import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
+import Seo from "../../components/Seo.jsx";
+import HeroVisual from "../../components/bmla/HeroVisual.jsx";
 import SectionHeading from "../../components/SectionHeading.jsx";
 import Magnetic from "../../lib/Magnetic.jsx";
 import Icon from "../../lib/icons.jsx";
@@ -10,7 +14,16 @@ import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
 import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
-import EmailCapture from "../../components/bmla/EmailCapture.jsx";
+import { calcExercises } from "../../data/calc/index.js";
+
+// A real lesson tool, mounted live on the landing page so visitors can touch the
+// product before signing up. Lazy so it never weighs down the hero paint.
+const BreakEvenDemo = lazy(() => import("../../components/bmla/tools/BreakEven.jsx"));
+
+// Hero cover art for /bmla. Set this to a Higgsfield-generated image URL (or an
+// imported asset) and the hero slot renders it; null shows the on-brand
+// linear-algebra motif placeholder. See components/bmla/HeroVisual.jsx.
+const HERO_ART = null;
 
 const LEVEL_CLS = {
   intro: "text-jade-bright border-jade/40 bg-jade/10",
@@ -36,7 +49,13 @@ const TOOLS_SHOWCASE = [
 export default function Bmla() {
   return (
     <>
+      <Seo
+        title={`${product.name} — Business Maths & Linear Algebra | KILLEYYY`}
+        description={product.promise}
+        canonical="/bmla"
+      />
       <Nav />
+      <BmlaSubnav />
       <main id="main">
         {/* hero */}
         <section className="relative isolate overflow-hidden">
@@ -44,8 +63,10 @@ export default function Bmla() {
           <div aria-hidden="true" className="grain absolute inset-0" />
           <div className="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/60 to-ink" aria-hidden="true" />
           <div className="relative mx-auto max-w-content px-6 pb-20 pt-24 md:pb-28 md:pt-32">
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,400px)]">
+              <div>
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-jade/40 bg-jade/10 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.2em] text-jade-bright">
-              <Sparkles size={13} aria-hidden="true" /> Free during beta
+              <Sparkles size={13} aria-hidden="true" /> Your private study vault
             </p>
             <h1 className="max-w-3xl font-serif text-fluid-2xl font-semibold leading-[1.02] text-silver">
               <span className="text-gradient">{product.name}</span> — {product.tagline}
@@ -54,7 +75,7 @@ export default function Bmla() {
             <div className="mt-9 flex flex-wrap gap-4">
               <Magnetic>
                 <Link to="/bmla/learn" className="glow-card inline-flex items-center gap-2 rounded-full bg-crimson px-7 py-3.5 text-sm font-medium text-silver transition-transform hover:scale-[1.03]">
-                  Start learning — free <ArrowRight size={16} aria-hidden="true" />
+                  Open my lessons <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               </Magnetic>
               <a href="#curriculum" className="inline-flex items-center rounded-full border border-line px-7 py-3.5 text-sm font-medium text-silver transition-colors hover:border-gold/60 hover:text-gold">
@@ -72,6 +93,48 @@ export default function Bmla() {
                 </div>
               ))}
             </dl>
+              </div>
+              <div className="hidden lg:block">
+                <HeroVisual src={HERO_ART} alt="BMLA Mastery — cinematic study cover" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* calculus cross-link — the other half of the study vault */}
+        <section className="mx-auto max-w-content px-6 pt-6">
+          <div className="glow-card relative overflow-hidden rounded-[18px] border border-line/70 bg-surface/50 p-6 md:p-8">
+            <div aria-hidden="true" className="aurora absolute inset-0 opacity-20" />
+            <div className="relative flex flex-wrap items-center justify-between gap-6">
+              <div className="max-w-xl">
+                <p className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-gold">
+                  <Sigma size={13} aria-hidden="true" /> Also in your vault
+                </p>
+                <h2 className="mt-2 font-serif text-fluid-lg font-semibold text-silver">Calculus — Solved</h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                  Worked solutions to your Calculus exercises — full questions, step by step, boxed answers. Same passcode, no extra login.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {calcExercises.map((e) => (
+                    <Link
+                      key={e.slug}
+                      to={`/calc/exercise/${e.slug}`}
+                      className="rounded-full border border-line/60 px-2.5 py-0.5 text-[11px] text-muted transition-colors hover:border-gold/50 hover:text-gold"
+                    >
+                      Ex {e.section}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <Magnetic>
+                <Link
+                  to="/calc"
+                  className="inline-flex items-center gap-2 rounded-full bg-crimson px-6 py-3 text-sm font-medium text-silver transition-transform hover:scale-[1.03]"
+                >
+                  Open Calculus <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </Magnetic>
+            </div>
           </div>
         </section>
 
@@ -139,6 +202,33 @@ export default function Bmla() {
                 </Item>
               ))}
             </Stagger>
+
+            {/* live, no-signup demo of a real lesson tool */}
+            <div id="try-it" className="mt-12 grid items-center gap-7 md:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
+              <div>
+                <p className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-jade-bright">
+                  <Sparkles size={13} aria-hidden="true" /> Live demo · no signup
+                </p>
+                <h3 className="mt-3 font-serif text-fluid-lg font-semibold text-silver">
+                  Don't take my word for it — drag the sliders.
+                </h3>
+                <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
+                  This is the exact break-even explorer baked into the lessons. Move fixed cost,
+                  price and unit cost and watch the crossover — where profit starts — move in real time.
+                </p>
+              </div>
+              <div className="glow-card">
+                <Suspense
+                  fallback={
+                    <div className="rounded-xl2 border border-line/70 bg-surface/50 p-5 text-sm text-muted">
+                      Loading the explorer…
+                    </div>
+                  }
+                >
+                  <BreakEvenDemo />
+                </Suspense>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -172,23 +262,29 @@ export default function Bmla() {
           </div>
         </section>
 
-        {/* pricing (honest beta framing) */}
+        {/* study-home closing CTA */}
         <section className="relative overflow-hidden border-t border-line/50">
           <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-crimson/15 blur-3xl" />
           <div className="relative mx-auto max-w-content px-6 py-20 text-center md:py-24">
             <h2 className="font-serif text-fluid-xl font-semibold text-silver">
-              Free while in beta. <span className="text-gradient-warm">Founding members keep the best deal.</span>
+              Lock in. <span className="text-gradient-warm">Pass this exam.</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted">
-              Full access costs nothing right now — you're helping shape it. When paid plans launch
-              (monthly & full-semester), early beta users get founding-member pricing first.
+              Lessons, interactive solvers, practice and your own materials — all in one private place.
             </p>
-            <Magnetic className="mt-8 inline-block">
-              <Link to="/bmla/learn" className="glow-card inline-flex items-center gap-2 rounded-full bg-crimson px-8 py-4 text-sm font-medium text-silver transition-transform hover:scale-[1.03]">
-                Claim free beta access <ArrowRight size={16} aria-hidden="true" />
+            <div className="mt-8 flex flex-wrap justify-center gap-4">
+              <Magnetic className="inline-block">
+                <Link to="/bmla/learn" className="glow-card inline-flex items-center gap-2 rounded-full bg-crimson px-8 py-4 text-sm font-medium text-silver transition-transform hover:scale-[1.03]">
+                  Open my dashboard <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </Magnetic>
+              <Link to="/bmla/resources" className="inline-flex items-center gap-2 rounded-full border border-line px-8 py-4 text-sm font-medium text-silver transition-colors hover:border-gold/60 hover:text-gold">
+                My materials locker
               </Link>
-            </Magnetic>
-            <EmailCapture />
+              <Link to="/bmla/reference" className="inline-flex items-center gap-2 rounded-full border border-line px-8 py-4 text-sm font-medium text-silver transition-colors hover:border-gold/60 hover:text-gold">
+                Formula sheet
+              </Link>
+            </div>
           </div>
         </section>
       </main>

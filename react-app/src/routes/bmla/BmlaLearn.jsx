@@ -1,31 +1,76 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { CircleCheck, Circle, ArrowRight, Clock } from "lucide-react";
+import { CircleCheck, Circle, ArrowRight, Clock, CalendarClock, Target } from "lucide-react";
 import Nav from "../../components/Nav.jsx";
+import BmlaSubnav from "../../components/bmla/BmlaSubnav.jsx";
 import Footer from "../../components/Footer.jsx";
 import Icon from "../../lib/icons.jsx";
-import { ProgressRing, Heatmap, Counter, Tile, StatusBadge } from "../../components/cockpit/viz.jsx";
+import { cn } from "../../lib/cn.js";
+import { ProgressRing, Heatmap, Counter, Tile } from "../../components/cockpit/viz.jsx";
 import { curriculum, lessonIndex } from "../../data/bmla/index.js";
 import { getProgress, activitySeries } from "../../lib/bmla/progress.js";
+import { practiceAreas } from "../../lib/bmla/stats.js";
+import { get, set } from "../../lib/bmla/storage.js";
 
 export default function BmlaLearn() {
   const progress = useMemo(() => getProgress(), []);
   const series = useMemo(() => activitySeries(126), []);
+  const weakSpots = useMemo(
+    () => practiceAreas().filter((a) => a.attempts > 0 && a.lessonSlug).sort((a, b) => a.accuracy - b.accuracy).slice(0, 3),
+    [],
+  );
   const doneCount = lessonIndex.filter((l) => progress.done[l.slug]).length;
   const pct = lessonIndex.length ? Math.round((doneCount / lessonIndex.length) * 100) : 0;
   const next = lessonIndex.find((l) => !progress.done[l.slug]);
+  const lectures = lessonIndex.filter((l) => l.lecture).sort((a, b) => a.lecture.n - b.lecture.n);
+
+  const [examDate, setExamDate] = useState(() => get("examDate", ""));
+  const saveExam = (v) => {
+    setExamDate(v);
+    set("examDate", v);
+  };
+  const daysLeft = examDate
+    ? Math.ceil((new Date(`${examDate}T00:00:00`).getTime() - Date.now()) / 86400000)
+    : null;
+  const remaining = lessonIndex.length - doneCount;
+  const perDay = daysLeft && daysLeft > 0 && remaining > 0 ? Math.ceil(remaining / daysLeft) : null;
 
   return (
     <>
       <Nav />
+      <BmlaSubnav />
       <main id="main" className="mx-auto max-w-content px-6 py-12 md:py-16">
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
-            <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
-          </div>
-          <StatusBadge state="live" />
+        <div className="mb-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
+          <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
         </div>
+
+        {/* lectures so far — quick access to the class-aligned lessons */}
+        {lectures.length > 0 && (
+          <section className="mb-8">
+            <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Your lectures so far</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {lectures.map((l) => {
+                const isDone = !!progress.done[l.slug];
+                return (
+                  <Link
+                    key={l.slug}
+                    to={`/bmla/lesson/${l.slug}`}
+                    className="glow-card rounded-[14px] border border-line/70 bg-surface/50 p-4 transition-colors hover:border-gold/50"
+                  >
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-violet-bright">
+                      Lecture {l.lecture.n} · {l.lecture.date}
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-silver">{l.title}</p>
+                    <p className={`mt-2 text-xs ${isDone ? "text-jade-bright" : "text-muted"}`}>
+                      {isDone ? "Reviewed ✓" : "Open lesson →"}
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* bento overview */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -49,6 +94,62 @@ export default function BmlaLearn() {
           <Tile className="col-span-2 lg:col-span-1">
             <p className="mb-2 font-mono text-xs uppercase tracking-wider text-muted">Study streak</p>
             <Heatmap data={series} />
+          </Tile>
+        </div>
+
+        {/* exam countdown + weak spots */}
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <Tile>
+            <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted">
+              <CalendarClock size={14} aria-hidden="true" /> Exam countdown
+            </p>
+            {daysLeft != null && daysLeft >= 0 ? (
+              <p className="mt-1 font-serif text-[2.6rem] font-semibold leading-none text-crimson-bright">
+                {daysLeft}<span className="text-fluid-base text-muted"> {daysLeft === 1 ? "day" : "days"} left</span>
+              </p>
+            ) : daysLeft != null ? (
+              <p className="mt-2 text-sm text-muted">That date has passed — set a new one.</p>
+            ) : (
+              <p className="mt-2 text-sm text-muted">Set your exam date to pace your prep.</p>
+            )}
+            {perDay && (
+              <p className="mt-1 text-xs text-muted">
+                ≈ {perDay} lesson{perDay > 1 ? "s" : ""}/day to finish the remaining {remaining}.
+              </p>
+            )}
+            <label htmlFor="exam-date" className="sr-only">Exam date</label>
+            <input
+              id="exam-date"
+              type="date"
+              value={examDate}
+              onChange={(e) => saveExam(e.target.value)}
+              className="mt-3 rounded-lg border border-line/70 bg-ink/40 px-3 py-2 text-sm text-silver [color-scheme:dark]"
+            />
+          </Tile>
+
+          <Tile>
+            <p className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted">
+              <Target size={14} aria-hidden="true" /> Weak spots
+            </p>
+            {weakSpots.length ? (
+              <ul className="mt-3 space-y-2">
+                {weakSpots.map((w) => (
+                  <li key={w.label}>
+                    <Link
+                      to={`/bmla/lesson/${w.lessonSlug}`}
+                      className="flex items-center justify-between gap-3 rounded-lg border border-line/70 bg-surface/50 px-3 py-2 text-sm transition-colors hover:border-gold/50"
+                    >
+                      <span className="flex-1 text-silver">{w.label}</span>
+                      <span className={cn("font-mono text-xs", w.accuracy < 60 ? "text-crimson-bright" : w.accuracy < 80 ? "text-gold" : "text-jade-bright")}>
+                        {w.accuracy}%
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-3 text-sm text-muted">Take any practice set and the topics you miss most surface here — with a one-tap link back to the lesson.</p>
+            )}
           </Tile>
         </div>
 
@@ -98,6 +199,11 @@ export default function BmlaLearn() {
                               <Circle size={16} className="shrink-0 text-muted" aria-hidden="true" />
                             )}
                             <span className={`flex-1 ${isDone ? "text-muted" : "text-silver"}`}>{l.title}</span>
+                            {l.lecture && (
+                              <span className="hidden shrink-0 rounded-full border border-violet/40 bg-violet/10 px-2 py-0.5 font-mono text-[10px] text-violet-bright sm:inline">
+                                Lec {l.lecture.n} · {l.lecture.date}
+                              </span>
+                            )}
                             <span className="inline-flex items-center gap-1 font-mono text-xs text-muted">
                               <Clock size={12} aria-hidden="true" /> {l.minutes}m
                             </span>

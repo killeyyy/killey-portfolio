@@ -23,7 +23,7 @@ function Chips({ items, accent = "text-silver" }) {
   return (
     <ul className="flex flex-wrap gap-2">
       {items.map((it) => (
-        <li key={it} className={`rounded-full border border-line/70 bg-white/5 px-3 py-1 text-xs ${accent}`}>
+        <li key={it} className={`rounded-full border border-line/70 bg-silver/10 px-3 py-1 text-xs ${accent}`}>
           {it}
         </li>
       ))}

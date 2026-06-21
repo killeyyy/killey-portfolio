@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /owner
+Disallow: /bmla
 Allow: /api/og
 
 Sitemap: https://killey-portfolio.vercel.app/sitemap.xml
