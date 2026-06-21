@@ -1,7 +1,7 @@
 /** @type {import("../curriculum.js").Exercise} */
 // Ex 2.4 — Exponential Functions.
-// #3–11 identify/match (form, growth/decay, intercept, asymptote, equivalences),
-// #29–32 graphs, #37/41/47/52 interest, inflation, growth, decay.
+// #3–11 identify/match to graphs A–F (form, growth/decay, intercept, asymptote,
+// equivalences), #29–32 graphs, #37/41/47/52 interest, inflation, growth, decay.
 export default {
   slug: "ex-2-4",
   section: "2.4",
@@ -14,8 +14,11 @@ export default {
       topic: "match graph (A–F)",
       prompt: "Match to the correct graph (A–F): give the form, whether it rises or falls, the y-intercept, and the asymptote.",
       promptTex: "y = 3^{x}",
-      steps: [{ text: "Basic growth: increasing, with horizontal asymptote y = 0 and y-intercept (0, 1)." }],
-      answerTex: "\\text{Increasing; }y\\text{-int }(0,1);\\ \\text{HA }y=0",
+      steps: [
+        { text: "Basic growth: increasing, with horizontal asymptote y = 0 and y-intercept (0, 1)." },
+        { text: "It crosses the y-axis at 1 and climbs steeply (off the top near x ≈ 1.3) → graph (E)." },
+      ],
+      answerTex: "\\textbf{(E)}\\quad \\text{increasing; }y\\text{-int }(0,1);\\ \\text{HA }y=0",
     },
     {
       num: 4,
@@ -23,10 +26,10 @@ export default {
       prompt: "Match to the correct graph (A–F): give the form, growth/decay, y-intercept, and asymptote.",
       promptTex: "y = 3^{-x}",
       steps: [
-        { text: "3^(−x) = (1/3)^x — decay (decreasing), asymptote y = 0, y-intercept (0, 1)." },
-        { text: "Equivalent to #8." },
+        { text: "3^(−x) = (1/3)^x — decay (decreasing), asymptote y = 0, y-intercept (0, 1). Equivalent to #8." },
+        { text: "Falls from the upper left toward 0, staying above the axis → graph (B)." },
       ],
-      answerTex: "\\text{Decreasing; }y\\text{-int }(0,1);\\ \\text{HA }y=0",
+      answerTex: "\\textbf{(B)}\\quad \\text{decreasing; }y\\text{-int }(0,1);\\ \\text{HA }y=0",
     },
     {
       num: 5,
@@ -36,9 +39,9 @@ export default {
       steps: [
         { text: "Simplify:" },
         { tex: "\\left(\\tfrac13\\right)^{1-x}=\\tfrac13\\cdot 3^{x}=3^{x-1}" },
-        { text: "Increasing; asymptote y = 0; y-intercept (0, 1/3). Equivalent to #11." },
+        { text: "Increasing; asymptote y = 0; y-intercept (0, 1/3) — the gentlest of the increasing curves. Equivalent to #11 → graph (C)." },
       ],
-      answerTex: "=3^{x-1}:\\ \\text{increasing; }y\\text{-int }(0,\\tfrac13);\\ \\text{HA }y=0",
+      answerTex: "\\textbf{(C)}\\quad 3^{x-1};\\ \\text{increasing; }y\\text{-int }(0,\\tfrac13)",
     },
     {
       num: 6,
@@ -47,9 +50,9 @@ export default {
       promptTex: "y = 3^{x+1}",
       steps: [
         { tex: "3^{x+1}=3\\cdot 3^{x}" },
-        { text: "Increasing; asymptote y = 0; y-intercept (0, 3). Equivalent to #7." },
+        { text: "Increasing; asymptote y = 0; y-intercept (0, 3) — the steepest, crossing high near the top. Equivalent to #7 → graph (F)." },
       ],
-      answerTex: "\\text{Increasing; }y\\text{-int }(0,3);\\ \\text{HA }y=0",
+      answerTex: "\\textbf{(F)}\\quad \\text{increasing; }y\\text{-int }(0,3);\\ \\text{HA }y=0",
     },
     {
       num: 7,
@@ -58,9 +61,9 @@ export default {
       promptTex: "y = 3(3)^{x}",
       steps: [
         { tex: "3(3)^{x}=3^{x+1}" },
-        { text: "Identical to #6: increasing; y-intercept (0, 3); asymptote y = 0." },
+        { text: "Identical to #6: increasing; y-intercept (0, 3); asymptote y = 0 → graph (F)." },
       ],
-      answerTex: "=3^{x+1}:\\ \\text{increasing; }y\\text{-int }(0,3);\\ \\text{HA }y=0",
+      answerTex: "\\textbf{(F)}\\quad 3^{x+1};\\ \\text{increasing; }y\\text{-int }(0,3)",
     },
     {
       num: 8,
@@ -69,9 +72,9 @@ export default {
       promptTex: "y = \\left(\\tfrac{1}{3}\\right)^{x}",
       steps: [
         { tex: "\\left(\\tfrac13\\right)^{x}=3^{-x}" },
-        { text: "Decreasing; asymptote y = 0; y-intercept (0, 1). Equivalent to #4." },
+        { text: "Decreasing; asymptote y = 0; y-intercept (0, 1). Identical to #4 → graph (B)." },
       ],
-      answerTex: "=3^{-x}:\\ \\text{decreasing; }y\\text{-int }(0,1);\\ \\text{HA }y=0",
+      answerTex: "\\textbf{(B)}\\quad 3^{-x};\\ \\text{decreasing; }y\\text{-int }(0,1)",
     },
     {
       num: 9,
@@ -81,8 +84,9 @@ export default {
       steps: [
         { text: "As x → ∞, 3^(−x) → 0 so y → 2 (asymptote y = 2, approached from below); as x → −∞, y → −∞. So it is increasing." },
         { tex: "y\\text{-intercept } (0,\\,2-1)=(0,1)" },
+        { text: "It rises and flattens toward the upper line y = 2 → graph (A)." },
       ],
-      answerTex: "\\text{Increasing; }y\\text{-int }(0,1);\\ \\text{HA }y=2",
+      answerTex: "\\textbf{(A)}\\quad \\text{increasing; }y\\text{-int }(0,1);\\ \\text{HA }y=2",
     },
     {
       num: 10,
@@ -92,16 +96,19 @@ export default {
       steps: [
         { text: "As x → ∞, 3^(−x) → 0 so y → −2 (asymptote y = −2); as x → −∞, y → ∞. So it is decreasing." },
         { tex: "y\\text{-intercept } (0,\\,-2+1)=(0,-1)" },
+        { text: "It falls and flattens toward the lower line y = −2 → graph (D)." },
       ],
-      answerTex: "\\text{Decreasing; }y\\text{-int }(0,-1);\\ \\text{HA }y=-2",
+      answerTex: "\\textbf{(D)}\\quad \\text{decreasing; }y\\text{-int }(0,-1);\\ \\text{HA }y=-2",
     },
     {
       num: 11,
       topic: "match graph (A–F)",
       prompt: "Match to the correct graph (A–F): give growth/decay, y-intercept, and asymptote.",
       promptTex: "y = 3^{x-1}",
-      steps: [{ text: "Increasing; asymptote y = 0; y-intercept (0, 1/3). Equivalent to #5." }],
-      answerTex: "\\text{Increasing; }y\\text{-int }(0,\\tfrac13);\\ \\text{HA }y=0",
+      steps: [
+        { text: "Increasing; asymptote y = 0; y-intercept (0, 1/3). Identical to #5 → graph (C)." },
+      ],
+      answerTex: "\\textbf{(C)}\\quad 3^{x-1};\\ \\text{increasing; }y\\text{-int }(0,\\tfrac13)",
     },
     {
       num: 29,
@@ -154,11 +161,11 @@ export default {
         "Find the interest earned on **$10,000** invested for **5 years** at **4%**, compounded (a) annually, (b) semiannually, (c) quarterly, (d) monthly, (e) continuously.",
       steps: [
         { text: "Use A = P(1 + r/n)^{nt} (and A = Pe^{rt} for continuous); interest = A − P. Here P = 10,000, r = 0.04, t = 5." },
-        { tex: "(a)\\ 10000(1.04)^5=12166.53 \\Rightarrow \\$2166.53" },
-        { tex: "(b)\\ 10000(1.02)^{10}=12189.94 \\Rightarrow \\$2189.94" },
-        { tex: "(c)\\ 10000(1.01)^{20}=12201.90 \\Rightarrow \\$2201.90" },
-        { tex: "(d)\\ 10000\\left(1+\\tfrac{0.04}{12}\\right)^{60}=12209.67 \\Rightarrow \\$2209.67" },
-        { tex: "(e)\\ 10000e^{0.2}=12214.03 \\Rightarrow \\$2214.03" },
+        { tex: "(a)\\ \\ 10000(1.04)^5=12166.53 \\;\\Rightarrow\\; \\$2166.53" },
+        { tex: "(b)\\ \\ 10000(1.02)^{10}=12189.94 \\;\\Rightarrow\\; \\$2189.94" },
+        { tex: "(c)\\ \\ 10000(1.01)^{20}=12201.90 \\;\\Rightarrow\\; \\$2201.90" },
+        { tex: "(d)\\ \\ 10000\\left(1+\\tfrac{0.04}{12}\\right)^{60}=12209.67 \\;\\Rightarrow\\; \\$2209.67" },
+        { tex: "(e)\\ \\ 10000e^{0.2}=12214.03 \\;\\Rightarrow\\; \\$2214.03" },
       ],
       answerTex: "(a)\\,\\$2166.53\\ (b)\\,\\$2189.94\\ (c)\\,\\$2201.90\\ (d)\\,\\$2209.67\\ (e)\\,\\$2214.03",
     },
@@ -169,7 +176,9 @@ export default {
         "With continuous compounding, find the cost of a **$10** item in **3 years** at inflation rates (a) 3%, (b) 4%, (c) 5%.",
       steps: [
         { text: "Use A = Pe^{rt} with P = 10, t = 3." },
-        { tex: "(a)\\ 10e^{0.09}\\approx\\$10.94\\quad (b)\\ 10e^{0.12}\\approx\\$11.27\\quad (c)\\ 10e^{0.15}\\approx\\$11.62" },
+        { tex: "(a)\\ \\ 10e^{0.09}\\approx\\$10.94" },
+        { tex: "(b)\\ \\ 10e^{0.12}\\approx\\$11.27" },
+        { tex: "(c)\\ \\ 10e^{0.15}\\approx\\$11.62" },
       ],
       answerTex: "(a)\\,\\$10.94\\quad (b)\\,\\$11.27\\quad (c)\\,\\$11.62",
     },
@@ -179,10 +188,10 @@ export default {
       prompt:
         "World population (millions) since 1960 fits `A(t) = 3100e^{0.0166t}`, t = years since 1960. (a) Compare A to the actual 1970 figure of 3686 million. (b) Approximate the 2000 population (actual ≈ 6115). (c) Estimate the 2015 population.",
       steps: [
-        { tex: "(a)\\ A(10)=3100e^{0.166}\\approx 3660\\ \\text{million}" },
+        { tex: "(a)\\ \\ A(10)=3100e^{0.166}\\approx 3660\\ \\text{million}" },
         { text: "≈3660 million vs. the actual 3686 — within about 26 million (≈0.7% low)." },
-        { tex: "(b)\\ A(40)=3100e^{0.664}\\approx 6022\\ \\text{million}" },
-        { tex: "(c)\\ A(55)=3100e^{0.913}\\approx 7725\\ \\text{million}" },
+        { tex: "(b)\\ \\ A(40)=3100e^{0.664}\\approx 6022\\ \\text{million}" },
+        { tex: "(c)\\ \\ A(55)=3100e^{0.913}\\approx 7725\\ \\text{million}" },
       ],
       answerTex: "(a)\\approx 3660\\text{M (vs }3686)\\quad (b)\\approx 6022\\text{M}\\quad (c)\\approx 7725\\text{M}",
     },
