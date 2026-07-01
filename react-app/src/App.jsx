@@ -22,6 +22,7 @@ const BmlaLesson = lazy(() => import("./routes/bmla/BmlaLesson.jsx"));
 const BmlaResources = lazy(() => import("./routes/bmla/BmlaResources.jsx"));
 const BmlaReference = lazy(() => import("./routes/bmla/BmlaReference.jsx"));
 const BmlaExam = lazy(() => import("./routes/bmla/BmlaExam.jsx"));
+const BmlaPapers = lazy(() => import("./routes/bmla/BmlaPapers.jsx"));
 const Calc = lazy(() => import("./routes/calc/Calc.jsx"));
 const CalcExercise = lazy(() => import("./routes/calc/CalcExercise.jsx"));
 
@@ -65,6 +66,7 @@ export default function App() {
                 <Route path="/bmla/resources" element={<BmlaGate><BmlaResources /></BmlaGate>} />
                 <Route path="/bmla/reference" element={<BmlaGate><BmlaReference /></BmlaGate>} />
                 <Route path="/bmla/exam" element={<BmlaGate><BmlaExam /></BmlaGate>} />
+                <Route path="/bmla/papers" element={<BmlaGate><BmlaPapers /></BmlaGate>} />
                 <Route path="/calc" element={<CalcGate><Calc /></CalcGate>} />
                 <Route path="/calc/exercise/:slug" element={<CalcGate><CalcExercise /></CalcGate>} />
                 <Route path="/owner" element={<Owner />} />

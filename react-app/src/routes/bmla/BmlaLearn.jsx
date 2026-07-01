@@ -11,6 +11,7 @@ import { curriculum, lessonIndex } from "../../data/bmla/index.js";
 import { getProgress, activitySeries } from "../../lib/bmla/progress.js";
 import { practiceAreas } from "../../lib/bmla/stats.js";
 import { get, set } from "../../lib/bmla/storage.js";
+import { ARCHETYPES } from "../../data/bmla/papers.js";
 
 export default function BmlaLearn() {
   const progress = useMemo(() => getProgress(), []);
@@ -71,6 +72,34 @@ export default function BmlaLearn() {
             </div>
           </section>
         )}
+
+        {/* past-paper standing */}
+        {(() => {
+          const last = get("papers:last", null);
+          const bestPaper = get("papers:best", 0);
+          const weakLabel = last?.weakest ? ARCHETYPES.find((a) => a.id === last.weakest)?.short : null;
+          return (
+            <Link
+              to="/bmla/papers"
+              className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-[14px] border border-line/70 bg-surface/50 px-5 py-4 transition-colors hover:border-gold/50"
+            >
+              <Target size={16} className="shrink-0 text-crimson-bright" aria-hidden="true" />
+              <span className="text-sm font-semibold text-silver">Past-paper standing</span>
+              {last ? (
+                <span className="text-sm text-muted">
+                  last diagnostic <span className={cn("font-mono font-semibold", last.pct >= 70 ? "text-jade-bright" : last.pct >= 50 ? "text-gold" : "text-crimson-bright")}>{last.pct}%</span>
+                  {bestPaper > 0 && <> · best {bestPaper}%</>}
+                  {weakLabel && <> · weakest: {weakLabel}</>}
+                </span>
+              ) : (
+                <span className="text-sm text-muted">no diagnostic yet — sit the timed test to find your weak spots</span>
+              )}
+              <span className="ml-auto inline-flex items-center gap-1 text-sm text-gold">
+                Open <ArrowRight size={14} aria-hidden="true" />
+              </span>
+            </Link>
+          );
+        })()}
 
         {/* bento overview */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
