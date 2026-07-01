@@ -12,6 +12,8 @@ import { getProgress, activitySeries } from "../../lib/bmla/progress.js";
 import { practiceAreas } from "../../lib/bmla/stats.js";
 import { get, set } from "../../lib/bmla/storage.js";
 import { ARCHETYPES } from "../../data/bmla/papers.js";
+import SyllabusNav from "../../components/bmla/SyllabusNav.jsx";
+import { nextSection } from "../../data/bmla/syllabus.js";
 
 export default function BmlaLearn() {
   const progress = useMemo(() => getProgress(), []);
@@ -41,10 +43,29 @@ export default function BmlaLearn() {
       <Nav />
       <BmlaSubnav />
       <main id="main" className="mx-auto max-w-content px-6 py-12 md:py-16">
-        <div className="mb-8">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
-          <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
+            <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
+          </div>
+          {(() => {
+            const up = nextSection(progress.done);
+            return up ? (
+              <Link
+                to={`/bmla/lesson/${up.lessonSlug}`}
+                className="inline-flex items-center gap-2 rounded-full bg-crimson px-5 py-2.5 text-sm font-medium text-silver transition-transform hover:scale-[1.03]"
+              >
+                Continue · §{up.sec} {up.label} <ArrowRight size={15} aria-hidden="true" />
+              </Link>
+            ) : null;
+          })()}
         </div>
+
+        {/* the syllabus — primary navigation, exactly as taught */}
+        <section className="mb-8">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Syllabus · Ch 1 (§1.1–1.5, 1.7–1.9) · Ch 2 (§2.1–2.3) · Ch 3 (§3.1–3.2)</p>
+          <SyllabusNav done={progress.done} />
+        </section>
 
         {/* lectures so far — quick access to the class-aligned lessons */}
         {lectures.length > 0 && (

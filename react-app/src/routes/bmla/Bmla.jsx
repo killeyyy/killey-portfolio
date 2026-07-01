@@ -12,6 +12,8 @@ import Icon from "../../lib/icons.jsx";
 import { Stagger, Item } from "../../lib/motion.jsx";
 import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
+import SyllabusNav from "../../components/bmla/SyllabusNav.jsx";
+import { getProgress } from "../../lib/bmla/progress.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
 import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
 import { calcExercises } from "../../data/calc/index.js";
@@ -164,7 +166,15 @@ export default function Bmla() {
 
         {/* curriculum */}
         <section id="curriculum" className="mx-auto max-w-content px-6 py-20 md:py-24">
-          <SectionHeading kicker="Curriculum" title="Mapped to the real exam, module by module." />
+          <SectionHeading kicker="Syllabus" title="The course, exactly as taught." />
+          <p className="-mt-4 mb-6 max-w-2xl text-sm leading-relaxed text-muted">
+            Chapter 01 (§1.1–1.5 · §1.7–1.9) · Chapter 02 (§2.1–2.3) · Chapter 03 (§3.1–3.2).
+            One click per section — ticks track what you've reviewed.
+          </p>
+          <SyllabusNav done={getProgress().done} />
+
+          <div className="mt-16" />
+          <SectionHeading kicker="Browse by topic" title="The same lessons, grouped by theme." />
           <Stagger className="grid gap-4 sm:grid-cols-2" gap={0.06}>
             {curriculum.map((mod, mi) => {
               const live = mod.lessonSlugs.length > 0;

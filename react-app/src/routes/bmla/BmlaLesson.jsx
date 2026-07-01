@@ -8,6 +8,7 @@ import LessonRenderer from "../../components/bmla/LessonRenderer.jsx";
 import ExamStyle from "../../components/bmla/ExamStyle.jsx";
 import NotFound from "../NotFound.jsx";
 import { loadLesson, lessonIndex, curriculum } from "../../data/bmla/index.js";
+import { syllabusSlugs, sectionOf } from "../../data/bmla/syllabus.js";
 import { getProgress, markLessonDone } from "../../lib/bmla/progress.js";
 
 export default function BmlaLesson() {
@@ -33,8 +34,16 @@ export default function BmlaLesson() {
   const idx = lessonIndex.findIndex((l) => l.slug === slug);
   const meta = idx >= 0 ? lessonIndex[idx] : null;
   const moduleTitle = meta ? curriculum.find((m) => m.slug === meta.moduleSlug)?.title : null;
-  const prev = idx > 0 ? lessonIndex[idx - 1] : null;
-  const next = idx >= 0 && idx < lessonIndex.length - 1 ? lessonIndex[idx + 1] : null;
+  // prev/next follow the SYLLABUS order (§1.1 → … → §3.2), then off-syllabus lessons.
+  const byId = Object.fromEntries(lessonIndex.map((l) => [l.slug, l]));
+  const readingOrder = [
+    ...syllabusSlugs.map((s) => byId[s]).filter(Boolean),
+    ...lessonIndex.filter((l) => !syllabusSlugs.includes(l.slug)),
+  ];
+  const ridx = readingOrder.findIndex((l) => l.slug === slug);
+  const prev = ridx > 0 ? readingOrder[ridx - 1] : null;
+  const next = ridx >= 0 && ridx < readingOrder.length - 1 ? readingOrder[ridx + 1] : null;
+  const section = sectionOf(slug);
 
   return (
     <>
@@ -62,6 +71,11 @@ export default function BmlaLesson() {
                 {meta?.lecture && (
                   <span className="rounded-full border border-violet/40 bg-violet/10 px-2 py-0.5 text-[10px] tracking-normal text-violet-bright">
                     Lecture {meta.lecture.n} · {meta.lecture.date}
+                  </span>
+                )}
+                {section && (
+                  <span className="rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-[10px] tracking-normal text-gold">
+                    Syllabus · Ch {section.chapter} · §{section.sec}
                   </span>
                 )}
               </p>
