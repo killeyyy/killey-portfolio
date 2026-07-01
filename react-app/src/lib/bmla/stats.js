@@ -15,6 +15,17 @@ export const TOPIC_AREAS = {
   lindep: { label: "§1.7 Linear Independence", lessonSlug: "lay-1-7" },
   "lt-intro": { label: "§1.8 Linear Transformations", lessonSlug: "lay-1-8" },
   "lt-matrix": { label: "§1.9 Matrix of a Transformation", lessonSlug: "lay-1-9" },
+  // Past-paper archetypes (recorded from /bmla/papers timed tests).
+  "paper-rref": { label: "Papers · RREF & solution sets", lessonSlug: "lay-1-2" },
+  "paper-param": { label: "Papers · Parametric solutions", lessonSlug: "lay-1-5" },
+  "paper-consist": { label: "Papers · Consistency analysis", lessonSlug: "lay-1-1" },
+  "paper-lindep": { label: "Papers · Linear independence", lessonSlug: "lay-1-7" },
+  "paper-lintrans": { label: "Papers · Linear transformations", lessonSlug: "lay-1-8" },
+  "paper-span": { label: "Papers · Span & combinations", lessonSlug: "lay-1-3" },
+  "paper-elem": { label: "Papers · Elementary matrices", lessonSlug: "lay-2-2" },
+  "paper-inverse": { label: "Papers · Matrix inverse", lessonSlug: "lay-2-2" },
+  "paper-det": { label: "Papers · Determinants", lessonSlug: "determinants-cofactor" },
+  "paper-invert": { label: "Papers · Invertibility", lessonSlug: "lay-2-3" },
 };
 
 const areaKey = (moduleSlug, topic) => (topic ? `topic:${topic}` : `mod:${moduleSlug}`);

@@ -65,7 +65,7 @@ export const curriculum = [
     summary: "Cofactor expansion, determinant rules, invertibility, and solving by inverse.",
     icon: "SquareDivide", accent: "text-gold", level: "core",
     topics: ["Cofactor expansion", "Determinant properties (det of AB, Aᵀ, A⁻¹, kA, Aⁿ)", "Invertibility & singularity", "Solve systems by inversion", "Cramer's rule"],
-    lessonSlugs: ["lay-2-2", "lay-2-3", "determinants-cofactor", "cramers-rule"],
+    lessonSlugs: ["lay-2-2", "lay-2-3", "determinants-cofactor", "lay-3-2", "cramers-rule"],
   },
   {
     slug: "transformations",

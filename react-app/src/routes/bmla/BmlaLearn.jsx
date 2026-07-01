@@ -11,6 +11,9 @@ import { curriculum, lessonIndex } from "../../data/bmla/index.js";
 import { getProgress, activitySeries } from "../../lib/bmla/progress.js";
 import { practiceAreas } from "../../lib/bmla/stats.js";
 import { get, set } from "../../lib/bmla/storage.js";
+import { ARCHETYPES } from "../../data/bmla/papers.js";
+import SyllabusNav from "../../components/bmla/SyllabusNav.jsx";
+import { nextSection } from "../../data/bmla/syllabus.js";
 
 export default function BmlaLearn() {
   const progress = useMemo(() => getProgress(), []);
@@ -40,10 +43,29 @@ export default function BmlaLearn() {
       <Nav />
       <BmlaSubnav />
       <main id="main" className="mx-auto max-w-content px-6 py-12 md:py-16">
-        <div className="mb-8">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
-          <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">BMLA Mastery · Dashboard</p>
+            <h1 className="mt-1 font-serif text-fluid-xl font-semibold text-silver">Your prep, at a glance.</h1>
+          </div>
+          {(() => {
+            const up = nextSection(progress.done);
+            return up ? (
+              <Link
+                to={`/bmla/lesson/${up.lessonSlug}`}
+                className="inline-flex items-center gap-2 rounded-full bg-crimson px-5 py-2.5 text-sm font-medium text-silver transition-transform hover:scale-[1.03]"
+              >
+                Continue · §{up.sec} {up.label} <ArrowRight size={15} aria-hidden="true" />
+              </Link>
+            ) : null;
+          })()}
         </div>
+
+        {/* the syllabus — primary navigation, exactly as taught */}
+        <section className="mb-8">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">Syllabus · Ch 1 (§1.1–1.5, 1.7–1.9) · Ch 2 (§2.1–2.3) · Ch 3 (§3.1–3.2)</p>
+          <SyllabusNav done={progress.done} />
+        </section>
 
         {/* lectures so far — quick access to the class-aligned lessons */}
         {lectures.length > 0 && (
@@ -71,6 +93,34 @@ export default function BmlaLearn() {
             </div>
           </section>
         )}
+
+        {/* past-paper standing */}
+        {(() => {
+          const last = get("papers:last", null);
+          const bestPaper = get("papers:best", 0);
+          const weakLabel = last?.weakest ? ARCHETYPES.find((a) => a.id === last.weakest)?.short : null;
+          return (
+            <Link
+              to="/bmla/papers"
+              className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-[14px] border border-line/70 bg-surface/50 px-5 py-4 transition-colors hover:border-gold/50"
+            >
+              <Target size={16} className="shrink-0 text-crimson-bright" aria-hidden="true" />
+              <span className="text-sm font-semibold text-silver">Past-paper standing</span>
+              {last ? (
+                <span className="text-sm text-muted">
+                  last diagnostic <span className={cn("font-mono font-semibold", last.pct >= 70 ? "text-jade-bright" : last.pct >= 50 ? "text-gold" : "text-crimson-bright")}>{last.pct}%</span>
+                  {bestPaper > 0 && <> · best {bestPaper}%</>}
+                  {weakLabel && <> · weakest: {weakLabel}</>}
+                </span>
+              ) : (
+                <span className="text-sm text-muted">no diagnostic yet — sit the timed test to find your weak spots</span>
+              )}
+              <span className="ml-auto inline-flex items-center gap-1 text-sm text-gold">
+                Open <ArrowRight size={14} aria-hidden="true" />
+              </span>
+            </Link>
+          );
+        })()}
 
         {/* bento overview */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

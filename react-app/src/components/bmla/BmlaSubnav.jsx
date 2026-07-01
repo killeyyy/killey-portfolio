@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { GraduationCap, LayoutDashboard, FileCheck2, BookText, FolderLock, Sigma } from "lucide-react";
+import { GraduationCap, LayoutDashboard, FileCheck2, Files, BookText, FolderLock, Sigma } from "lucide-react";
 
 // Persistent wayfinding for the BMLA study area, with active-route highlighting.
 const ITEMS = [
   { to: "/bmla", label: "Overview", Icon: GraduationCap, match: (p) => p === "/bmla" },
   { to: "/bmla/learn", label: "Dashboard", Icon: LayoutDashboard, match: (p) => p.startsWith("/bmla/learn") || p.startsWith("/bmla/lesson") },
   { to: "/bmla/exam", label: "Mock exam", Icon: FileCheck2, match: (p) => p.startsWith("/bmla/exam") },
+  { to: "/bmla/papers", label: "Past papers", Icon: Files, match: (p) => p.startsWith("/bmla/papers") },
   { to: "/bmla/reference", label: "Formula sheet", Icon: BookText, match: (p) => p.startsWith("/bmla/reference") },
   { to: "/bmla/resources", label: "Locker", Icon: FolderLock, match: (p) => p.startsWith("/bmla/resources") },
   { to: "/calc", label: "Calculus", Icon: Sigma, match: (p) => p === "/calc" || p.startsWith("/calc/") },

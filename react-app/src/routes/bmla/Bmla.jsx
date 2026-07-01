@@ -12,6 +12,8 @@ import Icon from "../../lib/icons.jsx";
 import { Stagger, Item } from "../../lib/motion.jsx";
 import { Counter } from "../../components/cockpit/viz.jsx";
 import { curriculum, product, lessonIndex } from "../../data/bmla/index.js";
+import SyllabusNav from "../../components/bmla/SyllabusNav.jsx";
+import { getProgress } from "../../lib/bmla/progress.js";
 import { questMcqs, questFlashcards } from "../../data/bmla/quest-import.js";
 import { textbooks, freeResources, sourcesNote } from "../../data/bmla/sources.js";
 import { calcExercises } from "../../data/calc/index.js";
@@ -101,6 +103,30 @@ export default function Bmla() {
           </div>
         </section>
 
+        {/* past-papers cross-link — timed test-me grounded in real sittings */}
+        <section className="mx-auto max-w-content px-6 pt-6">
+          <div className="glow-card relative overflow-hidden rounded-[18px] border border-crimson/40 bg-surface/50 p-6 md:p-8">
+            <div className="relative flex flex-wrap items-center justify-between gap-6">
+              <div className="max-w-xl">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-crimson-bright">New · Past papers</p>
+                <h2 className="mt-2 font-serif text-fluid-lg font-semibold text-silver">What repeats — and a timed test on it.</h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                  Weightage analysis of your real sittings (2016 · 2025 · 2026) plus a timed diagnostic — MCQ and
+                  quick numeric answers, no hand-solving, tracked into your dashboard weak spots.
+                </p>
+              </div>
+              <Magnetic>
+                <Link
+                  to="/bmla/papers"
+                  className="inline-flex items-center gap-2 rounded-full bg-crimson px-6 py-3 text-sm font-medium text-silver transition-transform hover:scale-[1.03]"
+                >
+                  Test me <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </Magnetic>
+            </div>
+          </div>
+        </section>
+
         {/* calculus cross-link — the other half of the study vault */}
         <section className="mx-auto max-w-content px-6 pt-6">
           <div className="glow-card relative overflow-hidden rounded-[18px] border border-line/70 bg-surface/50 p-6 md:p-8">
@@ -140,7 +166,15 @@ export default function Bmla() {
 
         {/* curriculum */}
         <section id="curriculum" className="mx-auto max-w-content px-6 py-20 md:py-24">
-          <SectionHeading kicker="Curriculum" title="Mapped to the real exam, module by module." />
+          <SectionHeading kicker="Syllabus" title="The course, exactly as taught." />
+          <p className="-mt-4 mb-6 max-w-2xl text-sm leading-relaxed text-muted">
+            Chapter 01 (§1.1–1.5 · §1.7–1.9) · Chapter 02 (§2.1–2.3) · Chapter 03 (§3.1–3.2).
+            One click per section — ticks track what you've reviewed.
+          </p>
+          <SyllabusNav done={getProgress().done} />
+
+          <div className="mt-16" />
+          <SectionHeading kicker="Browse by topic" title="The same lessons, grouped by theme." />
           <Stagger className="grid gap-4 sm:grid-cols-2" gap={0.06}>
             {curriculum.map((mod, mi) => {
               const live = mod.lessonSlugs.length > 0;
