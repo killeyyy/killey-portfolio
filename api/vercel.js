@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", "public, s-maxage=30");
     return res.status(200).json(SAMPLE);
   }
-  if (!verifySession(req)) {
+  if (verifySession(req)?.role !== "owner") {
     return res.status(401).json({ error: "auth" });
   }
   try {

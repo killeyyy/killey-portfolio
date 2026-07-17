@@ -24,18 +24,20 @@ function sign(payload) {
   return `${data}.${sig}`;
 }
 
-export function issueCookie(payload) {
-  const token = sign({ ...payload, exp: Math.floor(Date.now() / 1000) + MAX_AGE });
-  return `${COOKIE}=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${MAX_AGE}`;
+// Options let /api/bmla/redeem reuse the same signing for its own cookie
+// (name "killey_bmla", longer maxAge) without touching the owner defaults.
+export function issueCookie(payload, { name = COOKIE, maxAge = MAX_AGE } = {}) {
+  const token = sign({ ...payload, exp: Math.floor(Date.now() / 1000) + maxAge });
+  return `${name}=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${maxAge}`;
 }
 
 export function clearCookie() {
   return `${COOKIE}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`;
 }
 
-export function verifySession(req) {
+export function verifySession(req, { name = COOKIE } = {}) {
   if (!secret()) return null;
-  const raw = req.cookies?.[COOKIE];
+  const raw = req.cookies?.[name];
   if (!raw || !raw.includes(".")) return null;
   const [data, sig] = raw.split(".");
   const expected = crypto.createHmac("sha256", secret()).update(data).digest("base64url");

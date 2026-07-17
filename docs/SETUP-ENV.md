@@ -42,7 +42,29 @@ re-running this and updating the value.)
 
 ---
 
-## 3. Custom domain (optional, recommended before launch)
+## 3. BMLA access codes (flip when the beta proves demand)
+
+Turns the `/bmla` gate from the shared beta passcode into paid **access codes**
+(docs/BMLA-BUSINESS-MODEL.md §5, stage 2). Everything ships in the repo already —
+this is just env config:
+
+| Name | What it is | Notes |
+|---|---|---|
+| `SESSION_SECRET` | signs the redeemed-code cookie | same one as §1 — required |
+| `BMLA_CODE_SECRET` | signs the codes themselves | optional; falls back to `SESSION_SECRET`. Use a dedicated one so you can revoke all sold codes without logging yourself out |
+| `VITE_BMLA_MODE` | set to `codes` | **not a secret** (it's a client flag) — flips the gate UI |
+
+Mint codes offline with the same secret (never mint on a shared machine):
+```bash
+BMLA_CODE_SECRET=<same-value-as-vercel> node scripts/bmla-codes.js --days 120 --count 5
+```
+Each code is stateless (expiry + signature baked in) — send one per paying student;
+they redeem it at `/bmla` and stay signed in via an httpOnly cookie (max 30 days per
+entry, re-enter until the code expires). Revoke everything by rotating the secret.
+
+---
+
+## 4. Custom domain (optional, recommended before launch)
 When you point a real domain (e.g. `killeyyy.com`) at the Vercel project, update the absolute
 URLs in `react-app/index.html` (JSON-LD `url`, OG/canonical), `react-app/public/sitemap.xml`,
 and `robots.txt` to that domain so SEO + share cards are correct.

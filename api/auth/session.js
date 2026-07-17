@@ -7,6 +7,7 @@ export default function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
   return res.status(200).json({
     configured: isConfigured(),
-    authenticated: Boolean(verifySession(req)),
+    // role check: a BMLA access-code session must never read as the owner
+    authenticated: verifySession(req)?.role === "owner",
   });
 }
