@@ -57,5 +57,7 @@ Start at the lower bound, raise after testimonials.
 
 - [ ] Owner: share with 3–5 classmates; collect feedback.
 - [ ] Owner: create free Resend account → set `RESEND_API_KEY` (+ optional `BMLA_NOTIFY_EMAIL`) in Vercel.
-- [ ] Build: `/api/bmla/redeem` + code generator when beta proves demand.
+- [x] Build: `/api/bmla/redeem` + code generator (`scripts/bmla-codes.js`) — shipped
+      inert; when beta proves demand, flip `VITE_BMLA_MODE=codes` + set the secrets
+      (`docs/SETUP-ENV.md` §3).
 - [ ] Set pricing from beta feedback; announce founding-member window.

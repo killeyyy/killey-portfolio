@@ -9,6 +9,12 @@ Branch: `claude/jolly-archimedes-EBecL`. Root `index.html` still serves producti
 until the Vite app reaches parity and the `vercel.json` flip lands.
 
 ### Added
+- **BMLA access codes (inert until flipped):** `/api/bmla/redeem` verifies stateless
+  HMAC-signed codes and sets a separate `role:"bmla"` httpOnly cookie;
+  `scripts/bmla-codes.js` mints codes offline; `BmlaGate` gains a codes mode behind
+  `VITE_BMLA_MODE=codes` (falls back to the beta passcode when unconfigured). Owner
+  endpoints now require `role:"owner"`, so a redeemed code can never unlock the
+  cockpit. Setup: `docs/SETUP-ENV.md` §3.
 - **Cmd/Ctrl+K command palette** (zero-dep, fully keyboard accessible): jump to any
   section, open case studies, launch live games, copy email, open socials, owner login.
   Trigger via keyboard or the ⌘K button in the nav.
